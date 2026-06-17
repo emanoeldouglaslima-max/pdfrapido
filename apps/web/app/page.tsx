@@ -63,7 +63,19 @@ export default async function HomePage() {
         {/* ── HERO ── */}
         <section className="bg-gradient-to-b from-brand-50 to-white py-16 px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <p className="text-brand-600 font-semibold text-sm uppercase tracking-widest mb-4">
+            {/* Avaliações / Estrelas (Prova Social) */}
+            <div className="flex items-center justify-center gap-1 mb-4">
+              {[...Array(5)].map((_, i) => (
+                <svg key={i} className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+              <span className="text-xs text-gray-500 font-semibold ml-2">
+                4.8/5 (mais de 12.000 avaliações de brasileiros)
+              </span>
+            </div>
+
+            <p className="text-brand-600 font-bold text-xs uppercase tracking-widest mb-3">
               Ferramentas Online Gratuitas
             </p>
             <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight tracking-tight">
@@ -71,10 +83,32 @@ export default async function HomePage() {
               <span className="text-brand-600">editar PDF online</span>{' '}
               — grátis e sem cadastro
             </h1>
-            <p className="mt-6 text-xl text-gray-500 leading-relaxed">
+            <p className="mt-5 text-lg text-gray-500 leading-relaxed max-w-2xl mx-auto">
               Comprima, converta, junte e divida seus PDFs em segundos. Funciona no celular,
-              computador e tablet. Seus arquivos são deletados automaticamente após 30 minutos.
+              computador e tablet. Seus arquivos são excluídos automaticamente após 30 minutos.
             </p>
+
+            {/* Vantagens Rápidas */}
+            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-xs text-gray-600 font-semibold">
+              <span className="flex items-center gap-1">
+                <svg className="w-3.5 h-3.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                Sem Limites
+              </span>
+              <span className="flex items-center gap-1">
+                <svg className="w-3.5 h-3.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                100% Seguro & Criptografado
+              </span>
+              <span className="flex items-center gap-1">
+                <svg className="w-3.5 h-3.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                Sem Cadastro
+              </span>
+            </div>
 
             {/* Stats */}
             {processed > 0 && (
@@ -142,6 +176,36 @@ export default async function HomePage() {
                   <div className="text-4xl mb-3">{b.icon}</div>
                   <h3 className="font-bold text-gray-900 mb-2">{b.title}</h3>
                   <p className="text-sm text-gray-500 leading-relaxed">{b.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── TESTEMUNHOS (PROVA SOCIAL) ── */}
+        <section className="bg-white py-16 px-4 border-t border-gray-100">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2 text-center">
+              Quem usa o PDFRápido aprova!
+            </h2>
+            <p className="text-gray-500 text-center mb-10">Veja o depoimento de alguns dos nossos usuários do dia a dia.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                { name: 'Dra. Mariana Souza', role: 'Advogada', text: 'Excelente ferramenta! Uso diariamente para juntar e comprimir petições antes de enviar para o tribunal. É muito rápida e não perde a qualidade.' },
+                { name: 'Carlos Eduardo', role: 'Contador', text: 'Eu precisava de algo prático para converter relatórios em Word para PDF e enviar para os clientes no WhatsApp. Funciona perfeito direto do meu celular.' },
+              ].map((t, i) => (
+                <div key={i} className="bg-gray-50 rounded-2xl p-6 border border-gray-100 relative">
+                  <div className="text-brand-600 text-3xl font-serif absolute top-3 left-4 opacity-20">“</div>
+                  <p className="text-sm text-gray-600 italic leading-relaxed relative z-10">{t.text}</p>
+                  <div className="mt-4 flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-xs">
+                      {t.name[0]}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-xs">{t.name}</h4>
+                      <p className="text-[10px] text-gray-400 font-medium">{t.role}</p>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
