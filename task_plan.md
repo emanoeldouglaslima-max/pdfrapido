@@ -43,5 +43,11 @@ Este documento descreve as fases planejadas para colocar a aplicação em pleno 
 * [x] Conectar Backend Node.js na Render (grátis) apontando para o diretório `apps/api`
 * [x] Configurar variáveis de ambiente na Vercel e na Render
 
+### Fase 8: Refinamento de UI/UX e Visual Profissional
+* [x] Criar componente de Logo SVG moderno e estilizado (`Logo.tsx`)
+* [x] Unificar os componentes `Header.tsx` e `Footer.tsx` e aplicar em todas as páginas
+* [x] Ajustar placeholders de publicidade (`AdUnit.tsx`) para um visual minimalista e profissional
+* [x] Testar compilação Next.js localmente e realizar push para produção (deploy automático)
+
 
 

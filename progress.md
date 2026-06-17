@@ -53,4 +53,10 @@ Acompanhamento em tempo real da execução técnica e testes.
 * **Ação**: Criado o deploy do Frontend Next.js na Vercel a partir da pasta `apps/web` com a variável `NEXT_PUBLIC_API_URL` apontando para a Render.
 * **Resultado**: Sucesso. Frontend publicado e integrado à API em tempo recorde!
 
+### 8. Ajustes de UI/UX e Logo Profissional
+* **Ação**: Criado componente de Logo SVG profissional (`components/Logo.tsx`) representando velocidade e documentos PDF em degradê de Indigo.
+* **Ação**: Unificados os componentes `Header` (`components/Header.tsx`) e `Footer` (`components/Footer.tsx`) e aplicados nas páginas Home e interna de Ferramentas.
+* **Ação**: Otimizado o design e placeholder das unidades de anúncios do AdSense (`components/AdUnit.tsx`) para um estilo polido e profissional.
+* **Resultado**: Build Next.js compilado com sucesso localmente, e as alterações foram enviadas (push) para o GitHub e aplicadas automaticamente na Vercel.
+
 
