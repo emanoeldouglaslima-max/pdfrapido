@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     site: '@pdfrápido',
   },
   verification: {
-    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || '',
+    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || 'qbvGg16DhV-HWQVvqIQ8A--wpg9_xr3RhQqJsIvUs0U',
   },
 };
 
