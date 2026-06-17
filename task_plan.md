@@ -39,8 +39,9 @@ Este documento descreve as fases planejadas para colocar a aplicação em pleno 
 * [ ] Executar script de deploy no Google Cloud Run (opcional, exige cartão/faturamento)
 
 ### Fase 7: Deploy Alternativo 100% Gratuito (Sem Cartão de Crédito)
-* [ ] Conectar Frontend Next.js na Vercel (grátis) apontando para o diretório `apps/web`
-* [ ] Conectar Backend Node.js na Render (grátis) apontando para o diretório `apps/api`
-* [ ] Configurar variáveis de ambiente na Vercel e na Render
+* [x] Conectar Frontend Next.js na Vercel (grátis) apontando para o diretório `apps/web`
+* [x] Conectar Backend Node.js na Render (grátis) apontando para o diretório `apps/api`
+* [x] Configurar variáveis de ambiente na Vercel e na Render
+
 
 

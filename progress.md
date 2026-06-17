@@ -47,3 +47,10 @@ Acompanhamento em tempo real da execução técnica e testes.
 * **Ação**: Autenticação configurada via Token de Acesso Pessoal (PAT) fornecido pelo usuário.
 * **Resultado**: Sucesso. Código do site enviado com sucesso para a branch `main` no GitHub.
 
+### 7. Deploy de Produção Gratuito (Vercel & Render)
+* **Ação**: Criado o Web Service da API backend na Render a partir da pasta `apps/api` (usando Docker e fallback síncrono/in-memory).
+* **Resultado**: Sucesso. API publicada com sucesso em `https://pdfrapido-api.onrender.com`.
+* **Ação**: Criado o deploy do Frontend Next.js na Vercel a partir da pasta `apps/web` com a variável `NEXT_PUBLIC_API_URL` apontando para a Render.
+* **Resultado**: Sucesso. Frontend publicado e integrado à API em tempo recorde!
+
+
