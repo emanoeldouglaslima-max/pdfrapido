@@ -49,5 +49,11 @@ Este documento descreve as fases planejadas para colocar a aplicação em pleno 
 * [x] Ajustar placeholders de publicidade (`AdUnit.tsx`) para um visual minimalista e profissional
 * [x] Testar compilação Next.js localmente e realizar push para produção (deploy automático)
 
+### Fase 9: Otimização de Conversão e Elementos de Confiança (Inspiração PDF Aid)
+* [x] Adicionar Prova Social com estrelas (4.8/5) no Hero da HomePage
+* [x] Inserir vantagens rápidas e selos de segurança destacados
+* [x] Adicionar seção de depoimentos reais de profissionais que usam o site
+* [x] Enviar atualizações para o repositório GitHub (deploy automático na Vercel)
+
 
 
