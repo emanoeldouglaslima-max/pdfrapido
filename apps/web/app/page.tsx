@@ -3,6 +3,8 @@ import Link from 'next/link';
 import Script from 'next/script';
 import { TOOLS } from './constants';
 import AdUnit from '../components/AdUnit';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrápido.com.br';
 
@@ -55,24 +57,7 @@ export default async function HomePage() {
       />
 
       {/* ── HEADER / NAV ── */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-extrabold text-brand-600 tracking-tight">PDF</span>
-            <span className="text-2xl font-extrabold text-gray-800 tracking-tight">Rápido</span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
-            {TOOLS.slice(0, 4).map((t) => (
-              <Link key={t.slug} href={`/${t.slug}`} className="hover:text-brand-600 transition-colors">
-                {t.name}
-              </Link>
-            ))}
-          </nav>
-          <span className="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded-full font-semibold">
-            100% Grátis
-          </span>
-        </div>
-      </header>
+      <Header />
 
       <main>
         {/* ── HERO ── */}
@@ -235,31 +220,7 @@ export default async function HomePage() {
       </main>
 
       {/* ── FOOTER ── */}
-      <footer className="bg-gray-900 text-gray-400 py-10 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between gap-8">
-            <div>
-              <span className="text-white font-extrabold text-xl">PDFRápido</span>
-              <p className="mt-2 text-sm">Ferramentas de PDF online grátis para brasileiros.</p>
-            </div>
-            <div>
-              <p className="text-white font-semibold mb-3 text-sm">Ferramentas</p>
-              <ul className="space-y-2">
-                {TOOLS.map((t) => (
-                  <li key={t.slug}>
-                    <Link href={`/${t.slug}`} className="text-sm hover:text-white transition-colors">
-                      {t.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="mt-8 pt-6 border-t border-gray-800 text-xs text-center">
-            © {new Date().getFullYear()} PDFRápido. Todos os direitos reservados.
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }

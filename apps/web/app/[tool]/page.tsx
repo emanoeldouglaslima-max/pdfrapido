@@ -9,6 +9,8 @@ import ProgressBar from '../../components/ProgressBar';
 import DownloadCard from '../../components/DownloadCard';
 import AdUnit from '../../components/AdUnit';
 import { usePdfTool } from '../hooks/usePdfTool';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 // Configuração específica por ferramenta
 const TOOL_CONFIG: Record<string, {
@@ -184,18 +186,7 @@ export default function ToolPage({ params }: PageProps) {
   return (
     <>
       {/* ── HEADER ── */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center gap-4">
-          <Link href="/" className="flex items-center gap-1 text-brand-600 hover:opacity-80">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            <span className="text-sm font-medium">Início</span>
-          </Link>
-          <span className="text-gray-300">›</span>
-          <span className="text-sm font-semibold text-gray-700">{tool.name}</span>
-        </div>
-      </header>
+      <Header />
 
       <main className="max-w-3xl mx-auto px-4 py-10">
 
@@ -407,6 +398,7 @@ export default function ToolPage({ params }: PageProps) {
           />
         </div>
       </main>
+      <Footer />
     </>
   );
 }
