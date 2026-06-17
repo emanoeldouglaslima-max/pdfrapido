@@ -41,3 +41,9 @@ Acompanhamento em tempo real da execução técnica e testes.
   - Adicionado `sublabel` no tipo `TOOL_CONFIG` em `[tool]/page.tsx` para evitar erro de atribuição.
   - Ajustado `disabled={false}` na `UploadZone` e removido `status !== 'idle'` do `ProgressBar.tsx` para evitar erros de tipos sem sobreposição.
 * **Resultado**: Builds de produção compilando 100% com sucesso tanto no backend (via `tsc`) quanto no frontend (via `next build` standalone). Pronto para deploy!
+
+### 6. Upload do Código para o GitHub (Sincronização)
+* **Ação**: Vinculado o repositório git local ao repositório remoto criado pelo usuário no GitHub (`https://github.com/emanoeldouglaslima-max/pdfrapido.git`).
+* **Ação**: Autenticação configurada via Token de Acesso Pessoal (PAT) fornecido pelo usuário.
+* **Resultado**: Sucesso. Código do site enviado com sucesso para a branch `main` no GitHub.
+

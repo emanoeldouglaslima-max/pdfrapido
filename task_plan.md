@@ -35,5 +35,12 @@ Este documento descreve as fases planejadas para colocar a aplicação em pleno 
 * [x] Criar arquivo `ads.txt` do AdSense e `robots.txt` para indexação
 * [x] Criar scripts de deploy automatizados em shell (`deploy.sh`) e PowerShell (`deploy.ps1`)
 * [x] Corrigir erros de tipagem do TypeScript e testar compilação de produção local
-* [ ] Executar script de deploy no Google Cloud Run (a cargo do usuário, pois exige gcloud logado localmente)
+* [x] Fazer o upload do repositório no GitHub (`main`) usando o token de acesso pessoal
+* [ ] Executar script de deploy no Google Cloud Run (opcional, exige cartão/faturamento)
+
+### Fase 7: Deploy Alternativo 100% Gratuito (Sem Cartão de Crédito)
+* [ ] Conectar Frontend Next.js na Vercel (grátis) apontando para o diretório `apps/web`
+* [ ] Conectar Backend Node.js na Render (grátis) apontando para o diretório `apps/api`
+* [ ] Configurar variáveis de ambiente na Vercel e na Render
+
 

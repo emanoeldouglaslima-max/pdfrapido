@@ -69,3 +69,5 @@ Constituição e diretrizes do projeto PDFRápido.com.br.
 * **2026-06-17**: Configuração inicial de SEO e monetização, com a inclusão do `ads.txt` (Google AdSense) e `robots.txt` no frontend, além de variáveis de ambiente de produção.
 * **2026-06-17**: Correção de erros de tipagem e imports do TypeScript no Frontend que impediam a geração do build estático (`sitemap.ts`, `[tool]/page.tsx` e `ProgressBar.tsx`), garantindo um build de produção standalone gerado sem erros.
 * **2026-06-17**: Criação dos scripts automatizados de deploy `deploy.sh` (Unix) e `deploy.ps1` (PowerShell/Windows) facilitando o deploy final para o usuário.
+* **2026-06-17**: Vinculação e envio (push) do repositório local para a branch `main` do repositório do usuário no GitHub (`https://github.com/emanoeldouglaslima-max/pdfrapido.git`) usando autenticação via Token de Acesso Pessoal (PAT).
+
