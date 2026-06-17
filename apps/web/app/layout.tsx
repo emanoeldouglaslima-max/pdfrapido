@@ -3,7 +3,7 @@ import Script from 'next/script';
 import './globals.css';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrápido.com.br';
-const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || '';
+const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-8269194570705692';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
