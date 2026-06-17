@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # ── API Backend ──────────────────────────────────────────────────────────────
+  api:
+    build:
+      context: ./apps/api
+      target: production
+    container_name: pdfrapido-api
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - REDIS_URL=redis://redis:6379
+      - CORS_ORIGIN=http://localhost:3000
+      - MAX_FILE_SIZE_MB=25
+      - RATE_LIMIT_PER_HOUR=100
+      - FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID:-}
+      - FIREBASE_PRIVATE_KEY=${FIREBASE_PRIVATE_KEY:-}
+      - FIREBASE_CLIENT_EMAIL=${FIREBASE_CLIENT_EMAIL:-}
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── Frontend Next.js ─────────────────────────────────────────────────────────
+  web:
+    build:
+      context: ./apps/web
+      target: production
+      args:
+        - NEXT_PUBLIC_API_URL=http://localhost:8080
+        - NEXT_PUBLIC_SITE_URL=http://localhost:3000
+        - NEXT_PUBLIC_ADSENSE_ID=${NEXT_PUBLIC_ADSENSE_ID:-}
+    container_name: pdfrapido-web
+    ports:
+      - "3000:3000"
+    environment:
+      - HOSTNAME=0.0.0.0
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  # ── Redis ────────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: pdfrapido-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ── Redis UI (apenas debug) ─────────────────────────────────────────────────
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: pdfrapido-redis-ui
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on: [redis]
+    profiles: ["debug"]

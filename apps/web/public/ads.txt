@@ -1,0 +1,4 @@
+# ads.txt — Google AdSense
+# Substitua o PUBLISHER_ID pelo seu ID de editor do AdSense (ex: pub-1234567890123456)
+# Após criar sua conta no AdSense, copie o ID e cole aqui.
+google.com, PUBLISHER_ID, DIRECT, f08c47fec0942fa0
