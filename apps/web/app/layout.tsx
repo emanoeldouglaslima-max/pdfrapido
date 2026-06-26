@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 import './globals.css';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrápido.com.br';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrapido.com.br';
 const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-8269194570705692';
 
 export const metadata: Metadata = {
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@pdfrápido',
+    site: '@pdfrapido',
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || 'qbvGg16DhV-HWQVvqIQ8A--wpg9_xr3RhQqJsIvUs0U',

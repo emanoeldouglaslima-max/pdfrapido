@@ -1,7 +1,7 @@
 // app/robots.ts
 import { MetadataRoute } from 'next';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrápido.com.br';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrapido.com.br';
 
 export default function robots(): MetadataRoute.Robots {
   return {

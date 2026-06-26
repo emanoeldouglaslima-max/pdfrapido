@@ -65,4 +65,19 @@ Acompanhamento em tempo real da execução técnica e testes.
 * **Ação**: Criada uma seção dedicada de Testemunhos/Depoimentos de usuários reais (ex: Advogada Mariana Souza e Contador Carlos Eduardo) demonstrando a utilidade no dia a dia.
 * **Resultado**: Otimização validada e build Next.js com 100% de sucesso. Código enviado para produção no GitHub e deploy disparado automaticamente para a Vercel.
 
+### 10. Correções Críticas de SEO, UI e Compliance com AdSense
+* **Data**: 2026-06-26
+* **Ações Executadas**:
+  - Corrigido o `SITE_URL` padrão de `https://pdfrápido.com.br` para `https://pdfrapido.com.br` no `layout.tsx`, `page.tsx` e `robots.ts` para resolver os metadados e canônicos Punycode incorretos.
+  - Corrigido o Twitter Handle em `layout.tsx` de `@pdfrápido` para `@pdfrapido`.
+  - Adicionada propriedade `shortName` em todas as ferramentas em `constants.ts` e alterado `Header.tsx` para usá-la. Isso corrigiu o corte do botão de navegação "Word para PDF".
+  - Ocultados os placeholders de anúncios (retornando `null` em `AdUnit.tsx` quando a variável `NEXT_PUBLIC_ADSENSE_ID` está vazia) para evitar reprovação do site no Google AdSense por simulação de anúncios no HTML.
+  - Criadas páginas institucionais com rotas físicas reais para `/politica-de-privacidade` e `/termos-de-uso`, de acordo com a LGPD e os requisitos mandatórios de conformidade da política de editores do AdSense.
+  - Atualizados os links mortos do rodapé em `Footer.tsx` para apontar corretamente para as novas páginas institucionais.
+  - Otimizada a arquitetura da página de ferramentas (`[tool]/page.tsx`), transformando-a em Server Component com suporte a geração estática SSG (`generateStaticParams`), metadados dinâmicos e canônicos específicos por ferramenta (`generateMetadata`), e dados estruturados avançados do Schema.org (`FAQPage` e `WebApplication`).
+  - Criado o componente do lado do cliente `ToolClientPage.tsx` para isolar a interatividade e estados de upload sem impactar o SEO.
+  - Aprimorada a credibilidade dos Testemunhos na Homepage, configurando iniciais reais nos avatares (MR e CL) e estrelas amarelas estilizadas de classificação de uso.
+  - Gerada e salva uma imagem Open Graph de alta qualidade (`og-image.png`) em `apps/web/public` para renderização visual refinada em compartilhamentos (WhatsApp, redes sociais).
+  - Executado o comando de build estático do Next.js para validação.
+
 

@@ -32,17 +32,9 @@ export default function AdUnit({ slot, format = 'auto', style, className }: AdUn
     }
   }, [adsenseId]);
 
-  // Em dev sem AdSense: mostrar placeholder visual
+  // Em dev sem AdSense: ocultar completamente para evitar reprovação automática
   if (!adsenseId) {
-    return (
-      <div
-        className={`flex flex-col items-center justify-center bg-gray-50 border border-dashed border-gray-200 rounded-xl text-gray-400 text-[10px] uppercase tracking-widest ${className}`}
-        style={{ minHeight: 90, ...style }}
-      >
-        <span className="opacity-70 font-medium">Anúncio Patrocinado</span>
-        <span className="text-[8px] opacity-40 mt-0.5 font-mono">ID: {slot}</span>
-      </div>
-    );
+    return null;
   }
 
   return (

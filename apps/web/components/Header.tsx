@@ -9,25 +9,30 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all">
+    <header className="sticky top-0 z-50 glass border-b border-white/40 shadow-sm transition-all">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="hover:opacity-90 transition-opacity">
           <Logo />
         </Link>
 
         {/* Links rápidos para as principais ferramentas */}
-        <nav className="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
+        <nav className="hidden md:flex items-center gap-1 text-sm font-semibold text-gray-600">
           {TOOLS.slice(0, 4).map((t) => {
             const isActive = pathname === `/${t.slug}`;
             return (
               <Link
                 key={t.slug}
                 href={`/${t.slug}`}
-                className={`transition-colors hover:text-brand-600 py-1 ${
-                  isActive ? 'text-brand-600 font-bold border-b-2 border-brand-600' : ''
+                className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 hover:bg-brand-50 ${
+                  isActive
+                    ? 'text-brand-600 font-bold bg-brand-50'
+                    : ''
                 }`}
               >
-                {t.name.replace(' PDF', '')}
+                {t.shortName || t.name}
+                {isActive && (
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 rounded-full" />
+                )}
               </Link>
             );
           })}
@@ -45,8 +50,13 @@ export default function Header() {
               Início
             </Link>
           )}
-          <span className="text-xs bg-green-50 text-green-700 border border-green-200/60 px-3 py-1.5 rounded-full font-semibold shadow-sm animate-pulse">
-            ⚡ 100% Grátis
+
+          {/* Badge animado "100% Grátis" */}
+          <span className="flex items-center gap-1.5 text-xs bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1.5 rounded-full font-bold shadow-md shadow-green-200 hover:shadow-lg transition-all duration-200 cursor-default">
+            <svg className="w-3 h-3 animate-bounce-slow" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+            </svg>
+            100% Grátis
           </span>
         </div>
       </div>

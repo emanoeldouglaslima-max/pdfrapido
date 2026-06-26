@@ -2,6 +2,7 @@ export const TOOLS = [
   {
     slug: 'comprimir-pdf',
     name: 'Comprimir PDF',
+    shortName: 'Comprimir',
     description: 'Reduza o tamanho do PDF sem perder qualidade. Ideal para enviar por e-mail ou WhatsApp.',
     icon: '🗜️',
     color: 'bg-blue-50',
@@ -11,6 +12,7 @@ export const TOOLS = [
   {
     slug: 'converter-pdf-para-word',
     name: 'PDF para Word',
+    shortName: 'PDF para Word',
     description: 'Transforme PDF em documento Word editável (.docx) em segundos.',
     icon: '📄',
     color: 'bg-indigo-50',
@@ -20,6 +22,7 @@ export const TOOLS = [
   {
     slug: 'converter-pdf-para-jpg',
     name: 'PDF para JPG',
+    shortName: 'PDF para JPG',
     description: 'Converta cada página do PDF em imagem JPG de alta qualidade.',
     icon: '🖼️',
     color: 'bg-green-50',
@@ -29,6 +32,7 @@ export const TOOLS = [
   {
     slug: 'converter-word-para-pdf',
     name: 'Word para PDF',
+    shortName: 'Word para PDF',
     description: 'Transforme documentos Word (.docx) em PDF preservando a formatação.',
     icon: '📝',
     color: 'bg-purple-50',
@@ -38,6 +42,7 @@ export const TOOLS = [
   {
     slug: 'converter-jpg-para-pdf',
     name: 'Imagem para PDF',
+    shortName: 'Imagem para PDF',
     description: 'Junte fotos e imagens JPG/PNG em um único documento PDF.',
     icon: '📷',
     color: 'bg-yellow-50',
@@ -47,6 +52,7 @@ export const TOOLS = [
   {
     slug: 'juntar-pdf',
     name: 'Juntar PDF',
+    shortName: 'Juntar PDF',
     description: 'Una vários arquivos PDF em um só documento na ordem que desejar.',
     icon: '🔗',
     color: 'bg-orange-50',
@@ -56,6 +62,7 @@ export const TOOLS = [
   {
     slug: 'dividir-pdf',
     name: 'Dividir PDF',
+    shortName: 'Dividir PDF',
     description: 'Separe páginas de um PDF ou extraia um intervalo específico.',
     icon: '✂️',
     color: 'bg-red-50',

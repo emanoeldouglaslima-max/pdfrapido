@@ -1,203 +1,260 @@
-'use client';
-
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { useState } from 'react';
+import Script from 'next/script';
 import { TOOLS } from '../constants';
-import UploadZone from '../../components/UploadZone';
-import ProgressBar from '../../components/ProgressBar';
-import DownloadCard from '../../components/DownloadCard';
-import AdUnit from '../../components/AdUnit';
-import { usePdfTool } from '../hooks/usePdfTool';
+import ToolClientPage from './ToolClientPage';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import AdUnit from '../../components/AdUnit';
 
-// Configuração específica por ferramenta
-const TOOL_CONFIG: Record<string, {
-  endpoint: string;
-  accept: Record<string, string[]>;
-  multiple?: boolean;
-  label: string;
-  sublabel?: string;
-  options?: React.ReactNode;
-  buildFormData: (files: File[], opts: Record<string, string>) => FormData;
-}> = {
-  'comprimir-pdf': {
-    endpoint: 'compress',
-    accept: { 'application/pdf': ['.pdf'] },
-    label: 'Arraste seu PDF aqui ou clique para selecionar',
-    options: undefined,
-    buildFormData: (files, opts) => {
-      const fd = new FormData();
-      fd.append('file', files[0]);
-      fd.append('level', opts.level || 'medio');
-      return fd;
-    },
-  },
-  'converter-pdf-para-word': {
-    endpoint: 'pdf-to-word',
-    accept: { 'application/pdf': ['.pdf'] },
-    label: 'Arraste seu PDF aqui para converter em Word',
-    buildFormData: (files) => { const fd = new FormData(); fd.append('file', files[0]); return fd; },
-  },
-  'converter-pdf-para-jpg': {
-    endpoint: 'pdf-to-jpg',
-    accept: { 'application/pdf': ['.pdf'] },
-    label: 'Arraste seu PDF aqui para converter em imagens JPG',
-    buildFormData: (files, opts) => {
-      const fd = new FormData();
-      fd.append('file', files[0]);
-      fd.append('dpi', opts.dpi || '150');
-      return fd;
-    },
-  },
-  'converter-word-para-pdf': {
-    endpoint: 'word-to-pdf',
-    accept: {
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
-      'application/msword': ['.doc'],
-    },
-    label: 'Arraste seu arquivo Word (.docx) aqui',
-    buildFormData: (files) => { const fd = new FormData(); fd.append('file', files[0]); return fd; },
-  },
-  'converter-jpg-para-pdf': {
-    endpoint: 'jpg-to-pdf',
-    accept: { 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'image/webp': ['.webp'] },
-    multiple: true,
-    label: 'Arraste suas imagens aqui (JPG, PNG)',
-    sublabel: 'Pode selecionar várias imagens de uma vez',
-    buildFormData: (files, opts) => {
-      const fd = new FormData();
-      files.forEach((f) => fd.append('files', f));
-      fd.append('orientation', opts.orientation || 'portrait');
-      return fd;
-    },
-  },
-  'juntar-pdf': {
-    endpoint: 'merge',
-    accept: { 'application/pdf': ['.pdf'] },
-    multiple: true,
-    label: 'Arraste os PDFs que quer juntar (mínimo 2)',
-    sublabel: 'Selecione vários PDFs — eles serão unidos na ordem enviada',
-    buildFormData: (files) => {
-      const fd = new FormData();
-      files.forEach((f) => fd.append('files', f));
-      return fd;
-    },
-  },
-  'dividir-pdf': {
-    endpoint: 'split',
-    accept: { 'application/pdf': ['.pdf'] },
-    label: 'Arraste o PDF que quer dividir',
-    buildFormData: (files, opts) => {
-      const fd = new FormData();
-      fd.append('file', files[0]);
-      fd.append('mode', opts.mode || 'every');
-      fd.append('pages', opts.pages || '1');
-      fd.append('from', opts.from || '1');
-      fd.append('to', opts.to || '1');
-      fd.append('page', opts.page || '1');
-      return fd;
-    },
-  },
-};
+interface PageProps {
+  params: { tool: string };
+}
 
-// Conteúdo SEO por ferramenta
+// Mapeamento dinâmico para SEO e Metadados das ferramentas
 const SEO_CONTENT: Record<string, {
+  title: string;
+  description: string;
   h2: string;
   why: string;
   how: string[];
   faq: { q: string; a: string }[];
 }> = {
   'comprimir-pdf': {
+    title: 'Comprimir PDF Online Grátis — Reduzir PDF | PDFRápido',
+    description: 'Reduza o tamanho do seu PDF online grátis sem perder qualidade. Ideal para enviar por e-mail ou WhatsApp. Sem cadastro e sem limites.',
     h2: 'Como comprimir PDF online grátis?',
-    why: 'Comprimir PDF é essencial para enviar arquivos por e-mail, WhatsApp ou armazenar com menos espaço. Nosso compressor reduz o tamanho do PDF sem comprometer a qualidade visual.',
-    how: ['Clique em "Selecionar arquivo" ou arraste o PDF', 'Escolha o nível de compressão desejado', 'Clique em "Comprimir PDF" e aguarde', 'Baixe o arquivo comprimido'],
-    faq: [
-      { q: 'Quanto posso reduzir um PDF?', a: 'Depende do conteúdo. PDFs com muitas imagens podem ser reduzidos em até 80%. PDFs de texto puro têm menos redução.' },
-      { q: 'A qualidade do texto é preservada?', a: 'Sim. O texto sempre é preservado. A compressão afeta principalmente as imagens embutidas.' },
+    why: 'Comprimir PDF é essencial para enviar arquivos por e-mail, WhatsApp ou economizar espaço de armazenamento. Nosso compressor reduz o tamanho do PDF otimizando a estrutura interna e compactando imagens embutidas, mantendo o texto nítido.',
+    how: [
+      'Clique no botão de upload ou arraste o seu PDF para a área de seleção.',
+      'Escolha o nível de compressão desejado (médio recomendado).',
+      'Clique em "Comprimir PDF agora" para iniciar o processamento.',
+      'Baixe o seu PDF reduzido em instantes.'
     ],
+    faq: [
+      { q: 'Quanto posso reduzir o tamanho de um PDF?', a: 'PDFs contendo muitas imagens podem ser reduzidos em até 80% do tamanho original. Arquivos contendo apenas texto têm uma redução menor.' },
+      { q: 'A compressão reduz a qualidade das imagens?', a: 'O nível de compressão médio oferece o melhor equilíbrio, reduzindo o peso do arquivo enquanto mantém as imagens nítidas para leitura.' },
+      { q: 'O site armazena os meus documentos?', a: 'Não. Todos os arquivos enviados e processados são excluídos permanentemente de nossos servidores após 30 minutos.' }
+    ]
   },
   'converter-pdf-para-word': {
+    title: 'PDF para Word Online Grátis — Converter PDF em Word | PDFRápido',
+    description: 'Converta seus arquivos PDF em documentos do Word (.docx) editáveis online e grátis. Layout preservado, rápido e sem necessidade de cadastro.',
     h2: 'Como converter PDF para Word online?',
-    why: 'Converter PDF para Word permite editar o conteúdo do documento. Útil para currículo, contratos e qualquer documento que precise ser modificado.',
-    how: ['Envie o PDF que deseja converter', 'Aguarde o processamento automático', 'Baixe o arquivo .docx pronto para editar no Word ou Google Docs'],
-    faq: [
-      { q: 'A formatação é mantida?', a: 'Tentamos preservar a estrutura, mas PDFs complexos com colunas e tabelas podem ter variações.' },
-      { q: 'Funciona com PDF escaneado?', a: 'PDFs escaneados (imagens) têm resultado limitado. Funciona melhor com PDFs gerados digitalmente.' },
+    why: 'Converter PDF para Word permite editar o conteúdo de um documento com facilidade no Microsoft Word ou Google Docs. Ideal para atualizar currículos, revisar contratos ou copiar trechos de relatórios.',
+    how: [
+      'Selecione o arquivo PDF que deseja converter do seu computador ou celular.',
+      'Aguarde enquanto nossa ferramenta extrai o texto e reconstrói o documento.',
+      'Clique no botão de download para obter o arquivo .docx editável.'
     ],
+    faq: [
+      { q: 'O texto convertido pode ser editado?', a: 'Sim. O arquivo final é gerado no formato .docx padrão, permitindo que você altere textos, tabelas e parágrafos.' },
+      { q: 'A formatação original do PDF é mantida?', a: 'Nossa ferramenta extrai e preserva o texto de forma estruturada. Para PDFs muito complexos com muitos layouts gráficos, pequenos ajustes de design podem ser necessários após a conversão.' }
+    ]
   },
   'converter-pdf-para-jpg': {
+    title: 'PDF para JPG Online Grátis — Converter Páginas em Imagem | PDFRápido',
+    description: 'Transforme cada página do seu PDF em imagens JPG de alta qualidade em segundos. Rápido, seguro e gratuito. Baixe todas as fotos em um ZIP.',
     h2: 'Como converter PDF para JPG online?',
-    why: 'Converter PDF para imagem é útil para compartilhar páginas nas redes sociais, usar como referência visual ou criar thumbnails.',
-    how: ['Envie o PDF', 'Escolha a qualidade (150 DPI para web, 300 DPI para impressão)', 'Baixe as imagens — cada página vira uma imagem JPG'],
-    faq: [
-      { q: 'Todas as páginas são convertidas?', a: 'Sim. Cada página do PDF vira uma imagem JPG. Se o PDF tiver mais de 1 página, você receberá um arquivo .zip.' },
+    why: 'Converter páginas de PDF em imagem é excelente para compartilhar documentos nas redes sociais, usar como anexos de e-mail rápidos ou criar apresentações visuais sem precisar abrir leitores de PDF.',
+    how: [
+      'Envie o arquivo PDF que você deseja transformar em imagens.',
+      'Escolha a qualidade de saída desejada (150 DPI para uso web ou 300 DPI para impressão).',
+      'Aguarde o processamento e baixe o arquivo comprimido .zip contendo todas as páginas em JPG.'
     ],
+    faq: [
+      { q: 'Cada página vira uma imagem JPG separada?', a: 'Sim. Se o seu arquivo PDF tiver 5 páginas, a ferramenta gerará 5 imagens JPG individuais empacotadas em um único arquivo .zip para facilitar o download.' },
+      { q: 'A ferramenta suporta PDFs grandes?', a: 'Sim, você pode converter PDFs de até 25MB de forma totalmente gratuita.' }
+    ]
+  },
+  'converter-word-para-pdf': {
+    title: 'Word para PDF Online Grátis — Converter DOCX em PDF | PDFRápido',
+    description: 'Converta arquivos do Word (.docx ou .doc) para PDF online e grátis. Preserve a formatação do seu currículo ou contrato em qualquer dispositivo.',
+    h2: 'Como converter Word para PDF online?',
+    why: 'A conversão de documentos do Word para PDF é altamente recomendada antes de enviar currículos, propostas comerciais ou relatórios formais. O PDF garante que o destinatário veja a formatação exata que você criou, independentemente do sistema operacional.',
+    how: [
+      'Arraste e solte o arquivo Word (.docx ou .doc) na área indicada.',
+      'Aguarde o processamento do documento pelo nosso conversor.',
+      'Baixe o documento em PDF finalizado.'
+    ],
+    faq: [
+      { q: 'A formatação do Word é alterada na conversão?', a: 'Não. Nosso conversor preserva o layout original do documento, incluindo fontes, tabelas, imagens e espaçamento.' },
+      { q: 'Posso converter de qualquer dispositivo?', a: 'Sim. A conversão é feita na nuvem, funcionando direto pelo navegador do celular, tablet ou computador.' }
+    ]
+  },
+  'converter-jpg-para-pdf': {
+    title: 'Imagem para PDF Online Grátis — Converter JPG e PNG | PDFRápido',
+    description: 'Junte fotos, capturas de tela e imagens PNG/JPG em um único arquivo PDF. Ideal para enviar documentos e formulários online de forma organizada.',
+    h2: 'Como converter imagens para PDF online?',
+    why: 'Converter fotos e imagens para PDF facilita o envio de comprovantes, digitalizações manuais ou fotos de documentos para portais do governo, faculdades ou escritórios, unindo múltiplas capturas em um único arquivo profissional.',
+    how: [
+      'Selecione uma ou mais imagens (JPG, PNG ou WebP) do seu aparelho.',
+      'Escolha a orientação das páginas (Retrato ou Paisagem).',
+      'Clique em "Imagem para PDF agora" e baixe o seu documento unificado.'
+    ],
+    faq: [
+      { q: 'Posso enviar fotos em formatos misturados?', a: 'Sim. Você pode enviar arquivos JPG, JPEG, PNG e WebP simultaneamente. O sistema converterá todos e os adicionará na sequência correta no PDF.' },
+      { q: 'As imagens perdem a qualidade?', a: 'A qualidade original das fotos é preservada ao máximo, com dimensionamento adequado para o formato de página A4.' }
+    ]
   },
   'juntar-pdf': {
-    h2: 'Como juntar PDF online?',
-    why: 'Juntar vários PDFs em um só é ideal para organizar documentos, criar relatórios ou enviar múltiplos arquivos como um só.',
-    how: ['Selecione 2 ou mais PDFs', 'Organize a ordem se necessário', 'Clique em "Juntar PDFs"', 'Baixe o documento unificado'],
-    faq: [
-      { q: 'Quantos PDFs posso juntar?', a: 'Você pode juntar até 20 arquivos de uma vez, desde que o total não ultrapasse 25MB.' },
+    title: 'Juntar PDF Online Grátis — Unir Vários Arquivos PDF | PDFRápido',
+    description: 'Una vários arquivos PDF em um único documento online. Ordene as páginas do seu jeito, rápido, fácil e totalmente seguro.',
+    h2: 'Como juntar PDFs em um único arquivo?',
+    why: 'Juntar PDFs é o recurso ideal para unificar petições judiciais, juntar contratos e anexos, consolidar relatórios de equipes ou organizar capítulos dispersos de uma apostila em um único documento centralizado.',
+    how: [
+      'Selecione dois ou mais PDFs que deseja juntar.',
+      'Ordene a sequência das ferramentas enviando os arquivos na ordem que deseja lê-los.',
+      'Clique em "Juntar PDF agora" e faça o download do PDF unificado.'
     ],
+    faq: [
+      { q: 'Quantos arquivos PDF posso juntar de uma vez?', a: 'Você pode enviar e unir até 20 arquivos em uma única operação, respeitando o limite total acumulado de 25MB.' },
+      { q: 'É seguro juntar documentos confidenciais?', a: 'Sim. A comunicação é encriptada por SSL e todos os arquivos enviados são destruídos dos servidores após 30 minutos.' }
+    ]
   },
   'dividir-pdf': {
-    h2: 'Como dividir PDF online?',
-    why: 'Dividir PDF é útil quando você precisa extrair páginas específicas, separar capítulos ou reduzir um arquivo grande em partes menores.',
-    how: ['Envie o PDF', 'Escolha como dividir: por número de páginas, por intervalo ou página específica', 'Baixe as partes separadas'],
-    faq: [
-      { q: 'Posso extrair só uma página?', a: 'Sim. Escolha a opção "Página específica" e informe o número da página que deseja extrair.' },
+    title: 'Dividir PDF Online Grátis — Extrair Páginas de PDF | PDFRápido',
+    description: 'Extraia páginas específicas de um PDF ou divida o documento em várias partes online. Grátis, sem cadastro e muito rápido.',
+    h2: 'Como dividir PDF e extrair páginas online?',
+    why: 'Dividir um PDF permite isolar apenas as folhas que interessam, como a página de assinatura de um contrato longo ou separar capítulos específicos de um e-book para estudos rápidos.',
+    how: [
+      'Faça o upload do PDF que você deseja dividir.',
+      'Escolha a regra de divisão: a cada N páginas, extrair uma página específica ou extrair um intervalo de páginas.',
+      'Inicie a divisão e baixe os arquivos separados (caso gere mais de um arquivo, eles virão agrupados em um ZIP).'
     ],
-  },
+    faq: [
+      { q: 'Como faço para extrair apenas a página 3 do meu PDF?', a: 'Escolha o modo "Extrair página específica", digite o número 3 no campo de texto e clique para processar.' },
+      { q: 'Os arquivos divididos mantêm os links e formatação?', a: 'Sim. O processo de divisão preserva a estrutura interna do PDF original, incluindo links clicáveis, texto selecionável e cores.' }
+    ]
+  }
 };
 
-interface PageProps {
-  params: { tool: string };
+// Gerador de Metadados dinâmico com foco em SEO local e canônicos válidos
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const tool = TOOLS.find((t) => t.slug === params.tool);
+  const seo = SEO_CONTENT[params.tool];
+  
+  if (!tool || !seo) {
+    return {};
+  }
+
+  const canonicalUrl = `https://pdfrapido.com.br/${params.tool}`;
+
+  return {
+    title: seo.title,
+    description: seo.description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: seo.title,
+      description: seo.description,
+      url: canonicalUrl,
+      type: 'website',
+      images: [
+        {
+          url: 'https://pdfrapido.com.br/og-image.png',
+          width: 1200,
+          height: 630,
+          alt: seo.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seo.title,
+      description: seo.description,
+      images: ['https://pdfrapido.com.br/og-image.png'],
+    },
+  };
+}
+
+// Geração de páginas estáticas em tempo de build (SSG)
+export async function generateStaticParams() {
+  return TOOLS.map((t) => ({
+    tool: t.slug,
+  }));
 }
 
 export default function ToolPage({ params }: PageProps) {
   const tool = TOOLS.find((t) => t.slug === params.tool);
-  const config = TOOL_CONFIG[params.tool];
-
-  if (!tool || !config) notFound();
+  
+  if (!tool) {
+    notFound();
+  }
 
   const seo = SEO_CONTENT[params.tool] || {
+    title: `${tool.name} Online Grátis | PDFRápido`,
+    description: tool.description,
     h2: `Como usar: ${tool.name}`,
     why: tool.description,
     how: ['Envie seu arquivo', 'Aguarde o processamento', 'Baixe o resultado'],
     faq: [],
   };
 
-  const { status, jobId, uploadProgress, downloadUrl, meta, errorMsg, submit, reset, handleDone, handleError } = usePdfTool();
-
-  const [files, setFiles] = useState<File[]>([]);
-  const [opts, setOpts] = useState<Record<string, string>>({});
-
-  const handleUpload = async () => {
-    if (files.length === 0) return;
-    const fd = config.buildFormData(files, opts);
-    await submit(config.endpoint, fd);
-  };
-
   const relatedTools = TOOLS.filter((t) => t.slug !== params.tool).slice(0, 3);
+  const canonicalUrl = `https://pdfrapido.com.br/${params.tool}`;
 
   return (
     <>
-      {/* ── HEADER ── */}
+      {/* Schema.org dinâmico (WebApplication) */}
+      <Script
+        id="schema-org-webapp"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            name: seo.title,
+            url: canonicalUrl,
+            description: seo.description,
+            applicationCategory: 'BusinessApplication',
+            operatingSystem: 'All',
+            browserRequirements: 'Requires HTML5 support',
+            inLanguage: 'pt-BR',
+            offers: {
+              '@type': 'Offer',
+              price: '0.00',
+              priceCurrency: 'BRL',
+            },
+          }),
+        }}
+      />
+
+      {/* Schema.org dinâmico para FAQs se existirem */}
+      {seo.faq.length > 0 && (
+        <Script
+          id="schema-org-faq"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: seo.faq.map((f) => ({
+                '@type': 'Question',
+                name: f.q,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: f.a,
+                },
+              })),
+            }),
+          }}
+        />
+      )}
+
       <Header />
 
       <main className="max-w-3xl mx-auto px-4 py-10">
-
-        {/* ── ANÚNCIO ABOVE FOLD ── */}
+        {/* Bloco de anúncio do topo da ferramenta (oculta se AdSense desligado) */}
         <AdUnit
           slot={process.env.NEXT_PUBLIC_AD_SLOT_TOOL_TOP || '0000000004'}
           format="horizontal"
           className="mb-8 ad-slot-horizontal rounded-xl overflow-hidden"
         />
 
-        {/* ── HERO DA FERRAMENTA ── */}
+        {/* Hero da ferramenta */}
         <div className="text-center mb-8">
           <div className={`inline-flex w-16 h-16 ${tool.iconBg} rounded-2xl items-center justify-center text-3xl mb-4`}>
             {tool.icon}
@@ -205,134 +262,13 @@ export default function ToolPage({ params }: PageProps) {
           <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
             {tool.name} Online Grátis
           </h1>
-          <p className="mt-3 text-lg text-gray-500">{tool.description} Sem cadastro.</p>
+          <p className="mt-3 text-lg text-gray-500">{tool.description} Sem cadastro e sem limites.</p>
         </div>
 
-        {/* ── FERRAMENTA ── */}
-        <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-          {status === 'idle' || status === 'failed' ? (
-            <>
-              <UploadZone
-                onFiles={setFiles}
-                accept={config.accept}
-                multiple={config.multiple}
-                label={config.label}
-                sublabel={(config as { sublabel?: string }).sublabel}
-                disabled={false}
-              />
+        {/* Componente de upload interativo do cliente */}
+        <ToolClientPage toolSlug={params.tool} />
 
-              {/* Arquivos selecionados */}
-              {files.length > 0 && (
-                <div className="mt-4 space-y-2">
-                  {files.map((f, i) => (
-                    <div key={i} className="flex items-center justify-between bg-gray-50 rounded-lg px-4 py-2 text-sm">
-                      <span className="text-gray-700 truncate">{f.name}</span>
-                      <span className="text-gray-400 flex-shrink-0 ml-3">{(f.size / 1024).toFixed(0)} KB</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Opções específicas por ferramenta */}
-              {params.tool === 'comprimir-pdf' && (
-                <div className="mt-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Nível de compressão</label>
-                  <select
-                    className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-                    value={opts.level || 'medio'}
-                    onChange={(e) => setOpts({ ...opts, level: e.target.value })}
-                  >
-                    <option value="baixo">Baixo — Máxima qualidade, menor redução</option>
-                    <option value="medio">Médio — Equilíbrio entre qualidade e tamanho (recomendado)</option>
-                    <option value="alto">Alto — Máxima redução, qualidade menor</option>
-                  </select>
-                </div>
-              )}
-
-              {params.tool === 'converter-pdf-para-jpg' && (
-                <div className="mt-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Qualidade da imagem</label>
-                  <select
-                    className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-                    value={opts.dpi || '150'}
-                    onChange={(e) => setOpts({ ...opts, dpi: e.target.value })}
-                  >
-                    <option value="150">150 DPI — Para web e e-mail</option>
-                    <option value="300">300 DPI — Alta qualidade para impressão</option>
-                  </select>
-                </div>
-              )}
-
-              {params.tool === 'dividir-pdf' && (
-                <div className="mt-4 space-y-3">
-                  <label className="block text-sm font-medium text-gray-700">Como dividir?</label>
-                  <select
-                    className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-                    value={opts.mode || 'every'}
-                    onChange={(e) => setOpts({ ...opts, mode: e.target.value })}
-                  >
-                    <option value="every">A cada N páginas</option>
-                    <option value="range">Extrair intervalo de páginas</option>
-                    <option value="single">Extrair página específica</option>
-                  </select>
-                  {(opts.mode === 'every' || !opts.mode) && (
-                    <input type="number" min="1" placeholder="Número de páginas por parte"
-                      className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-                      value={opts.pages || ''} onChange={(e) => setOpts({ ...opts, pages: e.target.value })} />
-                  )}
-                  {opts.mode === 'range' && (
-                    <div className="flex gap-3">
-                      <input type="number" min="1" placeholder="Página inicial"
-                        className="flex-1 border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-                        value={opts.from || ''} onChange={(e) => setOpts({ ...opts, from: e.target.value })} />
-                      <input type="number" min="1" placeholder="Página final"
-                        className="flex-1 border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-                        value={opts.to || ''} onChange={(e) => setOpts({ ...opts, to: e.target.value })} />
-                    </div>
-                  )}
-                  {opts.mode === 'single' && (
-                    <input type="number" min="1" placeholder="Número da página"
-                      className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-                      value={opts.page || ''} onChange={(e) => setOpts({ ...opts, page: e.target.value })} />
-                  )}
-                </div>
-              )}
-
-              {/* Erro */}
-              {errorMsg && (
-                <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">
-                  ⚠️ {errorMsg}
-                </div>
-              )}
-
-              {/* Botão processar */}
-              <button
-                onClick={handleUpload}
-                disabled={files.length === 0}
-                className="btn-primary w-full mt-5 text-base py-3.5"
-              >
-                {tool.icon} {tool.name} agora
-              </button>
-            </>
-          ) : status === 'done' && downloadUrl ? (
-            <DownloadCard
-              downloadUrl={downloadUrl}
-              filename={`pdfrápido-${params.tool}.${params.tool.includes('jpg') ? 'zip' : params.tool.includes('word') ? 'docx' : 'pdf'}`}
-              meta={meta || undefined}
-              onReset={reset}
-            />
-          ) : (
-            <ProgressBar
-              jobId={jobId}
-              status={status}
-              uploadProgress={uploadProgress}
-              onDone={handleDone}
-              onError={handleError}
-            />
-          )}
-        </div>
-
-        {/* ── ANÚNCIO IN-TOOL ── */}
+        {/* Bloco de anúncio no meio da página (oculta se AdSense desligado) */}
         <div className="my-8">
           <AdUnit
             slot={process.env.NEXT_PUBLIC_AD_SLOT_TOOL_MID || '0000000005'}
@@ -341,19 +277,19 @@ export default function ToolPage({ params }: PageProps) {
           />
         </div>
 
-        {/* ── ARTIGO SEO ── */}
+        {/* Conteúdo SEO rico e otimizado */}
         <article className="prose prose-gray max-w-none mt-10">
           <h2 className="text-2xl font-bold text-gray-900">{seo.h2}</h2>
           <p className="text-gray-600 leading-relaxed mt-3">{seo.why}</p>
 
-          <h3 className="text-xl font-bold text-gray-900 mt-6">Passo a passo</h3>
+          <h3 className="text-xl font-bold text-gray-900 mt-6">Passo a passo para usar a ferramenta</h3>
           <ol className="mt-3 space-y-2">
             {seo.how.map((step, i) => (
               <li key={i} className="flex gap-3 text-gray-600">
                 <span className="flex-shrink-0 w-6 h-6 rounded-full bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center">
                   {i + 1}
                 </span>
-                {step}
+                <span className="mt-0.5">{step}</span>
               </li>
             ))}
           </ol>
@@ -373,9 +309,9 @@ export default function ToolPage({ params }: PageProps) {
           )}
         </article>
 
-        {/* ── OUTRAS FERRAMENTAS ── */}
+        {/* Links Internos e Ferramentas Relacionadas */}
         <div className="mt-10">
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Outras ferramentas</h3>
+          <h3 className="text-lg font-bold text-gray-900 mb-4">Outras ferramentas gratuitas</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {relatedTools.map((t) => (
               <Link
@@ -389,7 +325,7 @@ export default function ToolPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* ── ANÚNCIO FINAL ── */}
+        {/* Bloco de anúncio no final da ferramenta (oculta se AdSense desligado) */}
         <div className="mt-10">
           <AdUnit
             slot={process.env.NEXT_PUBLIC_AD_SLOT_TOOL_BOTTOM || '0000000006'}

@@ -2,7 +2,7 @@
 import { MetadataRoute } from 'next';
 import { TOOLS } from './constants';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrápido.com.br';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrapido.com.br';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const toolPages = TOOLS.map((tool) => ({
