@@ -16,14 +16,16 @@ interface PageProps {
 const SEO_CONTENT: Record<string, {
   title: string;
   description: string;
+  keywords: string;
   h2: string;
   why: string;
   how: string[];
   faq: { q: string; a: string }[];
 }> = {
   'comprimir-pdf': {
-    title: 'Comprimir PDF Online Grátis — Reduzir PDF | PDFRápido',
+    title: 'Comprimir PDF Online Grátis — Reduzir PDF sem Perder Qualidade',
     description: 'Reduza o tamanho do seu PDF online grátis sem perder qualidade. Ideal para enviar por e-mail ou WhatsApp. Sem cadastro e sem limites.',
+    keywords: 'comprimir pdf,reduzir pdf,diminuir tamanho pdf,comprimir pdf online grátis,compactar pdf,pdf menor,comprimir pdf whatsapp',
     h2: 'Como comprimir PDF online grátis?',
     why: 'Comprimir PDF é essencial para enviar arquivos por e-mail, WhatsApp ou economizar espaço de armazenamento. Nosso compressor reduz o tamanho do PDF otimizando a estrutura interna e compactando imagens embutidas, mantendo o texto nítido.',
     how: [
@@ -39,8 +41,9 @@ const SEO_CONTENT: Record<string, {
     ]
   },
   'converter-pdf-para-word': {
-    title: 'PDF para Word Online Grátis — Converter PDF em Word | PDFRápido',
+    title: 'PDF para Word Online Grátis — Converter PDF em Word Editável',
     description: 'Converta seus arquivos PDF em documentos do Word (.docx) editáveis online e grátis. Layout preservado, rápido e sem necessidade de cadastro.',
+    keywords: 'pdf para word,converter pdf para word,pdf para docx,transformar pdf em word,pdf editável,converter pdf online grátis',
     h2: 'Como converter PDF para Word online?',
     why: 'Converter PDF para Word permite editar o conteúdo de um documento com facilidade no Microsoft Word ou Google Docs. Ideal para atualizar currículos, revisar contratos ou copiar trechos de relatórios.',
     how: [
@@ -54,8 +57,9 @@ const SEO_CONTENT: Record<string, {
     ]
   },
   'converter-pdf-para-jpg': {
-    title: 'PDF para JPG Online Grátis — Converter Páginas em Imagem | PDFRápido',
+    title: 'PDF para JPG Online Grátis — Converter Páginas em Imagem',
     description: 'Transforme cada página do seu PDF em imagens JPG de alta qualidade em segundos. Rápido, seguro e gratuito. Baixe todas as fotos em um ZIP.',
+    keywords: 'pdf para jpg,converter pdf para imagem,pdf para jpeg,pdf para foto,transformar pdf em jpg,extrair imagem pdf',
     h2: 'Como converter PDF para JPG online?',
     why: 'Converter páginas de PDF em imagem é excelente para compartilhar documentos nas redes sociais, usar como anexos de e-mail rápidos ou criar apresentações visuais sem precisar abrir leitores de PDF.',
     how: [
@@ -69,8 +73,9 @@ const SEO_CONTENT: Record<string, {
     ]
   },
   'converter-word-para-pdf': {
-    title: 'Word para PDF Online Grátis — Converter DOCX em PDF | PDFRápido',
+    title: 'Word para PDF Online Grátis — Converter DOCX em PDF',
     description: 'Converta arquivos do Word (.docx ou .doc) para PDF online e grátis. Preserve a formatação do seu currículo ou contrato em qualquer dispositivo.',
+    keywords: 'word para pdf,converter word para pdf,docx para pdf,doc para pdf,transformar word em pdf,salvar word como pdf',
     h2: 'Como converter Word para PDF online?',
     why: 'A conversão de documentos do Word para PDF é altamente recomendada antes de enviar currículos, propostas comerciais ou relatórios formais. O PDF garante que o destinatário veja a formatação exata que você criou, independentemente do sistema operacional.',
     how: [
@@ -84,8 +89,9 @@ const SEO_CONTENT: Record<string, {
     ]
   },
   'converter-jpg-para-pdf': {
-    title: 'Imagem para PDF Online Grátis — Converter JPG e PNG | PDFRápido',
+    title: 'Imagem para PDF Online Grátis — Converter JPG e PNG para PDF',
     description: 'Junte fotos, capturas de tela e imagens PNG/JPG em um único arquivo PDF. Ideal para enviar documentos e formulários online de forma organizada.',
+    keywords: 'jpg para pdf,imagem para pdf,foto para pdf,png para pdf,converter imagem em pdf,juntar fotos em pdf',
     h2: 'Como converter imagens para PDF online?',
     why: 'Converter fotos e imagens para PDF facilita o envio de comprovantes, digitalizações manuais ou fotos de documentos para portais do governo, faculdades ou escritórios, unindo múltiplas capturas em um único arquivo profissional.',
     how: [
@@ -99,8 +105,9 @@ const SEO_CONTENT: Record<string, {
     ]
   },
   'juntar-pdf': {
-    title: 'Juntar PDF Online Grátis — Unir Vários Arquivos PDF | PDFRápido',
+    title: 'Juntar PDF Online Grátis — Unir Vários Arquivos em Um',
     description: 'Una vários arquivos PDF em um único documento online. Ordene as páginas do seu jeito, rápido, fácil e totalmente seguro.',
+    keywords: 'juntar pdf,unir pdf,combinar pdf,mesclar pdf,juntar arquivos pdf online,unir vários pdf em um',
     h2: 'Como juntar PDFs em um único arquivo?',
     why: 'Juntar PDFs é o recurso ideal para unificar petições judiciais, juntar contratos e anexos, consolidar relatórios de equipes ou organizar capítulos dispersos de uma apostila em um único documento centralizado.',
     how: [
@@ -114,8 +121,9 @@ const SEO_CONTENT: Record<string, {
     ]
   },
   'dividir-pdf': {
-    title: 'Dividir PDF Online Grátis — Extrair Páginas de PDF | PDFRápido',
+    title: 'Dividir PDF Online Grátis — Extrair Páginas de PDF',
     description: 'Extraia páginas específicas de um PDF ou divida o documento em várias partes online. Grátis, sem cadastro e muito rápido.',
+    keywords: 'dividir pdf,separar pdf,extrair páginas pdf,separar páginas pdf online,dividir pdf em partes,cortar pdf',
     h2: 'Como dividir PDF e extrair páginas online?',
     why: 'Dividir um PDF permite isolar apenas as folhas que interessam, como a página de assinatura de um contrato longo ou separar capítulos específicos de um e-book para estudos rápidos.',
     how: [
@@ -144,6 +152,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: seo.title,
     description: seo.description,
+    keywords: seo.keywords,
     alternates: {
       canonical: canonicalUrl,
     },
@@ -163,6 +172,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     twitter: {
       card: 'summary_large_image',
+      site: '@pdfrapido',
       title: seo.title,
       description: seo.description,
       images: ['https://pdfrapido.com.br/og-image.png'],
