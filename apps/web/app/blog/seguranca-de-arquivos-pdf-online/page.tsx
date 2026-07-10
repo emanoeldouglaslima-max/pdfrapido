@@ -4,7 +4,7 @@ import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Segurança e Privacidade de PDFs Online: É Seguro? | PDFRápido',
+  title: 'Segurança e Privacidade de PDFs Online: É Seguro?',
   description: 'Descubra como o PDFRápido protege seus arquivos com criptografia HTTPS, exclusão automática em 30 minutos e total conformidade com a LGPD.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/seguranca-de-arquivos-pdf-online',

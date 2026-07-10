@@ -4,7 +4,7 @@ import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Como Juntar Vários PDFs em um Só Documento para Concursos e Petições | PDFRápido',
+  title: 'Como Juntar Vários PDFs em um Só Documento para Concursos e Petições',
   description: 'Aprenda a unificar e organizar documentos PDF para envio em editais de concursos públicos, petições jurídicas no PJe e processos seletivos.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/como-juntar-pdf-concursos-peticoes',

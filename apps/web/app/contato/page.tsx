@@ -3,7 +3,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Fale Conosco | PDFRápido',
+  title: 'Fale Conosco',
   description: 'Entre em contato com a equipe do PDFRápido. Tire suas dúvidas, envie sugestões ou solicite suporte técnico.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/contato',

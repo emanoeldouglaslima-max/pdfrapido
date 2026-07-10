@@ -3,7 +3,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Política de Privacidade | PDFRápido',
+  title: 'Política de Privacidade',
   description: 'Saiba como protegemos seus dados e arquivos. O PDFRápido preza pela sua segurança e privacidade.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/politica-de-privacidade',

@@ -4,7 +4,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Blog — Dicas, Guias e Tutoriais de PDF | PDFRápido',
+  title: 'Blog — Dicas, Guias e Tutoriais de PDF',
   description: 'Leia artigos completos sobre compressão de PDF, conversão para Word no celular, segurança de dados e organização de documentos digitais.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog',

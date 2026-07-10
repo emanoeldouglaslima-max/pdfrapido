@@ -4,7 +4,7 @@ import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Como Converter PDF em Word no Celular de Forma Gratuita | PDFRápido',
+  title: 'Como Converter PDF em Word no Celular de Forma Gratuita',
   description: 'Descubra como transformar arquivos PDF em documentos editáveis do Word (.docx) diretamente do seu celular Android ou iPhone, sem gastar nada.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/como-converter-pdf-em-word-no-celular',

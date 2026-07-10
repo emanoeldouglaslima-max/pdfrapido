@@ -3,7 +3,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Termos de Uso | PDFRápido',
+  title: 'Termos de Uso',
   description: 'Leia os termos de uso do site PDFRápido. Entenda as regras, limites e termos de serviço.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/termos-de-uso',

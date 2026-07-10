@@ -4,7 +4,7 @@ import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Como Comprimir PDF para o WhatsApp sem Perder Qualidade | PDFRápido',
+  title: 'Como Comprimir PDF para o WhatsApp sem Perder Qualidade',
   description: 'Aprenda a reduzir o tamanho de seus documentos PDF para enviar pelo WhatsApp respeitando os limites do aplicativo e mantendo a qualidade de leitura.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/como-comprimir-pdf-para-whatsapp',

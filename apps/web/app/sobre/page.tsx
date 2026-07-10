@@ -3,7 +3,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Sobre Nós | PDFRápido',
+  title: 'Sobre Nós',
   description: 'Conheça o PDFRápido, nosso compromisso com a facilidade, velocidade e segurança no processamento de arquivos PDF para o público brasileiro.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/sobre',

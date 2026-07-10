@@ -9,7 +9,7 @@ import Footer from '../components/Footer';
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrapido.com.br';
 
 export const metadata: Metadata = {
-  title: 'Ferramentas de PDF Online Grátis — Converter, Comprimir, Juntar | PDFRápido',
+  title: 'Ferramentas de PDF Online Grátis — Converter, Comprimir, Juntar',
   description:
     'Converta, comprima, junte e divida PDFs online de graça. Sem cadastro, sem limite. PDF para Word, PDF para JPG, Word para PDF e muito mais. Funciona no celular.',
   alternates: { canonical: SITE_URL },
