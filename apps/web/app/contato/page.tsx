@@ -41,8 +41,8 @@ export default function ContatoPage() {
                 <div className="text-2xl mb-3">✉️</div>
                 <h3 className="font-bold text-gray-900 mb-1">E-mail Direto</h3>
                 <p className="text-xs text-gray-400 mb-3">Ideal para propostas de parcerias ou suporte.</p>
-                <a href="mailto:emanoeldouglas@gmail.com" className="text-sm font-semibold text-brand-600 hover:underline">
-                  emanoeldouglas@gmail.com
+                <a href="mailto:emanoeldouglaslima@gmail.com" className="text-sm font-semibold text-brand-600 hover:underline">
+                  emanoeldouglaslima@gmail.com
                 </a>
               </div>
 
@@ -66,7 +66,7 @@ export default function ContatoPage() {
 
             {/* Formulário de contato */}
             <div className="md:col-span-3 bg-white border border-gray-100 rounded-3xl p-8 shadow-xl shadow-brand-100/20">
-              <form action="https://formsubmit.co/emanoeldouglas@gmail.com" method="POST" className="space-y-5">
+              <form action="https://formsubmit.co/emanoeldouglaslima@gmail.com" method="POST" className="space-y-5">
                 {/* Formsubmit.co — campos ocultos de configuração */}
                 <input type="hidden" name="_subject" value="[PDFRápido] Nova mensagem do site" />
                 <input type="hidden" name="_captcha" value="false" />
