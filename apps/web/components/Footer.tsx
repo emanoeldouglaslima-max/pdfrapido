@@ -15,7 +15,7 @@ export default function Footer() {
       <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-purple-900/20 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Coluna 1 — Logo e descrição */}
           <div className="flex flex-col gap-3">
             <Link href="/" className="inline-block hover:opacity-90 transition-opacity">
@@ -44,7 +44,7 @@ export default function Footer() {
           {/* Coluna 2 — Ferramentas */}
           <div>
             <p className="text-white font-bold mb-4 text-sm tracking-wider uppercase">Ferramentas de PDF</p>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <ul className="grid grid-cols-1 gap-2">
               {TOOLS.map((t) => (
                 <li key={t.slug}>
                   <Link
@@ -60,9 +60,40 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Coluna 3 — Segurança */}
+          {/* Coluna 3 — Institucional */}
           <div>
-            <p className="text-white font-bold mb-4 text-sm tracking-wider uppercase">Segurança e Privacidade</p>
+            <p className="text-white font-bold mb-4 text-sm tracking-wider uppercase">Institucional</p>
+            <ul className="space-y-3">
+              <li>
+                <Link href="/sobre" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors group">
+                  <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Sobre Nós
+                </Link>
+              </li>
+              <li>
+                <Link href="/contato" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors group">
+                  <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  Fale Conosco
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors group">
+                  <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                  </svg>
+                  Blog
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Coluna 4 — Segurança e Legal */}
+          <div>
+            <p className="text-white font-bold mb-4 text-sm tracking-wider uppercase">Segurança e Legal</p>
             <p className="text-sm text-gray-500 leading-relaxed">
               Todos os arquivos enviados são criptografados durante o upload e deletados permanentemente de nossos servidores após 30 minutos de processamento.
             </p>

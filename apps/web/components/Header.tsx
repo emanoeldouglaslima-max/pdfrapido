@@ -36,6 +36,37 @@ export default function Header() {
               </Link>
             );
           })}
+
+          {/* Separador visual */}
+          <span className="w-px h-4 bg-gray-200 mx-1" />
+
+          {/* Links institucionais */}
+          <Link
+            href="/blog"
+            className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 hover:bg-brand-50 ${
+              pathname.startsWith('/blog')
+                ? 'text-brand-600 font-bold bg-brand-50'
+                : ''
+            }`}
+          >
+            Blog
+            {pathname.startsWith('/blog') && (
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 rounded-full" />
+            )}
+          </Link>
+          <Link
+            href="/sobre"
+            className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 hover:bg-brand-50 ${
+              pathname === '/sobre'
+                ? 'text-brand-600 font-bold bg-brand-50'
+                : ''
+            }`}
+          >
+            Sobre
+            {pathname === '/sobre' && (
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 rounded-full" />
+            )}
+          </Link>
         </nav>
 
         <div className="flex items-center gap-3">
