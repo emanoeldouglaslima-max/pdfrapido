@@ -41,8 +41,8 @@ export default function ContatoPage() {
                 <div className="text-2xl mb-3">✉️</div>
                 <h3 className="font-bold text-gray-900 mb-1">E-mail Direto</h3>
                 <p className="text-xs text-gray-400 mb-3">Ideal para propostas de parcerias ou suporte.</p>
-                <a href="mailto:contato@pdfrapido.com.br" className="text-sm font-semibold text-brand-600 hover:underline">
-                  contato@pdfrapido.com.br
+                <a href="mailto:emanoeldouglas@gmail.com" className="text-sm font-semibold text-brand-600 hover:underline">
+                  emanoeldouglas@gmail.com
                 </a>
               </div>
 
@@ -66,13 +66,19 @@ export default function ContatoPage() {
 
             {/* Formulário de contato */}
             <div className="md:col-span-3 bg-white border border-gray-100 rounded-3xl p-8 shadow-xl shadow-brand-100/20">
-              <form className="space-y-5">
+              <form action="https://formsubmit.co/emanoeldouglas@gmail.com" method="POST" className="space-y-5">
+                {/* Formsubmit.co — campos ocultos de configuração */}
+                <input type="hidden" name="_subject" value="[PDFRápido] Nova mensagem do site" />
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_next" value="https://pdfrapido.com.br/contato" />
+                <input type="hidden" name="_template" value="table" />
                 <div>
                   <label htmlFor="name" className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
                     Nome Completo
                   </label>
                   <input
                     id="name"
+                    name="name"
                     type="text"
                     required
                     placeholder="Seu nome"
@@ -86,6 +92,7 @@ export default function ContatoPage() {
                   </label>
                   <input
                     id="email"
+                    name="email"
                     type="email"
                     required
                     placeholder="seu.email@exemplo.com"
@@ -99,12 +106,13 @@ export default function ContatoPage() {
                   </label>
                   <select
                     id="subject"
+                    name="assunto"
                     className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-gray-700"
                   >
-                    <option value="suporte">Dúvida / Suporte Técnico</option>
-                    <option value="sugestao">Sugestão de Ferramenta</option>
-                    <option value="reclamacao">Reclamação ou Erro</option>
-                    <option value="parceria">Comercial / Parceria</option>
+                    <option value="Dúvida / Suporte Técnico">Dúvida / Suporte Técnico</option>
+                    <option value="Sugestão de Ferramenta">Sugestão de Ferramenta</option>
+                    <option value="Reclamação ou Erro">Reclamação ou Erro</option>
+                    <option value="Comercial / Parceria">Comercial / Parceria</option>
                   </select>
                 </div>
 
@@ -114,6 +122,7 @@ export default function ContatoPage() {
                   </label>
                   <textarea
                     id="message"
+                    name="mensagem"
                     required
                     rows={4}
                     placeholder="Descreva sua dúvida ou sugestão em detalhes..."
