@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Script from 'next/script';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 
@@ -14,6 +15,38 @@ export const metadata: Metadata = {
 export default function Artigo3Page() {
   return (
     <>
+      {/* Schema.org dinâmico (BlogPosting) */}
+      <Script
+        id="schema-org-blogpost"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: 'Segurança e Privacidade de PDFs Online: É Seguro?',
+            description: 'Descubra como o PDFRápido protege seus arquivos com criptografia HTTPS, exclusão automática em 30 minutos e total conformidade com a LGPD.',
+            datePublished: '2026-07-05T12:00:00Z',
+            dateModified: '2026-07-05T12:00:00Z',
+            author: {
+              '@type': 'Organization',
+              name: 'Equipe PDFRápido',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'PDFRápido',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://pdfrapido.com.br/apple-icon.png',
+              },
+            },
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': 'https://pdfrapido.com.br/blog/seguranca-de-arquivos-pdf-online',
+            },
+          }),
+        }}
+      />
+
       <Header />
       <main className="max-w-3xl mx-auto px-4 py-12">
         {/* Breadcrumbs */}
@@ -42,6 +75,13 @@ export default function Artigo3Page() {
               <span>6 min de leitura</span>
             </div>
           </header>
+
+          {/* === ADSENSE SLOT: Topo do Artigo (horizontal/responsivo) === */}
+          {/* Descomentar após aprovação do Google AdSense:
+          <div className="my-6 text-center">
+            <ins className="adsbygoogle" style={{ display: 'block' }} data-ad-client="ca-pub-8269194570705692" data-ad-slot="SLOT_ID_AQUI" data-ad-format="auto" data-full-width-responsive="true" />
+          </div>
+          */}
 
           {/* Corpo do Artigo */}
           <div className="prose prose-gray max-w-none text-gray-600 leading-relaxed space-y-6">
@@ -102,6 +142,13 @@ export default function Artigo3Page() {
               <li><strong>Não use ferramentas que exigem cadastro para funções simples:</strong> Plataformas que exigem nome, e-mail e criação de conta para tarefas básicas de edição aumentam a exposição de seus dados pessoais desnecessariamente.</li>
             </ul>
           </div>
+
+          {/* === ADSENSE SLOT: Final do Artigo (horizontal/responsivo) === */}
+          {/* Descomentar após aprovação do Google AdSense:
+          <div className="my-8 text-center">
+            <ins className="adsbygoogle" style={{ display: 'block' }} data-ad-client="ca-pub-8269194570705692" data-ad-slot="SLOT_ID_AQUI" data-ad-format="auto" data-full-width-responsive="true" />
+          </div>
+          */}
         </article>
       </main>
       <Footer />

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Script from 'next/script';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 
@@ -14,6 +15,38 @@ export const metadata: Metadata = {
 export default function Artigo2Page() {
   return (
     <>
+      {/* Schema.org dinâmico (BlogPosting) */}
+      <Script
+        id="schema-org-blogpost"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: 'Como Converter PDF em Word no Celular de Forma Gratuita',
+            description: 'Descubra como transformar arquivos PDF em documentos editáveis do Word (.docx) diretamente do seu celular Android ou iPhone, sem gastar nada.',
+            datePublished: '2026-07-06T12:00:00Z',
+            dateModified: '2026-07-06T12:00:00Z',
+            author: {
+              '@type': 'Organization',
+              name: 'Equipe PDFRápido',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'PDFRápido',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://pdfrapido.com.br/apple-icon.png',
+              },
+            },
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': 'https://pdfrapido.com.br/blog/como-converter-pdf-em-word-no-celular',
+            },
+          }),
+        }}
+      />
+
       <Header />
       <main className="max-w-3xl mx-auto px-4 py-12">
         {/* Breadcrumbs */}
@@ -42,6 +75,13 @@ export default function Artigo2Page() {
               <span>5 min de leitura</span>
             </div>
           </header>
+
+          {/* === ADSENSE SLOT: Topo do Artigo (horizontal/responsivo) === */}
+          {/* Descomentar após aprovação do Google AdSense:
+          <div className="my-6 text-center">
+            <ins className="adsbygoogle" style={{ display: 'block' }} data-ad-client="ca-pub-8269194570705692" data-ad-slot="SLOT_ID_AQUI" data-ad-format="auto" data-full-width-responsive="true" />
+          </div>
+          */}
 
           {/* Corpo do Artigo */}
           <div className="prose prose-gray max-w-none text-gray-600 leading-relaxed space-y-6">
@@ -105,6 +145,13 @@ export default function Artigo2Page() {
               Após baixar o arquivo convertido em `.docx`, se você não tiver o aplicativo pago do Microsoft Word no celular, use o aplicativo gratuito **Google Docs** (Documentos Google). Ele abre qualquer arquivo DOCX nativamente no celular, permitindo que você digite, edite e exporte o arquivo de volta para PDF se precisar enviar o resultado final.
             </p>
           </div>
+
+          {/* === ADSENSE SLOT: Final do Artigo (horizontal/responsivo) === */}
+          {/* Descomentar após aprovação do Google AdSense:
+          <div className="my-8 text-center">
+            <ins className="adsbygoogle" style={{ display: 'block' }} data-ad-client="ca-pub-8269194570705692" data-ad-slot="SLOT_ID_AQUI" data-ad-format="auto" data-full-width-responsive="true" />
+          </div>
+          */}
         </article>
       </main>
       <Footer />

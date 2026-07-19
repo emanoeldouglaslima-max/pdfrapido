@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Script from 'next/script';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 
@@ -14,6 +15,38 @@ export const metadata: Metadata = {
 export default function Artigo4Page() {
   return (
     <>
+      {/* Schema.org dinâmico (BlogPosting) */}
+      <Script
+        id="schema-org-blogpost"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: 'Como Juntar Vários PDFs em um Só Documento para Concursos e Petições',
+            description: 'Aprenda a unificar e organizar documentos PDF para envio em editais de concursos públicos, petições jurídicas no PJe e processos seletivos.',
+            datePublished: '2026-07-04T12:00:00Z',
+            dateModified: '2026-07-04T12:00:00Z',
+            author: {
+              '@type': 'Organization',
+              name: 'Equipe PDFRápido',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'PDFRápido',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://pdfrapido.com.br/apple-icon.png',
+              },
+            },
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': 'https://pdfrapido.com.br/blog/como-juntar-pdf-concursos-peticoes',
+            },
+          }),
+        }}
+      />
+
       <Header />
       <main className="max-w-3xl mx-auto px-4 py-12">
         {/* Breadcrumbs */}
@@ -41,6 +74,13 @@ export default function Artigo4Page() {
               <span>5 min de leitura</span>
             </div>
           </header>
+
+          {/* === ADSENSE SLOT: Topo do Artigo (horizontal/responsivo) === */}
+          {/* Descomentar após aprovação do Google AdSense:
+          <div className="my-6 text-center">
+            <ins className="adsbygoogle" style={{ display: 'block' }} data-ad-client="ca-pub-8269194570705692" data-ad-slot="SLOT_ID_AQUI" data-ad-format="auto" data-full-width-responsive="true" />
+          </div>
+          */}
 
           <div className="prose prose-gray max-w-none text-gray-600 leading-relaxed space-y-6">
             <p className="text-lg text-gray-700 font-medium">
@@ -122,6 +162,13 @@ export default function Artigo4Page() {
               <li>Renomeie o arquivo conforme o padrão exigido e faça o upload.</li>
             </ol>
           </div>
+
+          {/* === ADSENSE SLOT: Final do Artigo (horizontal/responsivo) === */}
+          {/* Descomentar após aprovação do Google AdSense:
+          <div className="my-8 text-center">
+            <ins className="adsbygoogle" style={{ display: 'block' }} data-ad-client="ca-pub-8269194570705692" data-ad-slot="SLOT_ID_AQUI" data-ad-format="auto" data-full-width-responsive="true" />
+          </div>
+          */}
         </article>
       </main>
       <Footer />

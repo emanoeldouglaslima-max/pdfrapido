@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Script from 'next/script';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 
@@ -14,6 +15,38 @@ export const metadata: Metadata = {
 export default function Artigo1Page() {
   return (
     <>
+      {/* Schema.org dinâmico (BlogPosting) */}
+      <Script
+        id="schema-org-blogpost"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: 'Como Comprimir PDF para o WhatsApp sem Perder Qualidade',
+            description: 'Aprenda a reduzir o tamanho de seus documentos PDF para enviar pelo WhatsApp respeitando os limites do aplicativo e mantendo a qualidade de leitura.',
+            datePublished: '2026-07-07T12:00:00Z',
+            dateModified: '2026-07-07T12:00:00Z',
+            author: {
+              '@type': 'Organization',
+              name: 'Equipe PDFRápido',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'PDFRápido',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://pdfrapido.com.br/apple-icon.png',
+              },
+            },
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': 'https://pdfrapido.com.br/blog/como-comprimir-pdf-para-whatsapp',
+            },
+          }),
+        }}
+      />
+
       <Header />
       <main className="max-w-3xl mx-auto px-4 py-12">
         {/* Breadcrumbs */}
@@ -42,6 +75,13 @@ export default function Artigo1Page() {
               <span>4 min de leitura</span>
             </div>
           </header>
+
+          {/* === ADSENSE SLOT: Topo do Artigo (horizontal/responsivo) === */}
+          {/* Descomentar após aprovação do Google AdSense:
+          <div className="my-6 text-center">
+            <ins className="adsbygoogle" style={{ display: 'block' }} data-ad-client="ca-pub-8269194570705692" data-ad-slot="SLOT_ID_AQUI" data-ad-format="auto" data-full-width-responsive="true" />
+          </div>
+          */}
 
           {/* Corpo do Artigo */}
           <div className="prose prose-gray max-w-none text-gray-600 leading-relaxed space-y-6">
@@ -109,6 +149,13 @@ export default function Artigo1Page() {
               <li><strong>Dê nomes curtos e sem caracteres especiais:</strong> Arquivos com nomes excessivamente longos ou com muitos símbolos podem apresentar falhas no download dentro do WhatsApp de alguns modelos de celular Android.</li>
             </ul>
           </div>
+
+          {/* === ADSENSE SLOT: Final do Artigo (horizontal/responsivo) === */}
+          {/* Descomentar após aprovação do Google AdSense:
+          <div className="my-8 text-center">
+            <ins className="adsbygoogle" style={{ display: 'block' }} data-ad-client="ca-pub-8269194570705692" data-ad-slot="SLOT_ID_AQUI" data-ad-format="auto" data-full-width-responsive="true" />
+          </div>
+          */}
         </article>
       </main>
       <Footer />
