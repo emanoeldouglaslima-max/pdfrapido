@@ -1,4 +1,4 @@
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+import { PDFDocument, StandardFonts, rgb, PDFName, PDFRawStream, PDFNumber } from 'pdf-lib';
 import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
@@ -35,24 +35,51 @@ export async function compressPdf(
 
   const quality = COMPRESSION_QUALITY[level];
 
-  // Comprimir imagens embutidas nas páginas
-  const pages = pdfDoc.getPages();
-  for (const page of pages) {
-    const { width, height } = page.getSize();
+  // Comprimir imagens embutidas nas páginas (compressão real de imagem via sharp)
+  const indirectObjects = pdfDoc.context.enumerateIndirectObjects();
+  let imgCompressedCount = 0;
 
-    // Renderizar página como imagem e recomprimir (abordagem via sharp)
-    // Apenas para PDFs com muitas imagens — compressão estrutural é feita pelo save
-    logger.debug(`Processando página ${pages.indexOf(page) + 1}/${pages.length}`, {
-      width: Math.round(width),
-      height: Math.round(height),
-    });
+  for (const [ref, obj] of indirectObjects) {
+    if (!(obj instanceof PDFRawStream)) continue;
+
+    const dict = obj.dict;
+    const type = dict.get(PDFName.of('Type'));
+    const subtype = dict.get(PDFName.of('Subtype'));
+
+    if (type === PDFName.of('XObject') && subtype === PDFName.of('Image')) {
+      try {
+        const rawBytes = obj.contents;
+
+        // Comprimir bytes da imagem com sharp
+        let compressedBytes;
+        try {
+          compressedBytes = await sharp(rawBytes)
+            .jpeg({ quality, progressive: true })
+            .toBuffer();
+        } catch (e) {
+          // Ignorar se o formato de imagem interna não for compatível com sharp
+          continue;
+        }
+
+        // Atualizar metadados de tamanho e formato no dicionário antes de instanciar o novo stream
+        dict.set(PDFName.of('Length'), PDFNumber.of(compressedBytes.length));
+        dict.set(PDFName.of('Filter'), PDFName.of('DCTDecode'));
+
+        // Criar novo raw stream e atribuir no contexto
+        const newStream = PDFRawStream.of(dict, compressedBytes);
+        pdfDoc.context.assign(ref, newStream);
+        
+        imgCompressedCount++;
+      } catch (err) {
+        logger.debug('Falha ao comprimir imagem interna do PDF', { error: (err as Error).message });
+      }
+    }
   }
 
   const compressedBuffer = await pdfDoc.save({
-    useObjectStreams: true, // compressão de objetos
+    useObjectStreams: true, // compressão estrutural de objetos
   });
 
-  // Aplicar sharp para compressão adicional se o PDF contiver imagens
   // Salvar resultado
   await fs.promises.writeFile(outputPath, compressedBuffer);
 
@@ -64,6 +91,7 @@ export async function compressPdf(
     compressed: formatBytes(compressedSize),
     reduction: `${reduction}%`,
     level,
+    imagesCompressed: imgCompressedCount,
   });
 
   return {

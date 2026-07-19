@@ -125,7 +125,28 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
   };
 
   const extension = toolSlug.includes('jpg') ? 'zip' : toolSlug.includes('word') ? 'docx' : 'pdf';
-  const downloadFilename = `pdfrapido-${toolSlug}.${extension}`;
+  
+  // Função para preservar o nome original do arquivo do usuário
+  const getDownloadFilename = () => {
+    if (files.length === 0) {
+      return `pdfrapido-${toolSlug}.${extension}`;
+    }
+    const originalName = files[0].name;
+    const dotIndex = originalName.lastIndexOf('.');
+    const baseName = dotIndex !== -1 ? originalName.substring(0, dotIndex) : originalName;
+
+    // Adiciona sufixo opcional explicativo dependendo do processo
+    let suffix = '';
+    if (toolSlug === 'comprimir-pdf') {
+      suffix = '-comprimido';
+    } else if (toolSlug === 'converter-pdf-para-word' || toolSlug === 'converter-word-para-pdf') {
+      suffix = '-convertido';
+    }
+
+    return `${baseName}${suffix}.${extension}`;
+  };
+
+  const downloadFilename = getDownloadFilename();
 
   return (
     <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
