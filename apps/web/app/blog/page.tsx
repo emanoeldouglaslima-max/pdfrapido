@@ -37,6 +37,78 @@ export const ARTICLES = [
     iconColor: 'bg-blue-100 text-blue-700',
   },
   {
+    slug: 'como-assinar-pdf-certificado-digital',
+    title: 'Como Assinar PDF com Certificado Digital ou Assinatura Eletrônica Grátis',
+    description: 'Descubra como assinar documentos em formato PDF usando o certificado digital gratuito do Gov.br ou assinaturas eletrônicas seguras e com validade jurídica.',
+    date: '15 de julho de 2026',
+    readTime: '5 min de leitura',
+    category: 'Segurança',
+    tags: ['Segurança', 'Assinatura', 'Celular'],
+    emoji: '🔑',
+    bgGradient: 'from-amber-500/10 to-yellow-500/10',
+    iconColor: 'bg-amber-100 text-amber-700',
+  },
+  {
+    slug: 'diferenca-pdfa-pdf-comum',
+    title: 'Diferença entre PDF/A e PDF Comum: Quando Usar Cada Um?',
+    description: 'Entenda o que é o formato PDF/A, a diferença em relação ao PDF tradicional e as exigências em concursos públicos e processos judiciais (PJe).',
+    date: '14 de julho de 2026',
+    readTime: '4 min de leitura',
+    category: 'Organização',
+    tags: ['Organização', 'PDF/A', 'Concursos'],
+    emoji: '📁',
+    bgGradient: 'from-purple-500/10 to-indigo-500/10',
+    iconColor: 'bg-purple-100 text-purple-700',
+  },
+  {
+    slug: 'remover-senha-de-pdf',
+    title: 'Como Remover a Senha de um PDF que Você Esqueceu ou Precisa Editar',
+    description: 'Aprenda a remover a senha de abertura ou restrições de edição e impressão de um arquivo PDF usando métodos legais e seguros no computador ou celular.',
+    date: '13 de julho de 2026',
+    readTime: '5 min de leitura',
+    category: 'Segurança',
+    tags: ['Segurança', 'Privacidade', 'LGPD'],
+    emoji: '🔓',
+    bgGradient: 'from-emerald-500/10 to-teal-500/10',
+    iconColor: 'bg-emerald-100 text-emerald-700',
+  },
+  {
+    slug: 'converter-png-para-pdf-celular',
+    title: 'Como Converter Imagens PNG para PDF no Celular sem Aplicativos',
+    description: 'Aprenda a transformar fotos e imagens em formato PNG ou JPG em arquivos PDF usando recursos integrados do Android e iOS, sem instalar nada.',
+    date: '12 de julho de 2026',
+    readTime: '4 min de leitura',
+    category: 'Conversor',
+    tags: ['Conversão', 'Celular', 'Word'],
+    emoji: '📸',
+    bgGradient: 'from-blue-500/10 to-sky-500/10',
+    iconColor: 'bg-blue-100 text-blue-700',
+  },
+  {
+    slug: 'extrair-paginas-de-pdf',
+    title: 'Como Extrair Apenas Algumas Páginas de um PDF Longo no Mac e Windows',
+    description: 'Aprenda a fracionar arquivos PDF grandes e salvar páginas específicas como novos arquivos separados usando softwares nativos e gratuitos.',
+    date: '11 de julho de 2026',
+    readTime: '4 min de leitura',
+    category: 'Organização',
+    tags: ['Organização', 'Compressão', 'Concursos'],
+    emoji: '✂️',
+    bgGradient: 'from-rose-500/10 to-red-500/10',
+    iconColor: 'bg-rose-100 text-rose-700',
+  },
+  {
+    slug: 'como-reduzir-tamanho-pdf-windows',
+    title: 'Como Reduzir o Tamanho do PDF no Windows sem Instalar Programas',
+    description: 'Descubra como comprimir e diminuir o tamanho de arquivos PDF pesados no Windows 10 e 11 usando ferramentas nativas e truques de navegador.',
+    date: '10 de julho de 2026',
+    readTime: '4 min de leitura',
+    category: 'Organização',
+    tags: ['Organização', 'Compressão', 'Celular'],
+    emoji: '🖥️',
+    bgGradient: 'from-violet-500/10 to-purple-500/10',
+    iconColor: 'bg-violet-100 text-violet-700',
+  },
+  {
     slug: 'seguranca-de-arquivos-pdf-online',
     title: 'Segurança e Privacidade: É seguro enviar documentos para sites de PDF?',
     description: 'Entenda como a criptografia SSL/HTTPS, as regras da LGPD e as políticas de exclusão protegem seus arquivos em ferramentas online.',
@@ -63,7 +135,8 @@ export const ARTICLES = [
 ];
 
 const CATEGORIES = ['WhatsApp', 'Conversor', 'Segurança', 'Organização'];
-const ALL_TAGS = ['Compressão', 'Conversão', 'Celular', 'Word', 'LGPD', 'Privacidade', 'Concursos', 'Petições'];
+const ALL_TAGS = ['Compressão', 'Conversão', 'Celular', 'Word', 'LGPD', 'Privacidade', 'Concursos', 'Petições', 'Assinatura', 'PDF/A', 'Segurança', 'Organização'];
+
 
 interface PageProps {
   searchParams: { q?: string; categoria?: string; tag?: string };

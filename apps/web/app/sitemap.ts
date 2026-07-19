@@ -9,6 +9,12 @@ const BLOG_SLUGS = [
   'como-converter-pdf-em-word-no-celular',
   'seguranca-de-arquivos-pdf-online',
   'como-juntar-pdf-concursos-peticoes',
+  'como-assinar-pdf-certificado-digital',
+  'diferenca-pdfa-pdf-comum',
+  'remover-senha-de-pdf',
+  'converter-png-para-pdf-celular',
+  'extrair-paginas-de-pdf',
+  'como-reduzir-tamanho-pdf-windows',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
