@@ -50,12 +50,12 @@ export default function Artigo2Page() {
       <Header />
       <main className="max-w-3xl mx-auto px-4 py-12">
         {/* Breadcrumbs */}
-        <div className="flex items-center gap-2 text-xs text-gray-400 mb-6 font-semibold">
-          <Link href="/" className="hover:text-brand-600">Início</Link>
+        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-400 mb-6 font-semibold">
+          <Link href="/" className="hover:text-brand-600 dark:hover:text-brand-400">Início</Link>
           <span>/</span>
-          <Link href="/blog" className="hover:text-brand-600">Blog</Link>
+          <Link href="/blog" className="hover:text-brand-600 dark:hover:text-brand-400">Blog</Link>
           <span>/</span>
-          <span className="text-gray-600">Converter PDF em Word no Celular</span>
+          <span className="text-gray-600 dark:text-gray-300">Converter PDF em Word no Celular</span>
         </div>
 
         <article>
@@ -64,10 +64,10 @@ export default function Artigo2Page() {
             <span className="px-3 py-1 rounded-full font-bold text-xs bg-blue-100 text-blue-700">
               Conversor
             </span>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight">
               Como Converter PDF em Word no Celular de forma Gratuita
             </h1>
-            <div className="flex items-center gap-4 text-sm text-gray-400 pt-2 border-b border-gray-100 pb-4">
+            <div className="flex items-center gap-4 text-sm text-gray-400 dark:text-gray-400 pt-2 border-b border-gray-100 dark:border-gray-800 pb-4">
               <span>Por Equipe PDFRápido</span>
               <span>•</span>
               <span>06 de julho de 2026</span>
@@ -84,8 +84,8 @@ export default function Artigo2Page() {
           */}
 
           {/* Corpo do Artigo */}
-          <div className="prose prose-gray max-w-none text-gray-600 leading-relaxed space-y-6">
-            <p className="text-lg text-gray-700 font-medium">
+          <div className="prose prose-gray dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed space-y-6">
+            <p className="text-lg text-gray-700 dark:text-gray-200 font-medium">
               Precisa editar o texto de um contrato, atualizar as informações de um currículo antigo ou copiar tabelas de um relatório e só tem o arquivo em PDF no celular?
             </p>
             <p>
@@ -95,7 +95,7 @@ export default function Artigo2Page() {
               Felizmente, você não precisa ligar o computador ou pagar por aplicativos de edição de PDF complexos. Hoje em dia, é perfeitamente possível converter PDF em documentos do Word editáveis (.docx) diretamente do seu smartphone ou tablet de maneira rápida e segura.
             </p>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">1. Por que usar o celular para fazer a conversão?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">1. Por que usar o celular para fazer a conversão?</h2>
             <p>
               A resposta é simples: conveniência. Passamos a maior parte do nosso tempo trabalhando ou estudando pelo celular. Recebemos contratos pelo WhatsApp, editais de concursos pelo navegador móvel e relatórios fiscais por e-mail.
             </p>
@@ -103,12 +103,12 @@ export default function Artigo2Page() {
               Ter a capacidade de transformar um PDF em Word na hora, copiar as informações necessárias, fazer os ajustes de texto usando o aplicativo do Microsoft Word ou Google Docs no celular e devolver o arquivo editado economiza um tempo valioso e nos dá total independência de computadores de mesa.
             </p>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">2. Passo a Passo: Convertendo PDF em Word no Android e iPhone</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">2. Passo a Passo: Convertendo PDF em Word no Android e iPhone</h2>
             <p>
               Nossa plataforma foi desenvolvida focada em dispositivos móveis. Você não precisa baixar ou instalar aplicativos da Play Store ou App Store (que geralmente vêm com anúncios invasivos, limites baixos ou cobranças embutidas). Basta seguir estas instruções simples no seu navegador móvel (Chrome, Safari, Firefox ou Samsung Internet):
             </p>
             <ol className="list-decimal pl-5 space-y-3">
-              <li>Abra o navegador no celular e acesse o nosso <Link href="/converter-pdf-para-word" className="text-brand-600 font-bold hover:underline">Conversor de PDF para Word</Link>.</li>
+              <li>Abra o navegador no celular e acesse o nosso <Link href="/converter-pdf-para-word" className="text-brand-600 dark:text-brand-400 font-bold hover:underline">Conversor de PDF para Word</Link>.</li>
               <li>Toque no botão central de upload e escolha o arquivo PDF na pasta de arquivos do seu celular.</li>
               <li>O sistema irá transmitir o arquivo de forma segura e iniciará a reconstrução estrutural do documento.</li>
               <li>Após alguns segundos, o processo será concluído. Basta tocar em &quot;Baixar Arquivo&quot;.</li>
@@ -116,9 +116,9 @@ export default function Artigo2Page() {
             </ol>
 
             {/* Box de Ação (CTA) */}
-            <div className="bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-100 p-8 rounded-3xl text-center space-y-4 my-8">
-              <h3 className="text-xl font-bold text-gray-900">Quer converter um PDF para Word editável agora?</h3>
-              <p className="text-sm text-gray-600 max-w-lg mx-auto">
+            <div className="bg-brand-50 dark:bg-gray-800 border border-brand-100 dark:border-gray-700 p-8 rounded-3xl text-center space-y-4 my-8 not-prose">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Quer converter um PDF para Word editável agora?</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300 max-w-lg mx-auto">
                 Experimente o nosso reconstrutor de documentos. Preservamos o texto e a estrutura básica do seu arquivo em segundos.
               </p>
               <div className="pt-2">
@@ -131,7 +131,7 @@ export default function Artigo2Page() {
               </div>
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">3. Como a formatação original é mantida?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">3. Como a formatação original é mantida?</h2>
             <p>
               A conversão de PDF para Word utiliza processos de extração de metadados de texto. A ferramenta analisa o posicionamento de cada palavra na página do PDF e tenta recriar as quebras de parágrafo, tabelas e títulos no formato do Word.
             </p>
@@ -140,7 +140,7 @@ export default function Artigo2Page() {
               <li><strong>PDFs Escaneados (Imagem):</strong> Se o PDF foi gerado tirando foto de um papel impresso, o arquivo final conterá a imagem inserida na folha do Word. Para esses casos, é necessário um processo de OCR (reconhecimento óptico de caracteres) adicional.</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">4. Dica extra: Use o Google Docs para edições rápidas no celular</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">4. Dica extra: Use o Google Docs para edições rápidas no celular</h2>
             <p>
               Após baixar o arquivo convertido em `.docx`, se você não tiver o aplicativo pago do Microsoft Word no celular, use o aplicativo gratuito **Google Docs** (Documentos Google). Ele abre qualquer arquivo DOCX nativamente no celular, permitindo que você digite, edite e exporte o arquivo de volta para PDF se precisar enviar o resultado final.
             </p>

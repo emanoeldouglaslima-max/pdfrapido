@@ -50,12 +50,12 @@ export default function Artigo1Page() {
       <Header />
       <main className="max-w-3xl mx-auto px-4 py-12">
         {/* Breadcrumbs */}
-        <div className="flex items-center gap-2 text-xs text-gray-400 mb-6 font-semibold">
-          <Link href="/" className="hover:text-brand-600">Início</Link>
+        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-400 mb-6 font-semibold">
+          <Link href="/" className="hover:text-brand-600 dark:hover:text-brand-400">Início</Link>
           <span>/</span>
-          <Link href="/blog" className="hover:text-brand-600">Blog</Link>
+          <Link href="/blog" className="hover:text-brand-600 dark:hover:text-brand-400">Blog</Link>
           <span>/</span>
-          <span className="text-gray-600">Comprimir PDF para WhatsApp</span>
+          <span className="text-gray-600 dark:text-gray-300">Comprimir PDF para WhatsApp</span>
         </div>
 
         <article>
@@ -64,10 +64,10 @@ export default function Artigo1Page() {
             <span className="px-3 py-1 rounded-full font-bold text-xs bg-green-100 text-green-700">
               WhatsApp
             </span>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight">
               Como Comprimir PDF para o WhatsApp sem perder qualidade
             </h1>
-            <div className="flex items-center gap-4 text-sm text-gray-400 pt-2 border-b border-gray-100 pb-4">
+            <div className="flex items-center gap-4 text-sm text-gray-400 dark:text-gray-400 pt-2 border-b border-gray-100 dark:border-gray-800 pb-4">
               <span>Por Equipe PDFRápido</span>
               <span>•</span>
               <span>07 de julho de 2026</span>
@@ -84,8 +84,8 @@ export default function Artigo1Page() {
           */}
 
           {/* Corpo do Artigo */}
-          <div className="prose prose-gray max-w-none text-gray-600 leading-relaxed space-y-6">
-            <p className="text-lg text-gray-700 font-medium">
+          <div className="prose prose-gray dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed space-y-6">
+            <p className="text-lg text-gray-700 dark:text-gray-200 font-medium">
               Você já tentou enviar um documento PDF importante para um cliente, colega ou grupo no WhatsApp e se deparou com um erro dizendo que o arquivo é grande demais?
             </p>
             <p>
@@ -95,7 +95,7 @@ export default function Artigo1Page() {
               Neste guia, você vai entender quais são os limites atuais do WhatsApp e aprender o passo a passo para reduzir o tamanho de seus PDFs sem comprometer a nitidez do texto e das imagens.
             </p>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">1. Quais são os limites de envio de arquivos no WhatsApp?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">1. Quais são os limites de envio de arquivos no WhatsApp?</h2>
             <p>
               O limite de tamanho para o compartilhamento de arquivos no WhatsApp depende de como você envia o documento:
             </p>
@@ -107,7 +107,7 @@ export default function Artigo1Page() {
               No entanto, na vida real, tentar enviar um arquivo de 50MB ou 100MB pelo WhatsApp pode demorar muito tempo (especialmente em conexões 4G/5G móveis) e consumir toda a franquia de internet do destinatário. Além disso, muitos telefones mais antigos travam ao tentar abrir PDFs gigantescos dentro do leitor do próprio WhatsApp. Por isso, a regra de ouro é: <strong>mantenha seus PDFs abaixo de 10MB</strong> sempre que possível.
             </p>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">2. Como comprimir seu PDF online de forma rápida?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">2. Como comprimir seu PDF online de forma rápida?</h2>
             <p>
               Para reduzir o peso de um PDF sem precisar de softwares avançados como o Adobe Acrobat Pro (que exige assinatura mensal), você pode usar nosso compressor gratuito. O processo leva menos de 10 segundos:
             </p>
@@ -128,11 +128,13 @@ export default function Artigo1Page() {
             </p>
 
             {/* Box de Ação (CTA) */}
-            <div className="bg-gradient-to-br from-brand-50 to-indigo-50 border border-brand-100 p-8 rounded-3xl text-center space-y-4 my-8">
-              <h3 className="text-xl font-bold text-gray-900">Precisa comprimir seu PDF agora?</h3>
-              <p className="text-sm text-gray-600 max-w-lg mx-auto">
-                Reduza o tamanho do seu documento em segundos com nosso compressor inteligente. 100% grátis, sem limites e com exclusão segura.
-              </p>
+            <div className="my-8 bg-brand-50 dark:bg-gray-800 border border-brand-100 dark:border-gray-700 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 not-prose">
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Quer diminuir o tamanho do seu PDF agora mesmo?</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  Reduza o tamanho do seu documento em segundos com nosso compressor inteligente. 100% grátis, sem limites e com exclusão segura.
+                </p>
+              </div>
               <div className="pt-2">
                 <Link
                   href="/comprimir-pdf"
@@ -143,7 +145,7 @@ export default function Artigo1Page() {
               </div>
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">4. Dicas extras para enviar arquivos no WhatsApp</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">3. Dicas avançadas para manter a qualidade de leitura</h2>
             <ul className="list-disc pl-5 space-y-2">
               <li><strong>Sempre selecione &quot;Documento&quot;:</strong> Evite enviar PDFs a partir de links externos se puder anexar como arquivo local. O WhatsApp lê o formato de forma nativa e facilita a vida de quem está lendo.</li>
               <li><strong>Dê nomes curtos e sem caracteres especiais:</strong> Arquivos com nomes excessivamente longos ou com muitos símbolos podem apresentar falhas no download dentro do WhatsApp de alguns modelos de celular Android.</li>

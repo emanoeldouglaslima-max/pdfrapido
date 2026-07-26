@@ -61,10 +61,10 @@ export default function UploadZone({
           relative border-2 border-dashed rounded-2xl p-8 md:p-12 text-center
           cursor-pointer select-none transition-all duration-300 group
           ${isDragActive && !isDragReject
-            ? 'border-brand-500 bg-gradient-to-br from-brand-50 to-indigo-50 scale-[1.02] shadow-inner shadow-brand-100'
+            ? 'border-brand-500 bg-gradient-to-br from-brand-50 to-indigo-50 dark:from-brand-950/30 dark:to-indigo-950/30 scale-[1.02] shadow-inner shadow-brand-100 dark:shadow-none'
             : isDragReject
-            ? 'border-red-400 bg-red-50'
-            : 'border-gray-200 bg-gradient-to-br from-gray-50/80 to-white hover:border-brand-400 hover:bg-gradient-to-br hover:from-brand-50/40 hover:to-white hover:shadow-sm'
+            ? 'border-red-400 bg-red-50 dark:bg-red-950/20'
+            : 'border-gray-200 dark:border-gray-700 bg-gradient-to-br from-gray-50/80 to-white dark:from-gray-800/50 dark:to-gray-900 hover:border-brand-400 dark:hover:border-brand-600 hover:bg-gradient-to-br hover:from-brand-50/40 hover:to-white dark:hover:from-brand-950/20 dark:hover:to-gray-900 hover:shadow-sm'
           }
           ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
         `}
@@ -73,8 +73,8 @@ export default function UploadZone({
 
         {/* Padrão de pontos decorativo */}
         <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none opacity-30">
-          <div className="absolute -top-4 -right-4 w-32 h-32 bg-brand-100 rounded-full blur-2xl" />
-          <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-purple-100 rounded-full blur-2xl" />
+          <div className="absolute -top-4 -right-4 w-32 h-32 bg-brand-100 dark:bg-brand-800/20 rounded-full blur-2xl" />
+          <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-purple-100 dark:bg-purple-800/20 rounded-full blur-2xl" />
         </div>
 
         {/* Ícone central animado */}
@@ -83,7 +83,7 @@ export default function UploadZone({
           transition-all duration-300
           ${isDragActive && !isDragReject
             ? 'bg-brand-600 shadow-lg shadow-brand-300 scale-110'
-            : 'bg-gradient-to-br from-brand-100 to-indigo-100 group-hover:from-brand-200 group-hover:to-indigo-200'
+            : 'bg-gradient-to-br from-brand-100 to-indigo-100 dark:from-brand-900/40 dark:to-indigo-900/40 group-hover:from-brand-200 group-hover:to-indigo-200 dark:group-hover:from-brand-800/50 dark:group-hover:to-indigo-800/50'
           }
         `}>
           {isDragActive && !isDragReject ? (
@@ -106,7 +106,7 @@ export default function UploadZone({
 
         {/* Texto principal */}
         <p className={`text-lg font-bold transition-colors duration-200 ${
-          isDragActive && !isDragReject ? 'text-brand-700' : 'text-gray-700 group-hover:text-brand-700'
+          isDragActive && !isDragReject ? 'text-brand-700 dark:text-brand-400' : 'text-gray-700 dark:text-gray-200 group-hover:text-brand-700 dark:group-hover:text-brand-400'
         }`}>
           {isDragActive && !isDragReject
             ? '✨ Solte para processar!'
@@ -118,7 +118,7 @@ export default function UploadZone({
         <p className="mt-2 text-sm text-gray-400">
           {sublabel || (
             <>
-              ou <span className="text-brand-600 font-semibold underline underline-offset-2">clique para selecionar</span>
+              ou <span className="text-brand-600 dark:text-brand-400 font-semibold underline underline-offset-2">clique para selecionar</span>
               {' · '}<span className="font-medium">{acceptedExtensions.toUpperCase()}</span>
               {' · '}máx. <span className="font-medium">{maxSizeMB}MB</span>
             </>
@@ -136,7 +136,7 @@ export default function UploadZone({
 
       {/* Erro */}
       {error && (
-        <p className="mt-3 text-sm text-red-500 flex items-center gap-1.5 bg-red-50 border border-red-100 rounded-xl px-4 py-2.5 animate-fade-in">
+        <p className="mt-3 text-sm text-red-500 dark:text-red-400 flex items-center gap-1.5 bg-red-50 dark:bg-red-950/20 border border-red-100 dark:border-red-800/50 rounded-xl px-4 py-2.5 animate-fade-in">
           <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
           </svg>

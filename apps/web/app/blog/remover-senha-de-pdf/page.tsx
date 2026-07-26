@@ -50,12 +50,12 @@ export default function Artigo7Page() {
       <Header />
       <main className="max-w-3xl mx-auto px-4 py-12">
         {/* Breadcrumbs */}
-        <div className="flex items-center gap-2 text-xs text-gray-400 mb-6 font-semibold">
-          <Link href="/" className="hover:text-brand-600">Início</Link>
+        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-400 mb-6 font-semibold">
+          <Link href="/" className="hover:text-brand-600 dark:hover:text-brand-400">Início</Link>
           <span>/</span>
-          <Link href="/blog" className="hover:text-brand-600">Blog</Link>
+          <Link href="/blog" className="hover:text-brand-600 dark:hover:text-brand-400">Blog</Link>
           <span>/</span>
-          <span className="text-gray-600">Remover Senha de PDF</span>
+          <span className="text-gray-600 dark:text-gray-300">Remover Senha de PDF</span>
         </div>
 
         <article>
@@ -64,10 +64,10 @@ export default function Artigo7Page() {
             <span className="px-3 py-1 rounded-full font-bold text-xs bg-amber-100 text-amber-700">
               Segurança
             </span>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight">
               Como Remover a Senha de um PDF que Você Esqueceu ou Precisa Editar
             </h1>
-            <div className="flex items-center gap-4 text-sm text-gray-400 pt-2 border-b border-gray-100 pb-4">
+            <div className="flex items-center gap-4 text-sm text-gray-400 dark:text-gray-400 pt-2 border-b border-gray-100 dark:border-gray-800 pb-4">
               <span>Por Equipe PDFRápido</span>
               <span>•</span>
               <span>13 de julho de 2026</span>
@@ -84,8 +84,8 @@ export default function Artigo7Page() {
           */}
 
           {/* Corpo do Artigo */}
-          <div className="prose prose-gray max-w-none text-gray-600 leading-relaxed space-y-6">
-            <p className="text-lg text-gray-700 font-medium">
+          <div className="prose prose-gray dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed space-y-6">
+            <p className="text-lg text-gray-700 dark:text-gray-200 font-medium">
               Recebeu um extrato bancário protegido, um boleto ou um documento assinado que exige uma senha chata de digitação toda vez que você tenta abrir? Ou pior: você mesmo colocou senha em um documento no passado e acabou esquecendo?
             </p>
             <p>
@@ -95,7 +95,7 @@ export default function Artigo7Page() {
               Neste tutorial prático, vamos explicar quais são os métodos seguros e legais para remover senhas e restrições de escrita de arquivos PDF usando o navegador do computador ou do celular.
             </p>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">1. Entendendo a diferença dos tipos de senha em arquivos PDF</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">1. Entendendo a diferença dos tipos de senha em arquivos PDF</h2>
             <p>
               Antes de tentar remover a proteção, é fundamental entender qual tipo de bloqueio está aplicado no documento:
             </p>
@@ -104,7 +104,7 @@ export default function Artigo7Page() {
               <li><strong>Senha de Restrições (Permissions Password):</strong> Você consegue ler o PDF normalmente, mas o botão de imprimir fica cinza (desativado), a seleção e cópia do texto é bloqueada e programas de edição não permitem fazer nenhuma alteração.</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">2. Método 1: Removendo restrições usando o Google Chrome (Imprimir para PDF)</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">2. Método 1: Removendo restrições usando o Google Chrome (Imprimir para PDF)</h2>
             <p>
               Se você conhece a senha de abertura do PDF, mas quer removê-la para não ter que digitá-la em toda visualização, ou se o arquivo tem restrições de cópia de texto, o método mais rápido e gratuito é usar o recurso nativo de impressão do navegador:
             </p>
@@ -117,18 +117,18 @@ export default function Artigo7Page() {
               <li>Pronto! O novo arquivo PDF gerado estará limpo, sem nenhuma senha de abertura ou restrições de impressão e edição.</li>
             </ol>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">3. Método 2: Remoção de restrições de edição (Senha do Proprietário)</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">3. Método 2: Remoção de restrições de edição (Senha do Proprietário)</h2>
             <p>
               Caso o documento possua travas rígidas de edição ou cópia impostas por ferramentas corporativas e você precise preencher campos ou juntar páginas dele, existem conversores online capazes de remover metadados de permissão em poucos segundos.
             </p>
             <p>
-              Se o arquivo estiver muito pesado para ser manuseado após a remoção de criptografia, você pode usar nosso compressor rápido na página de <Link href="/comprimir-pdf" className="text-brand-600 font-bold hover:underline">Comprimir PDF</Link> para encolhê-lo de volta ao tamanho ideal.
+              Se o arquivo estiver muito pesado para ser manuseado após a remoção de criptografia, você pode usar nosso compressor rápido na página de <Link href="/comprimir-pdf" className="text-brand-600 dark:text-brand-400 font-bold hover:underline">Comprimir PDF</Link> para encolhê-lo de volta ao tamanho ideal.
             </p>
 
             {/* Box de Ação (CTA) */}
-            <div className="bg-gradient-to-br from-brand-50 to-indigo-50 border border-brand-100 p-8 rounded-3xl text-center space-y-4 my-8">
-              <h3 className="text-xl font-bold text-gray-900">Seu arquivo ficou muito grande depois de desbloqueado?</h3>
-              <p className="text-sm text-gray-600 max-w-lg mx-auto">
+            <div className="bg-brand-50 dark:bg-gray-800 border border-brand-100 dark:border-gray-700 p-8 rounded-3xl text-center space-y-4 my-8 not-prose">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Seu arquivo ficou muito grande depois de desbloqueado?</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300 max-w-lg mx-auto">
                 Muitos editores incham o tamanho do PDF ao re-salvar sem criptografia. Use nosso compressor para reduzir o tamanho de forma segura e grátis.
               </p>
               <div className="pt-2">
@@ -141,7 +141,7 @@ export default function Artigo7Page() {
               </div>
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">4. Cuidados com a segurança e conformidade da LGPD</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">4. Cuidados com a segurança e conformidade da LGPD</h2>
             <p>
               Nunca envie arquivos contendo dados pessoais altamente sensíveis (como cópias de contratos de compra e venda ou declarações médicas) para sites de remoção de senha que não possuem políticas de segurança declaradas. 
             </p>

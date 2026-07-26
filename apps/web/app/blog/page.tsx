@@ -164,22 +164,22 @@ export default function BlogListingPage({ searchParams }: PageProps) {
       <main className="relative overflow-hidden bg-hero-gradient py-16 px-4">
         {/* Orbs de fundo */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-10 right-10 w-96 h-96 bg-brand-100/30 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 left-10 w-80 h-80 bg-purple-100/30 rounded-full blur-3xl" />
+          <div className="absolute top-10 right-10 w-96 h-96 bg-brand-100/30 dark:bg-brand-900/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 left-10 w-80 h-80 bg-purple-100/30 dark:bg-purple-900/10 rounded-full blur-3xl" />
         </div>
 
         <div className="relative max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <span className="text-brand-600 font-bold text-xs uppercase tracking-widest bg-brand-50 border border-brand-100 px-3.5 py-1.5 rounded-full shadow-sm">
+            <span className="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest bg-brand-50 dark:bg-brand-950/40 border border-brand-100 dark:border-brand-800/60 px-3.5 py-1.5 rounded-full shadow-sm">
               📰 Dicas e Tutoriais
             </span>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mt-6 leading-tight tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mt-6 leading-tight tracking-tight">
               Blog do{' '}
-              <span className="bg-gradient-to-r from-brand-600 to-violet-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-brand-600 to-violet-600 dark:from-brand-400 dark:to-violet-400 bg-clip-text text-transparent">
                 PDFRápido
               </span>
             </h1>
-            <p className="mt-4 text-lg text-gray-500 max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
               Guias passo a passo, boas práticas de segurança e dicas para gerenciar seus arquivos digitais com facilidade.
             </p>
 
@@ -191,7 +191,7 @@ export default function BlogListingPage({ searchParams }: PageProps) {
                   name="q"
                   defaultValue={searchParams?.q || ''}
                   placeholder="Pesquisar artigos..."
-                  className="w-full bg-white border border-gray-200 rounded-full py-3 px-6 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 shadow-sm placeholder-gray-400"
+                  className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 rounded-full py-3 px-6 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 shadow-sm placeholder-gray-400 dark:placeholder-gray-500"
                 />
                 <button
                   type="submit"
@@ -206,14 +206,14 @@ export default function BlogListingPage({ searchParams }: PageProps) {
           </div>
 
           {/* Filtros de Categorias e Tags */}
-          <div className="mb-12 bg-white border border-gray-150 rounded-3xl p-6 shadow-sm space-y-4">
+          <div className="mb-12 bg-white dark:bg-gray-900 border border-gray-150 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
             <div>
               <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Categorias</h3>
               <div className="flex flex-wrap gap-2">
                 <Link
                   href="/blog"
                   className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-                    !selectedCategory ? 'bg-brand-600 text-white shadow-sm shadow-brand-500/20' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    !selectedCategory ? 'bg-brand-600 text-white shadow-sm shadow-brand-500/20' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                   }`}
                 >
                   Todos
@@ -225,7 +225,7 @@ export default function BlogListingPage({ searchParams }: PageProps) {
                     className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
                       selectedCategory.toLowerCase() === cat.toLowerCase()
                         ? 'bg-brand-600 text-white shadow-sm shadow-brand-500/20'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                     }`}
                   >
                     {cat}
@@ -244,7 +244,7 @@ export default function BlogListingPage({ searchParams }: PageProps) {
                     className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all ${
                       selectedTag.toLowerCase() === tag.toLowerCase()
                         ? 'bg-indigo-600 text-white shadow-sm'
-                        : 'bg-gray-50 text-gray-500 hover:bg-gray-100 border border-gray-100'
+                        : 'bg-gray-50 dark:bg-gray-800/60 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-100 dark:border-gray-700'
                     }`}
                   >
                     #{tag}
@@ -256,10 +256,10 @@ export default function BlogListingPage({ searchParams }: PageProps) {
 
           {/* Resultados da busca */}
           {filteredArticles.length === 0 ? (
-            <div className="text-center py-16 bg-white border border-gray-100 rounded-3xl p-8 shadow-sm">
+            <div className="text-center py-16 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-8 shadow-sm">
               <span className="text-4xl" role="img" aria-label="alert">🔍</span>
-              <h2 className="text-lg font-bold text-gray-900 mt-4">Nenhum artigo encontrado</h2>
-              <p className="text-sm text-gray-500 mt-1">Tente pesquisar por outros termos ou limpe os filtros.</p>
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white mt-4">Nenhum artigo encontrado</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Tente pesquisar por outros termos ou limpe os filtros.</p>
               <Link
                 href="/blog"
                 className="mt-4 inline-flex bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-md transition-all active:scale-[0.98]"
@@ -273,7 +273,7 @@ export default function BlogListingPage({ searchParams }: PageProps) {
               {filteredArticles.map((article) => (
                 <article
                   key={article.slug}
-                  className="group relative flex flex-col bg-white border border-gray-100 rounded-3xl overflow-hidden hover:shadow-xl hover:border-brand-200 transition-all duration-300 hover:-translate-y-1 shadow-sm"
+                  className="group relative flex flex-col bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl overflow-hidden hover:shadow-xl hover:border-brand-200 dark:hover:border-brand-600 transition-all duration-300 hover:-translate-y-1 shadow-sm"
                 >
                   {/* Imagem Placeholder Decorativa (CSS Puro) */}
                   <div className={`h-48 w-full bg-gradient-to-br ${article.bgGradient} flex items-center justify-center text-5xl relative overflow-hidden transition-all duration-300 group-hover:scale-[1.02]`}>
@@ -284,7 +284,7 @@ export default function BlogListingPage({ searchParams }: PageProps) {
                   {/* Conteúdo */}
                   <div className="p-6 flex-grow flex flex-col justify-between">
                     <div className="space-y-3">
-                      <div className="flex items-center justify-between text-xs text-gray-400">
+                      <div className="flex items-center justify-between text-xs text-gray-400 dark:text-gray-400">
                         <Link
                           href={`/blog/categoria/${article.category.toLowerCase()}`}
                           className={`px-2.5 py-0.5 rounded-full font-semibold text-[10px] ${article.iconColor} hover:opacity-90`}
@@ -294,13 +294,13 @@ export default function BlogListingPage({ searchParams }: PageProps) {
                         <span>{article.readTime}</span>
                       </div>
 
-                      <h2 className="text-xl font-bold text-gray-900 leading-snug group-hover:text-brand-600 transition-colors">
+                      <h2 className="text-xl font-bold text-gray-900 dark:text-white leading-snug group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
                         <Link href={`/blog/${article.slug}`}>
                           {article.title}
                         </Link>
                       </h2>
 
-                      <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-3">
                         {article.description}
                       </p>
 
@@ -310,7 +310,7 @@ export default function BlogListingPage({ searchParams }: PageProps) {
                           <Link
                             key={t}
                             href={`/blog/tag/${t.toLowerCase()}`}
-                            className="text-[10px] font-bold text-indigo-500 hover:text-indigo-700 mr-2"
+                            className="text-[10px] font-bold text-indigo-500 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 mr-2"
                           >
                             #{t}
                           </Link>
@@ -318,11 +318,11 @@ export default function BlogListingPage({ searchParams }: PageProps) {
                       </div>
                     </div>
 
-                    <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                      <span className="text-xs text-gray-400 font-medium">{article.date}</span>
+                    <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                      <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">{article.date}</span>
                       <Link
                         href={`/blog/${article.slug}`}
-                        className="text-xs font-bold text-brand-600 flex items-center gap-1 group-hover:underline"
+                        className="text-xs font-bold text-brand-600 dark:text-brand-400 flex items-center gap-1 group-hover:underline"
                       >
                         Ler artigo completo
                         <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">

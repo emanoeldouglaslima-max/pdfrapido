@@ -20,13 +20,13 @@ export default function Logo({ className = '' }: { className?: string }) {
           />
         </svg>
         {/* Etiqueta "PDF" */}
-        <span className="absolute -bottom-1.5 -right-1.5 bg-gradient-to-r from-red-500 to-rose-500 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-md border-2 border-white shadow-sm">
+        <span className="absolute -bottom-1.5 -right-1.5 bg-gradient-to-r from-red-500 to-rose-500 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-md border-2 border-white dark:border-gray-900 shadow-sm">
           PDF
         </span>
       </div>
       <div className="flex flex-col text-left">
-        <span className="text-xl font-extrabold tracking-tight leading-none text-gray-900">
-          PDF<span className="bg-gradient-to-r from-brand-600 to-violet-600 bg-clip-text text-transparent">Rápido</span>
+        <span className="text-xl font-extrabold tracking-tight leading-none text-gray-900 dark:text-white">
+          PDF<span className="bg-gradient-to-r from-brand-600 to-violet-600 dark:from-brand-400 dark:to-violet-400 bg-clip-text text-transparent">Rápido</span>
         </span>
         <span className="text-[10px] text-gray-400 font-bold tracking-widest mt-0.5">
           ONLINE & GRÁTIS

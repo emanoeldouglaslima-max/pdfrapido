@@ -50,12 +50,12 @@ export default function Artigo8Page() {
       <Header />
       <main className="max-w-3xl mx-auto px-4 py-12">
         {/* Breadcrumbs */}
-        <div className="flex items-center gap-2 text-xs text-gray-400 mb-6 font-semibold">
-          <Link href="/" className="hover:text-brand-600">Início</Link>
+        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-400 mb-6 font-semibold">
+          <Link href="/" className="hover:text-brand-600 dark:hover:text-brand-400">Início</Link>
           <span>/</span>
-          <Link href="/blog" className="hover:text-brand-600">Blog</Link>
+          <Link href="/blog" className="hover:text-brand-600 dark:hover:text-brand-400">Blog</Link>
           <span>/</span>
-          <span className="text-gray-600">Converter PNG para PDF no Celular</span>
+          <span className="text-gray-600 dark:text-gray-300">Converter PNG para PDF no Celular</span>
         </div>
 
         <article>
@@ -64,10 +64,10 @@ export default function Artigo8Page() {
             <span className="px-3 py-1 rounded-full font-bold text-xs bg-indigo-100 text-indigo-700">
               Conversor
             </span>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight">
               Como Converter Imagens PNG para PDF no Celular sem Aplicativos
             </h1>
-            <div className="flex items-center gap-4 text-sm text-gray-400 pt-2 border-b border-gray-100 pb-4">
+            <div className="flex items-center gap-4 text-sm text-gray-400 dark:text-gray-400 pt-2 border-b border-gray-100 dark:border-gray-800 pb-4">
               <span>Por Equipe PDFRápido</span>
               <span>•</span>
               <span>12 de julho de 2026</span>
@@ -84,8 +84,8 @@ export default function Artigo8Page() {
           */}
 
           {/* Corpo do Artigo */}
-          <div className="prose prose-gray max-w-none text-gray-600 leading-relaxed space-y-6">
-            <p className="text-lg text-gray-700 font-medium">
+          <div className="prose prose-gray dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed space-y-6">
+            <p className="text-lg text-gray-700 dark:text-gray-200 font-medium">
               Precisa digitalizar uma foto do seu documento de identidade, contrato assinado à mão ou comprovante de endereço e enviá-lo em formato PDF para um cadastro? 
             </p>
             <p>
@@ -95,7 +95,7 @@ export default function Artigo8Page() {
               Aprenda a seguir como transformar suas fotos em documentos PDF sem instalar nenhum aplicativo adicional.
             </p>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">1. Como converter fotos em PDF no iPhone (iOS)</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">1. Como converter fotos em PDF no iPhone (iOS)</h2>
             <p>
               No iPhone, você pode usar o aplicativo nativo **Fotos** ou o app **Arquivos** para gerar um PDF instantaneamente:
             </p>
@@ -108,7 +108,7 @@ export default function Artigo8Page() {
               <li>Escolha a pasta de destino e salve. O seu arquivo de imagem agora é um PDF oficial de página inteira.</li>
             </ol>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">2. Como converter fotos em PDF no Android</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">2. Como converter fotos em PDF no Android</h2>
             <p>
               Os celulares modernos com sistema operacional Android utilizam o recurso de impressão nativo do sistema integrado ao Google Fotos:
             </p>
@@ -120,7 +120,7 @@ export default function Artigo8Page() {
               <li>Selecione a pasta do armazenamento interno onde deseja salvar e confirme o salvamento.</li>
             </ol>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">3. Como converter PNG em PDF online em lote</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">3. Como converter PNG em PDF online em lote</h2>
             <p>
               Os métodos nativos do celular descritos acima são excelentes para converter uma única imagem de cada vez. No entanto, se você tirou fotos de 5 páginas de um contrato e precisa juntá-las em um único arquivo PDF ordenado, fazer um por um no celular dará muito trabalho.
             </p>
@@ -129,9 +129,9 @@ export default function Artigo8Page() {
             </p>
 
             {/* Box de Ação (CTA) */}
-            <div className="bg-gradient-to-br from-brand-50 to-indigo-50 border border-brand-100 p-8 rounded-3xl text-center space-y-4 my-8">
-              <h3 className="text-xl font-bold text-gray-900">Tem várias fotos para transformar em um único PDF?</h3>
-              <p className="text-sm text-gray-600 max-w-lg mx-auto">
+            <div className="bg-brand-50 dark:bg-gray-800 border border-brand-100 dark:border-gray-700 p-8 rounded-3xl text-center space-y-4 my-8 not-prose">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Tem várias fotos para transformar em um único PDF?</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300 max-w-lg mx-auto">
                 Una todas as suas fotos PNG ou JPG em um arquivo de forma sequencial. Rápido, direto no celular e sem limite de envios.
               </p>
               <div className="pt-2">

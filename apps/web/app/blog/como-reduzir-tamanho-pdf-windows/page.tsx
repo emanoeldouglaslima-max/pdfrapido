@@ -50,12 +50,12 @@ export default function Artigo10Page() {
       <Header />
       <main className="max-w-3xl mx-auto px-4 py-12">
         {/* Breadcrumbs */}
-        <div className="flex items-center gap-2 text-xs text-gray-400 mb-6 font-semibold">
-          <Link href="/" className="hover:text-brand-600">Início</Link>
+        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-400 mb-6 font-semibold">
+          <Link href="/" className="hover:text-brand-600 dark:hover:text-brand-400">Início</Link>
           <span>/</span>
-          <Link href="/blog" className="hover:text-brand-600">Blog</Link>
+          <Link href="/blog" className="hover:text-brand-600 dark:hover:text-brand-400">Blog</Link>
           <span>/</span>
-          <span className="text-gray-600">Reduzir Tamanho do PDF no Windows</span>
+          <span className="text-gray-600 dark:text-gray-300">Reduzir Tamanho do PDF no Windows</span>
         </div>
 
         <article>
@@ -64,10 +64,10 @@ export default function Artigo10Page() {
             <span className="px-3 py-1 rounded-full font-bold text-xs bg-purple-100 text-purple-700">
               Organização
             </span>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight">
               Como Reduzir o Tamanho do PDF no Windows sem Instalar Programas
             </h1>
-            <div className="flex items-center gap-4 text-sm text-gray-400 pt-2 border-b border-gray-100 pb-4">
+            <div className="flex items-center gap-4 text-sm text-gray-400 dark:text-gray-400 pt-2 border-b border-gray-100 dark:border-gray-800 pb-4">
               <span>Por Equipe PDFRápido</span>
               <span>•</span>
               <span>10 de julho de 2026</span>
@@ -84,8 +84,8 @@ export default function Artigo10Page() {
           */}
 
           {/* Corpo do Artigo */}
-          <div className="prose prose-gray max-w-none text-gray-600 leading-relaxed space-y-6">
-            <p className="text-lg text-gray-700 font-medium">
+          <div className="prose prose-gray dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed space-y-6">
+            <p className="text-lg text-gray-700 dark:text-gray-200 font-medium">
               Você acabou de preencher um formulário importante no Windows, inseriu cópias de documentos de identificação e, na hora de fazer o upload em um portal do governo, percebeu que o arquivo tem 25MB, enquanto o limite do site é de apenas 5MB?
             </p>
             <p>
@@ -95,7 +95,7 @@ export default function Artigo10Page() {
               Veja a seguir os melhores métodos para encolher PDFs no Windows de forma totalmente segura e sem instalar nada.
             </p>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">1. Truque do Microsoft Edge: Imprimir em escala de cinza</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">1. Truque do Microsoft Edge: Imprimir em escala de cinza</h2>
             <p>
               Arquivos PDF coloridos contendo digitalizações de fotos são extremamente pesados. Se o destinatário do documento não precisa visualizar as imagens em cores (como certidões de nascimento ou RG), converter o PDF para tons de cinza reduz consideravelmente o tamanho do arquivo:
             </p>
@@ -108,7 +108,7 @@ export default function Artigo10Page() {
               <li>O Windows gerará um PDF em escala de cinza muito mais leve, ideal para upload em portais do governo.</li>
             </ol>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">2. Compactação nativa ao salvar no Word</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">2. Compactação nativa ao salvar no Word</h2>
             <p>
               Se você está criando o PDF a partir de um documento do Microsoft Word contendo muitas imagens pesadas (por exemplo, um catálogo de produtos ou um relatório com fotos de obras), você pode configurar a compressão automática na hora de salvar:
             </p>
@@ -120,7 +120,7 @@ export default function Artigo10Page() {
               <li>Clique em **Salvar**.</li>
             </ol>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">3. A forma mais rápida: Compressão Online Inteligente</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">3. A forma mais rápida: Compressão Online Inteligente</h2>
             <p>
               Se os métodos manuais descritos acima ainda não reduzirem o tamanho do arquivo o suficiente, ou se você precisa manter as imagens coloridas com excelente nitidez, a melhor alternativa é usar algoritmos modernos de compressão de PDF.
             </p>
@@ -129,9 +129,9 @@ export default function Artigo10Page() {
             </p>
 
             {/* Box de Ação (CTA) */}
-            <div className="bg-gradient-to-br from-brand-50 to-indigo-50 border border-brand-100 p-8 rounded-3xl text-center space-y-4 my-8">
-              <h3 className="text-xl font-bold text-gray-900">Seu arquivo continua pesado no Windows?</h3>
-              <p className="text-sm text-gray-600 max-w-lg mx-auto">
+            <div className="bg-brand-50 dark:bg-gray-800 border border-brand-100 dark:border-gray-700 p-8 rounded-3xl text-center space-y-4 my-8 not-prose">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Seu arquivo continua pesado no Windows?</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300 max-w-lg mx-auto">
                 Reduza o tamanho do seu documento instantaneamente em nosso compressor. Seguro, gratuito e sem instalação.
               </p>
               <div className="pt-2">

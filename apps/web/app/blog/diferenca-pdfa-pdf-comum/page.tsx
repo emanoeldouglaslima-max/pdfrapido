@@ -50,12 +50,12 @@ export default function Artigo6Page() {
       <Header />
       <main className="max-w-3xl mx-auto px-4 py-12">
         {/* Breadcrumbs */}
-        <div className="flex items-center gap-2 text-xs text-gray-400 mb-6 font-semibold">
-          <Link href="/" className="hover:text-brand-600">Início</Link>
+        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-400 mb-6 font-semibold">
+          <Link href="/" className="hover:text-brand-600 dark:hover:text-brand-400">Início</Link>
           <span>/</span>
-          <Link href="/blog" className="hover:text-brand-600">Blog</Link>
+          <Link href="/blog" className="hover:text-brand-600 dark:hover:text-brand-400">Blog</Link>
           <span>/</span>
-          <span className="text-gray-600">Diferença entre PDF/A e PDF Comum</span>
+          <span className="text-gray-600 dark:text-gray-300">Diferença entre PDF/A e PDF Comum</span>
         </div>
 
         <article>
@@ -64,10 +64,10 @@ export default function Artigo6Page() {
             <span className="px-3 py-1 rounded-full font-bold text-xs bg-purple-100 text-purple-700">
               Organização
             </span>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight">
               Diferença entre PDF/A e PDF Comum: Quando Usar Cada Um?
             </h1>
-            <div className="flex items-center gap-4 text-sm text-gray-400 pt-2 border-b border-gray-100 pb-4">
+            <div className="flex items-center gap-4 text-sm text-gray-400 dark:text-gray-400 pt-2 border-b border-gray-100 dark:border-gray-800 pb-4">
               <span>Por Equipe PDFRápido</span>
               <span>•</span>
               <span>14 de julho de 2026</span>
@@ -84,8 +84,8 @@ export default function Artigo6Page() {
           */}
 
           {/* Corpo do Artigo */}
-          <div className="prose prose-gray max-w-none text-gray-600 leading-relaxed space-y-6">
-            <p className="text-lg text-gray-700 font-medium">
+          <div className="prose prose-gray dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed space-y-6">
+            <p className="text-lg text-gray-700 dark:text-gray-200 font-medium">
               Ao enviar um arquivo para uma plataforma governamental, portal de concursos públicos ou sistema judiciário (PJe), você já deve ter visto o aviso: &quot;O documento enviado deve estar no formato PDF/A&quot;.
             </p>
             <p>
@@ -95,7 +95,7 @@ export default function Artigo6Page() {
               Neste artigo, explicamos os aspectos técnicos dessa variante do PDF, quando ela é indispensável e como garantir que seus arquivos cumpram a exigência legal.
             </p>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">1. O que é o PDF/A e qual sua finalidade?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">1. O que é o PDF/A e qual sua finalidade?</h2>
             <p>
               O **PDF/A** (onde a letra &quot;A&quot; significa *Archival*, ou Arquivamento) é uma versão padronizada pela ISO (Organização Internacional de Padronização) específica para a preservação de longo prazo de documentos digitais.
             </p>
@@ -103,7 +103,7 @@ export default function Artigo6Page() {
               Ao contrário do PDF comum, que pode mudar de aparência dependendo das fontes instaladas no leitor ou de links externos, o PDF/A garante que o documento seja renderizado **exatamente da mesma forma**, independentemente do software, do dispositivo ou do sistema operacional, mesmo que aberto daqui a 50 ou 100 anos.
             </p>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">2. Diferenças Técnicas: PDF/A vs. PDF Comum</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">2. Diferenças Técnicas: PDF/A vs. PDF Comum</h2>
             <p>
               Para assegurar que o conteúdo nunca mude, o padrão PDF/A restringe certos recursos interativos e dinâmicos do formato original:
             </p>
@@ -114,7 +114,7 @@ export default function Artigo6Page() {
               <li><strong>Proibição de Criptografia por Senha:</strong> Um arquivo criptografado exige chaves ou senhas de abertura. Para preservação a longo prazo, senhas são proibidas para evitar que o conteúdo se perca permanentemente.</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">3. Quando você deve utilizar o PDF/A?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">3. Quando você deve utilizar o PDF/A?</h2>
             <p>
               O PDF/A não é ideal para documentos do dia a dia (pois torna os arquivos ligeiramente maiores), mas é obrigatório nas seguintes situações:
             </p>
@@ -125,9 +125,9 @@ export default function Artigo6Page() {
             </ol>
 
             {/* Box de Ação (CTA) */}
-            <div className="bg-gradient-to-br from-brand-50 to-indigo-50 border border-brand-100 p-8 rounded-3xl text-center space-y-4 my-8">
-              <h3 className="text-xl font-bold text-gray-900">Precisa unificar arquivos para editais ou petições?</h3>
-              <p className="text-sm text-gray-600 max-w-lg mx-auto">
+            <div className="bg-brand-50 dark:bg-gray-800 border border-brand-100 dark:border-gray-700 p-8 rounded-3xl text-center space-y-4 my-8 not-prose">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Precisa unificar arquivos para editais ou petições?</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300 max-w-lg mx-auto">
                 Junte todos os seus certificados e comprovantes em um só arquivo PDF limpo e ordenado, pronto para submissão digital.
               </p>
               <div className="pt-2">
@@ -140,7 +140,7 @@ export default function Artigo6Page() {
               </div>
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">4. Como gerar ou converter um arquivo para PDF/A?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">4. Como gerar ou converter um arquivo para PDF/A?</h2>
             <p>
               Você pode criar arquivos PDF/A diretamente dos programas de edição de texto mais comuns:
             </p>

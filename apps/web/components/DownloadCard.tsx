@@ -44,8 +44,8 @@ export default function DownloadCard({
 
   return (
     <div className={`
-      mt-6 rounded-2xl overflow-hidden border border-green-200 
-      shadow-lg shadow-green-100/50
+      mt-6 rounded-2xl overflow-hidden border border-green-200 dark:border-green-900/60 
+      shadow-lg shadow-green-100/50 dark:shadow-none
       transition-all duration-500
       ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
     `}>
@@ -78,7 +78,7 @@ export default function DownloadCard({
         </div>
       </div>
 
-      <div className="bg-green-50/50 px-6 py-5">
+      <div className="bg-green-50/50 dark:bg-gray-900/80 px-6 py-5">
         {/* Meta de resultado com design premium */}
         {meta && (originalSize || pageCount || reduction) && (
           <div className="mb-5">
@@ -86,10 +86,10 @@ export default function DownloadCard({
             {reductionPercent !== null && originalSize && compressedSize && (
               <div className="mb-4">
                 <div className="flex justify-between items-center text-sm mb-1.5">
-                  <span className="text-gray-600 font-medium">Redução alcançada</span>
-                  <span className="font-bold text-green-700 text-base">{reduction} menor</span>
+                  <span className="text-gray-600 dark:text-gray-300 font-medium">Redução alcançada</span>
+                  <span className="font-bold text-green-700 dark:text-green-400 text-base">{reduction} menor</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-green-400 transition-all duration-1000"
                     style={{ width: visible ? `${Math.min(reductionPercent, 100)}%` : '0%' }}
@@ -101,19 +101,19 @@ export default function DownloadCard({
             {/* Chips de info */}
             <div className="flex flex-wrap gap-2">
               {originalSize && (
-                <div className="flex items-center gap-1.5 text-xs bg-white rounded-lg px-3 py-2 text-gray-600 border border-green-200 shadow-sm">
-                  <span className="w-2 h-2 rounded-full bg-gray-300 inline-block" />
+                <div className="flex items-center gap-1.5 text-xs bg-white dark:bg-gray-800 rounded-lg px-3 py-2 text-gray-600 dark:text-gray-300 border border-green-200 dark:border-gray-700 shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-500 inline-block" />
                   <span className="font-medium">Original:</span> {formatBytes(originalSize)}
                 </div>
               )}
               {compressedSize && (
-                <div className="flex items-center gap-1.5 text-xs bg-white rounded-lg px-3 py-2 text-gray-600 border border-green-200 shadow-sm">
+                <div className="flex items-center gap-1.5 text-xs bg-white dark:bg-gray-800 rounded-lg px-3 py-2 text-gray-600 dark:text-gray-300 border border-green-200 dark:border-gray-700 shadow-sm">
                   <span className="w-2 h-2 rounded-full bg-green-400 inline-block" />
                   <span className="font-medium">Processado:</span> {formatBytes(compressedSize)}
                 </div>
               )}
               {pageCount && (
-                <div className="flex items-center gap-1.5 text-xs bg-white rounded-lg px-3 py-2 text-gray-600 border border-green-200 shadow-sm">
+                <div className="flex items-center gap-1.5 text-xs bg-white dark:bg-gray-800 rounded-lg px-3 py-2 text-gray-600 dark:text-gray-300 border border-green-200 dark:border-gray-700 shadow-sm">
                   <span className="w-2 h-2 rounded-full bg-blue-400 inline-block" />
                   <span className="font-medium">{pageCount}</span> página(s)
                 </div>
@@ -152,8 +152,8 @@ export default function DownloadCard({
           <button
             onClick={onReset}
             className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5
-                       border-2 border-green-600 text-green-700 font-semibold rounded-xl
-                       hover:bg-green-50 active:scale-[0.98] transition-all duration-200"
+                       border-2 border-green-600 dark:border-green-500 text-green-700 dark:text-green-400 font-semibold rounded-xl
+                       hover:bg-green-50 dark:hover:bg-green-950/30 active:scale-[0.98] transition-all duration-200"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />

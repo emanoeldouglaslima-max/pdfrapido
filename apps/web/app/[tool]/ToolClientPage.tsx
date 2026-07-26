@@ -149,7 +149,7 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
   const downloadFilename = getDownloadFilename();
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 shadow-sm">
       {status === 'idle' || status === 'failed' ? (
         <>
           <UploadZone
@@ -165,9 +165,9 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
           {files.length > 0 && (
             <div className="mt-4 space-y-2">
               {files.map((f, i) => (
-                <div key={i} className="flex items-center justify-between bg-gray-50 rounded-lg px-4 py-2 text-sm">
-                  <span className="text-gray-700 truncate">{f.name}</span>
-                  <span className="text-gray-400 flex-shrink-0 ml-3">{(f.size / 1024).toFixed(0)} KB</span>
+                <div key={i} className="flex items-center justify-between bg-gray-50 dark:bg-gray-800 rounded-lg px-4 py-2 text-sm">
+                  <span className="text-gray-700 dark:text-gray-200 truncate">{f.name}</span>
+                  <span className="text-gray-400 dark:text-gray-500 flex-shrink-0 ml-3">{(f.size / 1024).toFixed(0)} KB</span>
                 </div>
               ))}
             </div>
@@ -176,9 +176,9 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
           {/* Opções específicas por ferramenta */}
           {toolSlug === 'comprimir-pdf' && (
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Nível de compressão</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nível de compressão</label>
               <select
-                className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                 value={opts.level || 'medio'}
                 onChange={(e) => setOpts({ ...opts, level: e.target.value })}
               >
@@ -219,7 +219,7 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
 
           {toolSlug === 'dividir-pdf' && (
             <div className="mt-4 space-y-3">
-              <label className="block text-sm font-medium text-gray-700">Como dividir?</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Como dividir?</label>
               <select
                 className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                 value={opts.mode || 'every'}
@@ -234,7 +234,7 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
                   type="number"
                   min="1"
                   placeholder="Número de páginas por parte"
-                  className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                   value={opts.pages || ''}
                   onChange={(e) => setOpts({ ...opts, pages: e.target.value })}
                 />
@@ -245,7 +245,7 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
                     type="number"
                     min="1"
                     placeholder="Página inicial"
-                    className="flex-1 border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="flex-1 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                     value={opts.from || ''}
                     onChange={(e) => setOpts({ ...opts, from: e.target.value })}
                   />
@@ -274,7 +274,7 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
 
           {/* Erro */}
           {errorMsg && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">
+            <div className="mt-4 p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800/50 rounded-xl text-sm text-red-600 dark:text-red-400">
               ⚠️ {errorMsg}
             </div>
           )}

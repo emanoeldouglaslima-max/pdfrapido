@@ -50,12 +50,12 @@ export default function Artigo3Page() {
       <Header />
       <main className="max-w-3xl mx-auto px-4 py-12">
         {/* Breadcrumbs */}
-        <div className="flex items-center gap-2 text-xs text-gray-400 mb-6 font-semibold">
-          <Link href="/" className="hover:text-brand-600">Início</Link>
+        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-400 mb-6 font-semibold">
+          <Link href="/" className="hover:text-brand-600 dark:hover:text-brand-400">Início</Link>
           <span>/</span>
-          <Link href="/blog" className="hover:text-brand-600">Blog</Link>
+          <Link href="/blog" className="hover:text-brand-600 dark:hover:text-brand-400">Blog</Link>
           <span>/</span>
-          <span className="text-gray-600">Segurança de PDFs Online</span>
+          <span className="text-gray-600 dark:text-gray-300">Segurança de PDFs Online</span>
         </div>
 
         <article>
@@ -64,10 +64,10 @@ export default function Artigo3Page() {
             <span className="px-3 py-1 rounded-full font-bold text-xs bg-amber-100 text-amber-700">
               Segurança
             </span>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight">
               Segurança e Privacidade: É seguro enviar documentos para sites de PDF?
             </h1>
-            <div className="flex items-center gap-4 text-sm text-gray-400 pt-2 border-b border-gray-100 pb-4">
+            <div className="flex items-center gap-4 text-sm text-gray-400 dark:text-gray-400 pt-2 border-b border-gray-100 dark:border-gray-800 pb-4">
               <span>Por Equipe PDFRápido</span>
               <span>•</span>
               <span>05 de julho de 2026</span>
@@ -84,8 +84,8 @@ export default function Artigo3Page() {
           */}
 
           {/* Corpo do Artigo */}
-          <div className="prose prose-gray max-w-none text-gray-600 leading-relaxed space-y-6">
-            <p className="text-lg text-gray-700 font-medium">
+          <div className="prose prose-gray dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed space-y-6">
+            <p className="text-lg text-gray-700 dark:text-gray-200 font-medium">
               Extratos bancários, declarações de imposto de renda, contratos de aluguel ou documentos de identificação pessoal. Enviá-los para um site gratuito é seguro?
             </p>
             <p>
@@ -95,7 +95,7 @@ export default function Artigo3Page() {
               Neste artigo, vamos esclarecer os critérios de segurança que você deve observar antes de enviar um documento para qualquer site e detalhar como o PDFRápido garante proteção total aos seus arquivos confidenciais.
             </p>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">1. Os três pilares de segurança em ferramentas online</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">1. Os três pilares de segurança em ferramentas online</h2>
             <p>
               Ao escolher um site de edição ou conversão de arquivos, certifique-se de que ele cumpre três requisitos mínimos de segurança digital:
             </p>
@@ -105,7 +105,7 @@ export default function Artigo3Page() {
               <li><strong>Conformidade com Leis de Proteção de Dados:</strong> O site precisa respeitar regulamentações de privacidade locais, como a **LGPD** (Lei Geral de Proteção de Dados) no Brasil e a **GDPR** na Europa.</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">2. Como a segurança funciona no PDFRápido?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">2. Como a segurança funciona no PDFRápido?</h2>
             <p>
               No PDFRápido, a privacidade e a segurança não são apenas recursos secundários — elas são a base de toda a nossa arquitetura de software:
             </p>
@@ -117,9 +117,9 @@ export default function Artigo3Page() {
             </ol>
 
             {/* Box de Ação (CTA) */}
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 p-8 rounded-3xl text-center space-y-4 my-8">
-              <h3 className="text-xl font-bold text-gray-900">Privacidade Garantida</h3>
-              <p className="text-sm text-gray-600 max-w-lg mx-auto">
+            <div className="bg-brand-50 dark:bg-gray-800 border border-brand-100 dark:border-gray-700 p-8 rounded-3xl text-center space-y-4 my-8 not-prose">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Privacidade Garantida</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300 max-w-lg mx-auto">
                 Todos os arquivos processados no PDFRápido são excluídos permanentemente de nossos servidores após 30 minutos. Privacidade absoluta para seus documentos confidenciais.
               </p>
               <div className="pt-2">
@@ -132,7 +132,7 @@ export default function Artigo3Page() {
               </div>
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">3. Como se proteger ainda mais ao usar ferramentas online?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">3. Como se proteger ainda mais ao usar ferramentas online?</h2>
             <p>
               Embora o PDFRápido garanta uma infraestrutura altamente segura, você também pode adotar práticas recomendadas para aumentar a sua segurança ao lidar com arquivos digitais:
             </p>

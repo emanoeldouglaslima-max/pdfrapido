@@ -77,26 +77,26 @@ export default function ProgressBar({
   return (
     <div className={`mt-6 space-y-4 transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
       {/* Card de progresso */}
-      <div className={`rounded-2xl border p-5 ${isError ? 'bg-red-50 border-red-200' : 'bg-gray-50 border-gray-200'}`}>
+      <div className={`rounded-2xl border p-5 ${isError ? 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800/50' : 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700'}`}>
         {/* Status icon + label */}
         <div className="flex items-center gap-3 mb-4">
           <div className={`w-10 h-10 rounded-full flex items-center justify-center text-lg flex-shrink-0 ${
-            isError ? 'bg-red-100' : 'bg-white border border-gray-200 shadow-sm'
+            isError ? 'bg-red-100 dark:bg-red-900/50' : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm'
           }`}>
             {config.icon}
           </div>
           <div className="flex-1 min-w-0">
-            <p className={`font-semibold text-sm ${isError ? 'text-red-700' : 'text-gray-700'}`}>
+            <p className={`font-semibold text-sm ${isError ? 'text-red-700 dark:text-red-400' : 'text-gray-700 dark:text-gray-200'}`}>
               {config.label}
             </p>
             {!isError && status !== 'done' && (
-              <p className="text-xs text-gray-400 mt-0.5">Seus arquivos são excluídos em 30 minutos</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Seus arquivos são excluídos em 30 minutos</p>
             )}
           </div>
           {/* Percentual */}
           {!isError && (
             <span className={`text-sm font-bold tabular-nums ${
-              status === 'done' ? 'text-green-600' : 'text-brand-600'
+              status === 'done' ? 'text-green-600 dark:text-green-400' : 'text-brand-600 dark:text-brand-400'
             }`}>
               {Math.round(visualProgress)}%
             </span>
@@ -104,7 +104,7 @@ export default function ProgressBar({
         </div>
 
         {/* Barra de progresso */}
-        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
           <div
             className={`h-full rounded-full transition-all duration-700 ease-out ${config.color} ${
               status !== 'done' && !isError ? 'animate-pulse' : ''
@@ -125,10 +125,10 @@ export default function ProgressBar({
               return (
                 <div key={step} className="flex flex-col items-center gap-1">
                   <div className={`w-2 h-2 rounded-full transition-all duration-500 ${
-                    isCompleted ? 'bg-brand-600 scale-125' : isCurrent ? 'bg-brand-400 animate-pulse' : 'bg-gray-300'
+                    isCompleted ? 'bg-brand-600 dark:bg-brand-400 scale-125' : isCurrent ? 'bg-brand-400 dark:bg-brand-500 animate-pulse' : 'bg-gray-300 dark:bg-gray-600'
                   }`} />
                   <span className={`text-[9px] font-medium hidden sm:block ${
-                    isCompleted ? 'text-brand-600' : 'text-gray-400'
+                    isCompleted ? 'text-brand-600 dark:text-brand-400' : 'text-gray-400 dark:text-gray-500'
                   }`}>
                     {['Upload', 'Fila', 'Processo', 'Pronto'][i]}
                   </span>

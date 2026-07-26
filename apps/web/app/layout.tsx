@@ -107,8 +107,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </Script>
         )}
       </head>
-      <body className="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 antialiased transition-colors duration-300">
-        {children}
+      <body className="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 antialiased transition-colors duration-300 min-h-screen flex flex-col justify-between">
+        <div className="flex-grow flex flex-col">
+          {children}
+        </div>
         <CookieBanner />
 
         {/* Google Analytics 4 (GA4) */}
