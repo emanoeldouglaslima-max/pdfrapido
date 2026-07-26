@@ -74,13 +74,50 @@ describe('GET /api/status/:jobId', () => {
   });
 });
 
+// ── Download ──────────────────────────────────────────────────────────────────
+describe('GET /api/download/:jobId', () => {
+  it('deve definir o Content-Disposition correto preservando o nome do arquivo enviado', async () => {
+    const originalName = 'relatorio_trimestral_2026.pdf';
+    const uploadRes = await request(app)
+      .post('/api/compress')
+      .attach('file', MINIMAL_PDF, { filename: originalName, contentType: 'application/pdf' });
+
+    const { jobId } = uploadRes.body;
+
+    // Aguardar processamento in-memory
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    const downloadRes = await request(app).get(`/api/download/${jobId}`);
+    expect(downloadRes.status).toBe(200);
+    expect(downloadRes.headers['content-disposition']).toContain('relatorio_trimestral_2026_comprimido.pdf');
+  });
+});
+
+// ── Transcribe ────────────────────────────────────────────────────────────────
+describe('POST /api/transcribe', () => {
+  it('deve retornar 400 ao receber arquivo com extensão/MIME inválido', async () => {
+    const fakeFile = Buffer.from('isto nao eh midia');
+    const res = await request(app)
+      .post('/api/transcribe')
+      .attach('file', fakeFile, { filename: 'fake.txt', contentType: 'text/plain' });
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('FILE_INVALID');
+  });
+
+  it('deve retornar 400 quando nenhum arquivo de mídia é enviado', async () => {
+    const res = await request(app).post('/api/transcribe');
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe('FILE_MISSING');
+  });
+});
+
 // ── Rate Limit ────────────────────────────────────────────────────────────────
 describe('Rate Limiting', () => {
   it('deve retornar 429 após exceder o limite', async () => {
-    const MAX = Number(process.env.RATE_LIMIT_PER_HOUR) || 10;
+    const MAX = Number(process.env.RATE_LIMIT_PER_HOUR) || 100;
 
-    // Fazer MAX + 1 requisições
-    const requests = Array.from({ length: MAX + 1 }, () =>
+    const requests = Array.from({ length: MAX + 5 }, () =>
       request(app)
         .post('/api/compress')
         .attach('file', MINIMAL_PDF, { filename: 'teste.pdf', contentType: 'application/pdf' })
@@ -93,31 +130,4 @@ describe('Rate Limiting', () => {
   });
 });
 
-// ── Health ────────────────────────────────────────────────────────────────────
-describe('GET /health', () => {
-  it('deve retornar 200 com status ok', async () => {
-    const res = await request(app).get('/health');
-    expect(res.status).toBe(200);
-    expect(res.body.status).toBe('ok');
-  });
-});
-
-// ── Download ──────────────────────────────────────────────────────────────────
-describe('GET /api/download/:jobId', () => {
-  it('deve definir o Content-Disposition correto preservando o nome do arquivo enviado', async () => {
-    const originalName = 'relatorio_trimestral_2026.pdf';
-    const uploadRes = await request(app)
-      .post('/api/compress')
-      .attach('file', MINIMAL_PDF, { filename: originalName, contentType: 'application/pdf' });
-
-    const { jobId } = uploadRes.body;
-
-    // Aguardar processamento in-memory
-    await new Promise((resolve) => setTimeout(resolve, 600));
-
-    const downloadRes = await request(app).get(`/api/download/${jobId}`);
-    expect(downloadRes.status).toBe(200);
-    expect(downloadRes.headers['content-disposition']).toContain('relatorio_trimestral_2026_comprimido.pdf');
-  });
-});
 

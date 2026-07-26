@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import path from 'path';
 import fs from 'fs';
-import { upload } from '../middleware/upload';
+import { upload, uploadMedia } from '../middleware/upload';
 import { fileValidator } from '../middleware/fileValidator';
 import { toolRateLimiter } from '../middleware/rateLimiter';
 import { addJob, getJobStatus } from '../services/jobQueue';
@@ -222,6 +222,58 @@ router.get('/download/:jobId', async (req: Request, res: Response, next: NextFun
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
 
     res.sendFile(filePath);
+  } catch (err) { next(err); }
+});
+
+// ── POST /api/transcribe ──────────────────────────────────────────────────────
+router.post(
+  '/transcribe',
+  toolRateLimiter,
+  uploadMedia.single('file'),
+  fileValidator(['media']),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const jobId = generateJobId();
+      const originalName = req.file!.originalname;
+      const inputPath = await saveInputFile(jobId, sanitizeFilename(originalName), req.file!.buffer);
+      const language = (req.body.language as string) || 'pt';
+      res.json(await enqueueJob('transcribe', jobId, inputPath, { language }, originalName));
+    } catch (err) { next(err); }
+  }
+);
+
+// ── GET /api/transcribe/result/:jobId ─────────────────────────────────────────
+router.get('/transcribe/result/:jobId', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { jobId } = req.params;
+    const status = await getJobStatus(jobId);
+
+    if (status.status === 'not_found') {
+      // Verificar se o resultado existe em disco
+      if (outputExists(jobId)) {
+        const files = listOutputFiles(jobId);
+        const jsonFile = files.find((f) => f.endsWith('result.json'));
+        if (jsonFile) {
+          const resultData = JSON.parse(fs.readFileSync(jsonFile, 'utf-8'));
+          return res.json({ status: 'done', data: resultData });
+        }
+      }
+      throw new AppError('JOB_NOT_FOUND', 404);
+    }
+
+    if (status.status === 'done') {
+      // Retornar resultado diretamente do meta do job
+      return res.json({
+        status: 'done',
+        data: status.result?.meta || {},
+      });
+    }
+
+    return res.json({
+      status: status.status,
+      progress: status.progress ?? 0,
+      error: status.error,
+    });
   } catch (err) { next(err); }
 });
 

@@ -46,6 +46,7 @@ export async function recordConversion(
       'jpg-to-pdf': 'jpg_to_pdf_count',
       'merge': 'merge_count',
       'split': 'split_count',
+      'transcribe': 'transcribe_count',
     };
 
     const admin = require('firebase-admin');

@@ -8,6 +8,7 @@ import { processSplit } from '../jobs/processors/splitProcessor';
 import { processPdfToJpg } from '../jobs/processors/pdfToJpgProcessor';
 import { processWordToPdf } from '../jobs/processors/wordToPdfProcessor';
 import { processJpgToPdf } from '../jobs/processors/jpgToPdfProcessor';
+import { processTranscribe } from '../jobs/processors/transcribeProcessor';
 
 export type JobType =
   | 'compress'
@@ -16,7 +17,8 @@ export type JobType =
   | 'word-to-pdf'
   | 'jpg-to-pdf'
   | 'merge'
-  | 'split';
+  | 'split'
+  | 'transcribe';
 
 export interface JobPayload {
   jobId: string;
@@ -47,7 +49,7 @@ const QUEUE_CONFIG = {
   redis: process.env.REDIS_URL || 'redis://localhost:6379',
   defaultJobOptions: {
     attempts: 2,
-    timeout: 2 * 60 * 1000,
+    timeout: 5 * 60 * 1000,
     removeOnComplete: { age: 60 * 60 },
     removeOnFail: { age: 24 * 60 * 60 },
     backoff: { type: 'exponential' as const, delay: 3000 },
@@ -71,6 +73,7 @@ async function processJob(data: JobPayload): Promise<JobResult> {
     case 'jpg-to-pdf':    return processJpgToPdf(fakeJob);
     case 'merge':         return processMerge(fakeJob);
     case 'split':         return processSplit(fakeJob);
+    case 'transcribe':    return processTranscribe(fakeJob);
     default:
       throw new Error(`Tipo de job desconhecido: ${data.type}`);
   }
@@ -120,6 +123,7 @@ export async function initQueue(): Promise<void> {
         case 'jpg-to-pdf':    return processJpgToPdf(job);
         case 'merge':         return processMerge(job);
         case 'split':         return processSplit(job);
+        case 'transcribe':    return processTranscribe(job);
         default:
           throw new Error(`Tipo de job desconhecido: ${job.data.type}`);
       }

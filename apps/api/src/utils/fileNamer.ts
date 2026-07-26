@@ -71,6 +71,26 @@ export function getMimeType(filename: string): string {
       return 'image/png';
     case '.zip':
       return 'application/zip';
+    case '.mp4':
+      return 'video/mp4';
+    case '.webm':
+      return 'video/webm';
+    case '.mov':
+      return 'video/quicktime';
+    case '.mp3':
+      return 'audio/mpeg';
+    case '.wav':
+      return 'audio/wav';
+    case '.m4a':
+      return 'audio/mp4';
+    case '.ogg':
+      return 'audio/ogg';
+    case '.json':
+      return 'application/json';
+    case '.txt':
+      return 'text/plain';
+    case '.srt':
+      return 'text/plain';
     default:
       return 'application/octet-stream';
   }
