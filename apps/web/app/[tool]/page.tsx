@@ -136,6 +136,23 @@ const SEO_CONTENT: Record<string, {
       { q: 'Como faço para extrair apenas a página 3 do meu PDF?', a: 'Escolha o modo "Extrair página específica", digite o número 3 no campo de texto e clique para processar.' },
       { q: 'Os arquivos divididos mantêm os links e formatação?', a: 'Sim. O processo de divisão preserva a estrutura interna do PDF original, incluindo links clicáveis, texto selecionável e cores.' }
     ]
+  },
+  'transcrever-video-em-texto': {
+    title: 'Transcrever Vídeo em Texto Online Grátis — Gerar Legendas SRT',
+    description: 'Converta vídeos (MP4, WEBM, MOV) e áudios em texto e legendas SRT online com inteligência artificial. Sem cadastro e sem limites.',
+    keywords: 'transcrever vídeo,vídeo para texto,converter áudio em texto,gerar legenda srt,whisper ai online,transcrever áudio mp3',
+    h2: 'Como transcrever vídeo e áudio em texto online grátis?',
+    why: 'Transcrever vídeos e gravações em texto é ideal para quem cria conteúdo para o YouTube/Instagram, estudantes que assistem aulas gravadas ou profissionais que precisam de atas de reuniões rápido.',
+    how: [
+      'Faça o upload do vídeo ou áudio nos formatos MP4, WEBM, MOV, MP3 ou WAV.',
+      'Selecione o idioma da gravação (Português, Inglês, Espanhol).',
+      'Clique para iniciar a transcrição e acompanhe em tempo real.',
+      'Copie o texto completo, baixe o arquivo de legenda .SRT ou exporte em PDF.'
+    ],
+    faq: [
+      { q: 'É preciso se cadastrar para transcrever um vídeo?', a: 'Não. No PDFRápido você pode converter seu vídeo ou áudio em texto 100% grátis e sem precisar criar conta.' },
+      { q: 'Quais formatos de arquivo são aceitos?', a: 'Aceitamos arquivos de vídeo como MP4, WEBM, MOV, AVI e áudios como MP3, WAV e M4A de até 100MB.' }
+    ]
   }
 };
 
