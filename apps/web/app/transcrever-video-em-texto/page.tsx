@@ -46,8 +46,8 @@ export default function TranscreverVideoPage() {
   const handleTranscribe = async () => {
     if (!file) return;
     setIsProcessing(true);
-    setProgress(10);
-    setStatusMessage('Enviando arquivo...');
+    setProgress(15);
+    setStatusMessage('Enviando arquivo de mídia...');
 
     const formData = new FormData();
     formData.append('file', file);
@@ -55,35 +55,58 @@ export default function TranscreverVideoPage() {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://pdfrapido-api.onrender.com';
 
-    setTimeout(() => { setProgress(30); setStatusMessage('Extraindo áudio do vídeo...'); }, 800);
-    setTimeout(() => { setProgress(60); setStatusMessage('Transcrevendo com Whisper IA...'); }, 2000);
-    setTimeout(() => { setProgress(85); setStatusMessage('Gerando legendas SRT...'); }, 3200);
-
-    let data;
     try {
-      const res = await fetch(`${apiUrl}/api/transcribe`, { method: 'POST', body: formData });
-      if (res.ok) data = (await res.json()).data;
-    } catch { /* fallback abaixo */ }
-
-    setTimeout(() => {
-      setProgress(100);
-      setIsProcessing(false);
-      setResult(data || {
-        transcript: `Transcrição automática do arquivo "${file.name}".\n\nO sistema utiliza o modelo Whisper AI para reconhecer fala em português e converter em texto com pontuação e parágrafos.\n\nVocê pode copiar o texto, baixar legendas .SRT para YouTube e Instagram, ou exportar como documento PDF.`,
-        summary: [
-          'Transcrição concluída com inteligência artificial Whisper.',
-          'Suporte a legendas .SRT sincronizadas por tempo.',
-          'Exportação instantânea para TXT e PDF.',
-        ],
-        wordCount: 52,
-        duration: '01:45',
-        subtitles: [
-          { time: '00:00 → 00:06', text: 'Transcrição automática do arquivo enviado.' },
-          { time: '00:06 → 00:14', text: 'O sistema utiliza Whisper AI para reconhecer fala em português.' },
-          { time: '00:14 → 00:22', text: 'Copie o texto, baixe legendas SRT ou exporte em PDF.' },
-        ],
+      // 1. Enviar arquivo para enfileirar o job de transcrição
+      const response = await fetch(`${apiUrl}/api/transcribe`, {
+        method: 'POST',
+        body: formData,
       });
-    }, 4000);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Erro ao enviar arquivo para o servidor');
+      }
+
+      const { jobId } = await response.json();
+      setProgress(30);
+      setStatusMessage('Extraindo áudio e processando com Whisper AI...');
+
+      // 2. Fazer polling do resultado a cada 1.5 segundos
+      const pollInterval = setInterval(async () => {
+        try {
+          const statusRes = await fetch(`${apiUrl}/api/transcribe/result/${jobId}`);
+          if (!statusRes.ok) return;
+
+          const statusData = await statusRes.json();
+
+          if (statusData.status === 'processing') {
+            setProgress((prev) => Math.min(prev + 10, 85));
+            setStatusMessage('Transcrevendo áudio com Whisper IA...');
+          } else if (statusData.status === 'done' && statusData.data) {
+            clearInterval(pollInterval);
+            setProgress(100);
+            setIsProcessing(false);
+            setResult({
+              transcript: statusData.data.transcript || 'Nenhum texto detectado.',
+              summary: statusData.data.summary || ['Transcrição concluída.'],
+              wordCount: statusData.data.wordCount || 0,
+              duration: statusData.data.duration || '00:00',
+              subtitles: statusData.data.subtitles || [],
+            });
+          } else if (statusData.status === 'failed') {
+            clearInterval(pollInterval);
+            setIsProcessing(false);
+            alert(`Erro no processamento: ${statusData.error || 'Falha na transcrição'}`);
+          }
+        } catch {
+          // Erro de rede temporário no polling — continuar tentando
+        }
+      }, 1500);
+
+    } catch (err: any) {
+      setIsProcessing(false);
+      alert(`Falha no upload: ${err.message || 'Verifique a conexão com o servidor'}`);
+    }
   };
 
   const handleCopy = () => {
