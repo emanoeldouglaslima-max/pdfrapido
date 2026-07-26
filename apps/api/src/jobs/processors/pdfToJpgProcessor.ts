@@ -3,10 +3,11 @@ import path from 'path';
 import fs from 'fs';
 import { JobPayload, JobResult } from '../../services/jobQueue';
 import { pdfToJpg, zipFiles } from '../../services/pdfService';
-import { createOutputDir } from '../../services/tempStorage';
+import { createOutputDir, saveOutputMeta } from '../../services/tempStorage';
+import { buildDownloadFilename } from '../../utils/fileNamer';
 
 export async function processPdfToJpg(job: Job<JobPayload>): Promise<JobResult> {
-  const { jobId, inputPath, options } = job.data;
+  const { jobId, inputPath, originalName, options } = job.data;
   const dpi = (options?.dpi as 150 | 300) || 150;
   const outputDir = createOutputDir(jobId);
 
@@ -16,12 +17,21 @@ export async function processPdfToJpg(job: Job<JobPayload>): Promise<JobResult> 
 
   // Se mais de 1 página, zipar
   let finalFiles = files;
+  let downloadName = '';
+  let mimeType = 'image/jpeg';
+
   if (files.length > 1) {
     const zipPath = path.join(outputDir, 'imagens.zip');
     await zipFiles(files, zipPath);
     files.forEach((f) => { try { fs.unlinkSync(f); } catch {} });
     finalFiles = [zipPath];
+    downloadName = buildDownloadFilename(originalName as string, 'imagens', 'imagens', '.zip');
+    mimeType = 'application/zip';
+  } else {
+    downloadName = buildDownloadFilename(originalName as string, 'pagina_1', undefined, '.jpg');
   }
+
+  saveOutputMeta(jobId, { downloadName, mimeType });
 
   await job.progress(100);
   return { outputFiles: finalFiles, meta: { pageCount: files.length } };

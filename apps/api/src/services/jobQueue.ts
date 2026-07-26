@@ -22,6 +22,7 @@ export interface JobPayload {
   jobId: string;
   type: JobType;
   inputPath: string | string[];
+  originalName?: string | string[];
   options?: Record<string, unknown>;
 }
 

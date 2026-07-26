@@ -58,11 +58,43 @@ export function outputExists(jobId: string): boolean {
   return fs.existsSync(dir) && fs.readdirSync(dir).length > 0;
 }
 
-// Lista arquivos do output de um job
+export interface OutputMeta {
+  downloadName?: string;
+  originalName?: string;
+  mimeType?: string;
+  createdAt?: string;
+}
+
+// Salva metadados do arquivo final gerado (ex: nome original para download)
+export function saveOutputMeta(jobId: string, meta: OutputMeta): void {
+  const dir = path.join(OUTPUT_DIR, jobId);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  const metaPath = path.join(dir, 'meta.json');
+  fs.writeFileSync(metaPath, JSON.stringify({ ...meta, createdAt: new Date().toISOString() }, null, 2));
+}
+
+// Obtém os metadados do arquivo final gerado
+export function getOutputMeta(jobId: string): OutputMeta | null {
+  const dir = path.join(OUTPUT_DIR, jobId);
+  const metaPath = path.join(dir, 'meta.json');
+  if (fs.existsSync(metaPath)) {
+    try {
+      return JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+// Lista arquivos do output de um job (ignorando metadados internos)
 export function listOutputFiles(jobId: string): string[] {
   const dir = path.join(OUTPUT_DIR, jobId);
   if (!fs.existsSync(dir)) return [];
-  return fs.readdirSync(dir).map((f) => path.join(dir, f));
+  return fs
+    .readdirSync(dir)
+    .filter((f) => f !== 'meta.json')
+    .map((f) => path.join(dir, f));
 }
 
 // Remove recursivamente uma pasta

@@ -28,6 +28,54 @@ export function getOutputPath(jobId: string): string {
   return `/tmp/output/${jobId}`;
 }
 
+// Formata o nome do arquivo final de download preservando a base do nome original enviado pelo usuário
+export function buildDownloadFilename(
+  originalName: string | undefined,
+  fallbackBase: string,
+  suffix?: string,
+  targetExtension?: string
+): string {
+  const baseName = originalName ? path.parse(originalName).name : fallbackBase;
+  const safeBase = sanitize(baseName, { replacement: '_' }) || fallbackBase;
+  const ext = targetExtension
+    ? targetExtension.startsWith('.') ? targetExtension : `.${targetExtension}`
+    : originalName ? path.extname(originalName) : '.pdf';
+
+  if (suffix) {
+    return `${safeBase}_${suffix}${ext}`;
+  }
+  return `${safeBase}${ext}`;
+}
+
+// Gera os cabeçalhos Content-Disposition compatíveis com UTF-8 e navegadores legados
+export function getDownloadContentDisposition(filename: string): string {
+  const asciiSafe = filename.replace(/[^\x20-\x7E]/g, '_');
+  const encodedUtf8 = encodeURIComponent(filename);
+  return `attachment; filename="${asciiSafe}"; filename*=UTF-8''${encodedUtf8}`;
+}
+
+// Retorna o MIME type baseado na extensão do arquivo
+export function getMimeType(filename: string): string {
+  const ext = path.extname(filename).toLowerCase();
+  switch (ext) {
+    case '.pdf':
+      return 'application/pdf';
+    case '.docx':
+      return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    case '.doc':
+      return 'application/msword';
+    case '.jpg':
+    case '.jpeg':
+      return 'image/jpeg';
+    case '.png':
+      return 'image/png';
+    case '.zip':
+      return 'application/zip';
+    default:
+      return 'application/octet-stream';
+  }
+}
+
 // Formata bytes em string legível
 export function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -40,3 +88,4 @@ export function reductionPercent(original: number, compressed: number): number {
   if (original === 0) return 0;
   return Math.round(((original - compressed) / original) * 100);
 }
+

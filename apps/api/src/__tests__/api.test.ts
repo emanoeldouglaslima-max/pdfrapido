@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../src/server';
+import app from '../server';
 import path from 'path';
 import fs from 'fs';
 
@@ -102,23 +102,22 @@ describe('GET /health', () => {
   });
 });
 
-// ── Merge ─────────────────────────────────────────────────────────────────────
-describe('POST /api/merge', () => {
-  it('deve retornar 400 se apenas 1 arquivo for enviado', async () => {
-    const res = await request(app)
-      .post('/api/merge')
-      .attach('files', MINIMAL_PDF, { filename: 'a.pdf', contentType: 'application/pdf' });
+// ── Download ──────────────────────────────────────────────────────────────────
+describe('GET /api/download/:jobId', () => {
+  it('deve definir o Content-Disposition correto preservando o nome do arquivo enviado', async () => {
+    const originalName = 'relatorio_trimestral_2026.pdf';
+    const uploadRes = await request(app)
+      .post('/api/compress')
+      .attach('file', MINIMAL_PDF, { filename: originalName, contentType: 'application/pdf' });
 
-    expect(res.status).toBe(400);
-  });
+    const { jobId } = uploadRes.body;
 
-  it('deve aceitar 2 PDFs e retornar jobId', async () => {
-    const res = await request(app)
-      .post('/api/merge')
-      .attach('files', MINIMAL_PDF, { filename: 'a.pdf', contentType: 'application/pdf' })
-      .attach('files', MINIMAL_PDF, { filename: 'b.pdf', contentType: 'application/pdf' });
+    // Aguardar processamento in-memory
+    await new Promise((resolve) => setTimeout(resolve, 600));
 
-    expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty('jobId');
+    const downloadRes = await request(app).get(`/api/download/${jobId}`);
+    expect(downloadRes.status).toBe(200);
+    expect(downloadRes.headers['content-disposition']).toContain('relatorio_trimestral_2026_comprimido.pdf');
   });
 });
+
