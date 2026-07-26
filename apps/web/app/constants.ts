@@ -69,4 +69,14 @@ export const TOOLS = [
     iconBg: 'bg-red-100',
     keywords: ['dividir pdf', 'separar pdf', 'extrair página pdf'],
   },
+  {
+    slug: 'transcrever-video-em-texto',
+    name: 'Transcrever Vídeo em Texto',
+    shortName: 'Vídeo em Texto',
+    description: 'Converta vídeos (MP4, WEBM, MOV) e áudios em texto e legendas (.SRT) online com inteligência artificial.',
+    icon: '🎙️',
+    color: 'bg-emerald-50',
+    iconBg: 'bg-emerald-100',
+    keywords: ['transcrever vídeo', 'vídeo para texto', 'converter áudio em texto', 'gerar legenda srt'],
+  },
 ];
