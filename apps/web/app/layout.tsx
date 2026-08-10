@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import CookieBanner from '../components/CookieBanner';
 import './globals.css';
 
@@ -111,6 +112,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </div>
         <CookieBanner />
+        <SpeedInsights />
 
         {/* Google Analytics 4 (GA4) */}
         {GA_MEASUREMENT_ID && (
