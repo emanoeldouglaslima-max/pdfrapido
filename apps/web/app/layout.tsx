@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/next';
 import CookieBanner from '../components/CookieBanner';
 import './globals.css';
 
@@ -111,6 +112,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </div>
         <CookieBanner />
+        <Analytics />
 
         {/* Google Analytics 4 (GA4) */}
         {GA_MEASUREMENT_ID && (
