@@ -90,7 +90,7 @@ export default function ProgressBar({
               {config.label}
             </p>
             {!isError && status !== 'done' && (
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Seus arquivos são excluídos em 30 minutos</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Seus arquivos são excluídos automaticamente após o processamento</p>
             )}
           </div>
           {/* Percentual */}

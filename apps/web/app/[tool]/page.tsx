@@ -43,18 +43,27 @@ const SEO_CONTENT: Record<string, {
   },
   'converter-pdf-para-word': {
     title: 'PDF para Word Online Grátis — Converter PDF em Word Editável',
-    description: 'Converta seus arquivos PDF em documentos do Word (.docx) editáveis online e grátis. Layout preservado, rápido e sem necessidade de cadastro.',
-    keywords: 'pdf para word,converter pdf para word,pdf para docx,transformar pdf em word,pdf editável,converter pdf online grátis',
-    h2: 'Como converter PDF para Word online?',
-    why: 'Converter PDF para Word permite editar o conteúdo de um documento com facilidade no Microsoft Word ou Google Docs. Ideal para atualizar currículos, revisar contratos ou copiar trechos de relatórios.',
+    description: 'Converta seus arquivos PDF em documentos do Word (.docx) editáveis online e grátis. Extração de texto rápida, segura e sem necessidade de cadastro.',
+    keywords: 'pdf para word,converter pdf para word,pdf para docx,transformar pdf em word,pdf editável,converter pdf online grátis,pdf para word no celular',
+    h2: 'Como converter PDF para Word online grátis?',
+    why: 'O conversor de PDF para Word do PDFRápido foi desenvolvido para extrair o texto de arquivos PDF e organizá-los em um documento Word (.docx) para que você possa editá-lo no Microsoft Word, Google Docs ou LibreOffice. Ideal para fazer modificações em currículos, contratos ou relatórios digitalizados sem precisar reescrever tudo do zero.',
     how: [
-      'Selecione o arquivo PDF que deseja converter do seu computador ou celular.',
-      'Aguarde enquanto nossa ferramenta extrai o texto e reconstrói o documento.',
-      'Clique no botão de download para obter o arquivo .docx editável.'
+      'Clique no campo de seleção e envie o seu arquivo PDF (limite de 25MB).',
+      'Nossa API fará o processamento na nuvem para extrair a camada de texto do documento.',
+      'O documento é reconstruído em parágrafos no formato padrão DOCX em poucos segundos.',
+      'Baixe o arquivo convertido pronto para ser editado no seu editor de texto preferido.'
     ],
     faq: [
-      { q: 'O texto convertido pode ser editado?', a: 'Sim. O arquivo final é gerado no formato .docx padrão, permitindo que você altere textos, tabelas e parágrafos.' },
-      { q: 'A formatação original do PDF é mantida?', a: 'Nossa ferramenta extrai e preserva o texto de forma estruturada. Para PDFs muito complexos com muitos layouts gráficos, pequenos ajustes de design podem ser necessários após a conversão.' }
+      { q: 'Como converter PDF para Word?', a: 'Basta enviar o seu documento PDF na área de upload acima, aguardar o processamento rápido na nuvem e clicar no botão para baixar o arquivo Word editável.' },
+      { q: 'O conversor é gratuito?', a: 'Sim, a ferramenta é 100% gratuita, sem cobranças ocultas, assinaturas ou limites diários artificiais para uso individual.' },
+      { q: 'Preciso instalar algum programa?', a: 'Não. Todo o processo de conversão ocorre online em nossos servidores de processamento. Você não precisa baixar nenhuma extensão ou software em seu aparelho.' },
+      { q: 'Posso usar no celular?', a: 'Sim. O site é responsivo e funciona perfeitamente direto do navegador do seu smartphone Android, iPhone, tablet ou computador.' },
+      { q: 'Posso converter PDF escaneado?', a: 'Nossa ferramenta extrai a camada de texto existente no PDF. Se o PDF for puramente uma imagem (uma foto escaneada sem camada de texto), o Word gerado ficará sem texto editável, pois o sistema não possui OCR (Reconhecimento Óptico de Caracteres) na versão atual.' },
+      { q: 'A formatação original do PDF será preservada?', a: 'O conversor extrai e reconstrói o texto corrido de forma estruturada. No entanto, tabelas complexas com grades personalizadas, imagens posicionadas em layouts sofisticados ou fontes muito exclusivas podem precisar de pequenos ajustes manuais após o download.' },
+      { q: 'Posso converter arquivos grandes?', a: 'Você pode enviar qualquer arquivo PDF de até 25MB para conversão direta, limite estabelecido para garantir o bom desempenho dos servidores de processamento.' },
+      { q: 'Meus arquivos ficam armazenados?', a: 'Não de forma persistente. Seus documentos são processados temporariamente na memória de nosso servidor e imediatamente excluídos de forma definitiva após a conclusão do download.' },
+      { q: 'O arquivo convertido pode ser editado?', a: 'Sim. O Word gerado vem com o texto em formato aberto, permitindo que você altere, apague ou insira trechos conforme necessário.' },
+      { q: 'Qual formato de Word é gerado?', a: 'Geramos o arquivo no formato padrão .docx, compatível com as versões modernas do Microsoft Word, Google Docs e LibreOffice Writer.' }
     ]
   },
   'converter-pdf-para-jpg': {

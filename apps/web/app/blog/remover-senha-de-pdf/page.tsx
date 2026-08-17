@@ -146,7 +146,7 @@ export default function Artigo7Page() {
               Nunca envie arquivos contendo dados pessoais altamente sensíveis (como cópias de contratos de compra e venda ou declarações médicas) para sites de remoção de senha que não possuem políticas de segurança declaradas. 
             </p>
             <p>
-              No PDFRápido, todos os arquivos enviados para qualquer conversão ou compressão trafegam sob encriptação de ponta a ponta (HTTPS) e são **excluídos de forma definitiva dos nossos servidores em até 30 minutos**, garantindo que seus dados nunca fiquem expostos a terceiros.
+              No PDFRápido, todos os arquivos enviados para qualquer conversão ou compressão trafegam sob encriptação de ponta a ponta (HTTPS) e são **excluídos de forma definitiva e automática de nossos servidores logo após o processamento**, garantindo que seus dados nunca fiquem expostos a terceiros.
             </p>
           </div>
 

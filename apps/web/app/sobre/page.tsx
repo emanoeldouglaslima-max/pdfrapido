@@ -56,8 +56,8 @@ export default function SobrePage() {
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
                 <div className="bg-gray-50 dark:bg-gray-800/60 border border-gray-100 dark:border-gray-700/60 p-4 rounded-2xl">
-                  <h3 className="font-bold text-gray-900 dark:text-gray-100 text-sm mb-1">⏱️ Exclusão em 30 Minutos</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Qualquer arquivo enviado ou processado é excluído de forma automática e permanente dos nossos servidores após 30 minutos.</p>
+                  <h3 className="font-bold text-gray-900 dark:text-gray-100 text-sm mb-1">⏱️ Exclusão Automática</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Qualquer arquivo enviado ou processado é excluído de forma automática e permanente dos nossos servidores logo após o processamento.</p>
                 </div>
                 <div className="bg-gray-50 dark:bg-gray-800/60 border border-gray-100 dark:border-gray-700/60 p-4 rounded-2xl">
                   <h3 className="font-bold text-gray-900 dark:text-gray-100 text-sm mb-1">🚫 Sem Análise de Dados</h3>

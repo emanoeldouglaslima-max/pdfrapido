@@ -28,7 +28,7 @@ export default function PoliticaPrivacidade() {
           </p>
           <ul className="list-disc pl-5 space-y-2">
             <li>Todos os arquivos enviados são transmitidos de forma segura e criptografada (HTTPS).</li>
-            <li>Os arquivos processados e seus respectivos downloads são <strong>deletados de nossos servidores permanentemente após 30 minutos</strong> de forma automatizada.</li>
+            <li>Os arquivos processados e seus respectivos downloads são <strong>excluídos automaticamente de nossos servidores logo após o processamento</strong>.</li>
             <li>Não realizamos cópias, análise de conteúdo ou leitura dos dados contidos nos seus documentos em hipótese alguma.</li>
           </ul>
 

@@ -6,7 +6,7 @@ import Footer from '../../../components/Footer';
 
 export const metadata: Metadata = {
   title: 'Segurança e Privacidade de PDFs Online: É Seguro?',
-  description: 'Descubra como o PDFRápido protege seus arquivos com criptografia HTTPS, exclusão automática em 30 minutos e total conformidade com a LGPD.',
+  description: 'Descubra como o PDFRápido protege seus arquivos com criptografia HTTPS, exclusão automática e total conformidade com a LGPD.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/seguranca-de-arquivos-pdf-online',
   },
@@ -24,7 +24,7 @@ export default function Artigo3Page() {
             '@context': 'https://schema.org',
             '@type': 'BlogPosting',
             headline: 'Segurança e Privacidade de PDFs Online: É Seguro?',
-            description: 'Descubra como o PDFRápido protege seus arquivos com criptografia HTTPS, exclusão automática em 30 minutos e total conformidade com a LGPD.',
+            description: 'Descubra como o PDFRápido protege seus arquivos com criptografia HTTPS, exclusão automática e total conformidade com a LGPD.',
             datePublished: '2026-07-05T12:00:00Z',
             dateModified: '2026-07-05T12:00:00Z',
             author: {
@@ -101,7 +101,7 @@ export default function Artigo3Page() {
             </p>
             <ul className="list-disc pl-5 space-y-2">
               <li><strong>Conexão Criptografada (SSL/HTTPS):</strong> O endereço do site deve começar com `https://` e exibir um ícone de cadeado no navegador. Isso garante que a transferência dos arquivos entre o seu dispositivo e o servidor seja criptografada e não possa ser interceptada por hackers em redes Wi-Fi públicas.</li>
-              <li><strong>Política de Exclusão Automática e Rápida:</strong> A plataforma deve definir claramente um tempo curto (geralmente entre 30 minutos e 2 horas) para a remoção total e definitiva de qualquer arquivo processado de seus discos rígidos.</li>
+              <li><strong>Política de Exclusão Automática e Rápida:</strong> A plataforma deve definir claramente a remoção total e definitiva de qualquer arquivo processado de seus discos rígidos de forma imediata após o processamento.</li>
               <li><strong>Conformidade com Leis de Proteção de Dados:</strong> O site precisa respeitar regulamentações de privacidade locais, como a **LGPD** (Lei Geral de Proteção de Dados) no Brasil e a **GDPR** na Europa.</li>
             </ul>
 
@@ -111,7 +111,7 @@ export default function Artigo3Page() {
             </p>
             <ol className="list-decimal pl-5 space-y-3">
               <li><strong>Transmissão segura:</strong> Todos os envios e downloads são feitos sob o protocolo TLS/SSL com criptografia de ponta a ponta.</li>
-              <li><strong>Exclusão absoluta em 30 minutos:</strong> Implementamos um sistema de limpeza cronometrado que roda ininterruptamente a cada 30 minutos. Todos os arquivos originais e convertidos que completam esse ciclo de vida temporário são deletados permanentemente do servidor físico e não podem ser restaurados.</li>
+              <li><strong>Exclusão absoluta após o processamento:</strong> Implementamos um sistema de limpeza automática imediata. Todos os arquivos originais e convertidos são excluídos de forma definitiva de nossos servidores após o processamento e download.</li>
               <li><strong>Nenhuma cópia de backup:</strong> Não criamos arquivos de backup ou cópias secundárias de seus documentos. O processamento ocorre e a limpeza é definitiva.</li>
               <li><strong>Zero leitura de conteúdo:</strong> O processo de compressão e conversão é executado de forma puramente automatizada. Nossos desenvolvedores ou administradores de sistema não têm acesso visual e não realizam nenhuma análise do conteúdo dos arquivos.</li>
             </ol>
@@ -120,7 +120,7 @@ export default function Artigo3Page() {
             <div className="bg-brand-50 dark:bg-gray-800 border border-brand-100 dark:border-gray-700 p-8 rounded-3xl text-center space-y-4 my-8 not-prose">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white">Privacidade Garantida</h3>
               <p className="text-sm text-gray-600 dark:text-gray-300 max-w-lg mx-auto">
-                Todos os arquivos processados no PDFRápido são excluídos permanentemente de nossos servidores após 30 minutos. Privacidade absoluta para seus documentos confidenciais.
+                Todos os arquivos processados no PDFRápido são excluídos permanentemente e automaticamente de nossos servidores logo após o processamento. Privacidade absoluta para seus documentos confidenciais.
               </p>
               <div className="pt-2">
                 <Link
