@@ -249,7 +249,7 @@ export default function TranscreverVideoPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                  Arquivos apagados após 30 min
+                  Arquivos excluídos automaticamente após processamento
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
