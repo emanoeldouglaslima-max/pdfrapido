@@ -24,8 +24,8 @@ const SEO_CONTENT: Record<string, {
   faq: { q: string; a: string }[];
 }> = {
   'comprimir-pdf': {
-    title: 'Comprimir PDF Online Grátis — Reduzir PDF sem Perder Qualidade',
-    description: 'Reduza o tamanho do seu PDF online grátis sem perder qualidade. Ideal para enviar por e-mail ou WhatsApp. Sem cadastro e sem limites.',
+    title: 'Comprimir PDF Online Grátis — Reduzir Tamanho de PDF',
+    description: 'Reduza o tamanho do seu PDF online grátis. Ideal para enviar por e-mail ou WhatsApp. Sem cadastro, com limite de arquivo informado antes do envio.',
     keywords: 'comprimir pdf,reduzir pdf,diminuir tamanho pdf,comprimir pdf online grátis,compactar pdf,pdf menor,comprimir pdf whatsapp',
     h2: 'Como comprimir PDF online grátis?',
     why: 'Comprimir PDF é essencial para enviar arquivos por e-mail, WhatsApp ou economizar espaço de armazenamento. Nosso compressor reduz o tamanho do PDF otimizando a estrutura interna e compactando imagens embutidas, mantendo o texto nítido.',
@@ -38,7 +38,7 @@ const SEO_CONTENT: Record<string, {
     faq: [
       { q: 'Quanto posso reduzir o tamanho de um PDF?', a: 'PDFs contendo muitas imagens podem ser reduzidos em até 80% do tamanho original. Arquivos contendo apenas texto têm uma redução menor.' },
       { q: 'A compressão reduz a qualidade das imagens?', a: 'O nível de compressão médio oferece o melhor equilíbrio, reduzindo o peso do arquivo enquanto mantém as imagens nítidas para leitura.' },
-      { q: 'O site armazena os meus documentos?', a: 'Não. Todos os arquivos enviados e processados são excluídos permanentemente de nossos servidores após 30 minutos.' }
+      { q: 'O site armazena os meus documentos?', a: 'Não como serviço de armazenamento. Os arquivos enviados são temporários e excluídos automaticamente de nossos servidores após o processamento.' }
     ]
   },
   'converter-pdf-para-word': {
@@ -118,7 +118,7 @@ const SEO_CONTENT: Record<string, {
     ],
     faq: [
       { q: 'Quantos arquivos PDF posso juntar de uma vez?', a: 'Você pode enviar e unir até 20 arquivos em uma única operação, respeitando o limite total acumulado de 25MB.' },
-      { q: 'É seguro juntar documentos confidenciais?', a: 'Sim. A comunicação é encriptada por SSL e todos os arquivos enviados são destruídos dos servidores após 30 minutos.' }
+      { q: 'É seguro juntar documentos confidenciais?', a: 'Sim. A comunicação é encriptada por SSL e todos os arquivos enviados são excluídos automaticamente de nossos servidores após o processamento.' }
     ]
   },
   'dividir-pdf': {
@@ -139,7 +139,7 @@ const SEO_CONTENT: Record<string, {
   },
   'transcrever-video-em-texto': {
     title: 'Transcrever Vídeo em Texto Online Grátis — Gerar Legendas SRT',
-    description: 'Converta vídeos (MP4, WEBM, MOV) e áudios em texto e legendas SRT online com inteligência artificial. Sem cadastro e sem limites.',
+    description: 'Converta vídeos (MP4, WEBM, MOV) e áudios em texto e legendas SRT online com inteligência artificial. Sem cadastro, com limite de arquivo informado antes do envio.',
     keywords: 'transcrever vídeo,vídeo para texto,converter áudio em texto,gerar legenda srt,whisper ai online,transcrever áudio mp3',
     h2: 'Como transcrever vídeo e áudio em texto online grátis?',
     why: 'Transcrever vídeos e gravações em texto é ideal para quem cria conteúdo para o YouTube/Instagram, estudantes que assistem aulas gravadas ou profissionais que precisam de atas de reuniões rápido.',
@@ -323,7 +323,7 @@ export default function ToolPage({ params }: PageProps) {
           <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">
             {tool.name} Online Grátis
           </h1>
-          <p className="mt-3 text-lg text-gray-500 dark:text-gray-400">{tool.description} Sem cadastro e sem limites.</p>
+          <p className="mt-3 text-lg text-gray-500 dark:text-gray-400">{tool.description} Sem cadastro e com limite de arquivo informado antes do envio.</p>
         </div>
 
         {/* Componente de upload interativo do cliente */}

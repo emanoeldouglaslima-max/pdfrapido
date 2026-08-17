@@ -35,7 +35,7 @@ export default function CookieBanner() {
           <div className="space-y-1">
             <h4 className="font-bold text-sm tracking-tight">Valorizamos sua privacidade</h4>
             <p className="text-xs text-gray-400 leading-relaxed">
-              Utilizamos cookies para otimizar sua experiência de conversão de arquivos e personalizar anúncios com o Google AdSense. Ao continuar navegando, você concorda com nosso uso de cookies de acordo com a nossa{' '}
+              Utilizamos cookies necessários para o funcionamento do site e, quando anúncios forem habilitados, cookies de parceiros como o Google AdSense. Ao continuar navegando, você concorda com nosso uso de cookies de acordo com a nossa{' '}
               <Link href="/cookies" className="text-brand-400 hover:underline font-semibold">
                 Política de Cookies
               </Link>

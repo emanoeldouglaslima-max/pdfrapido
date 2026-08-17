@@ -19,10 +19,17 @@ export default function AdUnit({ slot, format = 'auto', style, className }: AdUn
   const adRef = useRef<HTMLModElement>(null);
   const pushed = useRef(false);
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID;
+  const canShowAds = Boolean(
+    adsenseId &&
+    slot &&
+    !/^0+$/.test(slot) &&
+    process.env.NEXT_PUBLIC_ENABLE_AD_UNITS === 'true'
+  );
 
   useEffect(() => {
-    // Só executar uma vez por montagem e somente se o AdSense estiver configurado
-    if (!adsenseId || pushed.current) return;
+    // Push only real, approved ad units. The AdSense account script can still
+    // live in <head> for site review without rendering placeholder ad blocks.
+    if (!canShowAds || pushed.current) return;
 
     try {
       pushed.current = true;
@@ -30,10 +37,9 @@ export default function AdUnit({ slot, format = 'auto', style, className }: AdUn
     } catch (e) {
       // Silencioso — pode falhar em dev sem AdSense configurado
     }
-  }, [adsenseId]);
+  }, [canShowAds]);
 
-  // Em dev sem AdSense: ocultar completamente para evitar reprovação automática
-  if (!adsenseId) {
+  if (!canShowAds) {
     return null;
   }
 

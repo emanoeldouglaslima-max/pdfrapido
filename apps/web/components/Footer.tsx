@@ -95,7 +95,7 @@ export default function Footer() {
           <div>
             <p className="text-white font-bold mb-4 text-sm tracking-wider uppercase">Segurança e Legal</p>
             <p className="text-sm text-gray-500 leading-relaxed">
-              Todos os arquivos enviados são criptografados durante o upload e deletados permanentemente de nossos servidores após 30 minutos de processamento.
+              Seus arquivos são transmitidos via HTTPS, processados temporariamente em nossos servidores e excluídos automaticamente após o processamento.
             </p>
 
             <div className="mt-5 space-y-3">
@@ -116,6 +116,26 @@ export default function Footer() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 Termos de Uso
+              </Link>
+              <Link
+                href="/cookies"
+                className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors group"
+              >
+                <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3c.35 2.38 1.57 3.61 4 4 .39 2.58 1.73 3.82 4 4-.37 5.25-3.47 9-8 9-4.97 0-9-4.03-9-9 0-4.53 3.75-7.63 9-8z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 11h.01M11 15h.01M14 10h.01" />
+                </svg>
+                Política de Cookies
+              </Link>
+              <Link
+                href="/aviso-legal"
+                className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors group"
+              >
+                <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3 3 7l9 4 9-4-9-4z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10v5c0 2.21 3.13 4 7 4s7-1.79 7-4v-5" />
+                </svg>
+                Aviso Legal
               </Link>
             </div>
           </div>

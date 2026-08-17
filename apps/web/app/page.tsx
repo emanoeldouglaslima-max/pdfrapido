@@ -12,7 +12,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrapido.com.br';
 export const metadata: Metadata = {
   title: 'Ferramentas de PDF Online Grátis — Converter, Comprimir, Juntar',
   description:
-    'Converta, comprima, junte e divida PDFs online de graça. Sem cadastro, sem limite. PDF para Word, PDF para JPG, Word para PDF e muito mais. Funciona no celular.',
+    'Converta, comprima, junte e divida PDFs online de graça. Sem cadastro, com limite de arquivo informado antes do envio. Funciona no celular.',
   alternates: { canonical: SITE_URL },
   openGraph: {
     title: 'PDFRápido — Ferramentas de PDF Online Grátis',
@@ -23,11 +23,14 @@ export const metadata: Metadata = {
 };
 
 async function getStats(): Promise<{ total_files_processed: number }> {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (!apiUrl) return { total_files_processed: 0 };
+
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/stats`,
-      { next: { revalidate: 60 } }
-    );
+    const res = await fetch(`${apiUrl}/api/stats`, {
+      next: { revalidate: 60 },
+      signal: AbortSignal.timeout(2500),
+    });
     if (!res.ok) return { total_files_processed: 0 };
     return res.json();
   } catch {
@@ -83,17 +86,11 @@ export default async function HomePage() {
           <div className="absolute inset-0 bg-dots opacity-40 pointer-events-none" />
 
           <div className="relative max-w-3xl mx-auto text-center">
-            {/* Badge de prova social */}
+            {/* Badge de confiança */}
             <div className="inline-flex items-center gap-2 bg-white dark:bg-gray-900 border border-brand-100 dark:border-gray-800 rounded-full px-4 py-2 shadow-sm mb-6 animate-fade-in">
-              <div className="flex items-center gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-3.5 h-3.5 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
+              <span className="text-green-500" aria-hidden="true">●</span>
               <span className="text-xs text-gray-600 dark:text-gray-300 font-semibold">
-                4.8/5 — mais de <span className="text-brand-600 dark:text-brand-400">12.000</span> usuários brasileiros
+                Ferramentas claras, gratuitas e com páginas de política, contato e termos
               </span>
             </div>
 
@@ -116,8 +113,8 @@ export default async function HomePage() {
             {/* Selos de vantagens */}
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3 text-xs font-semibold">
               {[
-                { icon: '✅', label: 'Sem Limites' },
-                { icon: '🔒', label: '100% Seguro' },
+                { icon: '✅', label: 'Limite informado' },
+                { icon: '🔒', label: 'Exclusão automática' },
                 { icon: '📱', label: 'Funciona no Celular' },
                 { icon: '🚫', label: 'Sem Cadastro' },
               ].map((item) => (
@@ -231,7 +228,7 @@ export default async function HomePage() {
                 {
                   icon: '🔒',
                   title: 'Seus arquivos são seguros',
-                  desc: 'Todos os arquivos são deletados automaticamente após 30 minutos. Nunca armazenamos seus documentos confidenciais.',
+                  desc: 'Os arquivos enviados são usados apenas para executar a ferramenta escolhida e são removidos automaticamente após o processamento.',
                   color: 'from-green-100 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/10',
                   border: 'border-green-200 dark:border-green-900/30',
                 },
@@ -263,44 +260,39 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* ── TESTEMUNHOS ── */}
+        {/* ── CASOS DE USO ── */}
         <section className="bg-white dark:bg-gray-950 py-16 px-4 border-t border-gray-100 dark:border-gray-800">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
-              Quem usa o PDFRápido aprova!
+              Situações em que o PDFRápido ajuda
             </h2>
             <p className="text-gray-500 dark:text-gray-400 text-center mb-10 text-sm">
-              Mais de <strong>12.000</strong> brasileiros utilizam nosso serviço mensalmente.
+              Conteúdo prático para quem precisa preparar documentos sem instalar programas.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
                 {
-                  name: 'Mariana S. Ramos',
-                  initials: 'MR',
-                  role: 'Advogada Autônoma — OAB/SP',
-                  text: 'Excelente ferramenta! Uso diariamente para juntar e comprimir petições antes de enviar para os portais dos tribunais. É muito rápida e não distorce a formatação.',
+                  title: 'Documentos para processos e cadastros',
+                  initials: 'PDF',
+                  category: 'Organização de arquivos',
+                  text: 'Junte comprovantes, reduza o tamanho de anexos e exporte páginas específicas antes de enviar para sistemas que aceitam apenas PDF.',
                   avatarGradient: 'from-indigo-500 to-violet-500',
                 },
                 {
-                  name: 'Carlos E. Lima',
-                  initials: 'CL',
-                  role: 'Contador e Consultor Fiscal',
-                  text: 'Precisava de algo prático e seguro para converter relatórios do Word para PDF e enviar para clientes no WhatsApp. Funciona perfeitamente direto do celular.',
+                  title: 'Trabalho, estudo e atendimento',
+                  initials: 'DOC',
+                  category: 'Conversão e compartilhamento',
+                  text: 'Converta Word em PDF, transforme páginas em JPG e comprima arquivos para compartilhar por e-mail, WhatsApp ou portais de atendimento.',
                   avatarGradient: 'from-emerald-500 to-teal-500',
                 },
               ].map((t, i) => (
                 <div key={i} className="group bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800/80 hover:border-brand-200 dark:hover:border-brand-500/50 hover:shadow-lg transition-all duration-300 flex flex-col justify-between">
                   <div>
-                    {/* Estrelas */}
-                    <div className="flex items-center gap-0.5 mb-4">
-                      {[...Array(5)].map((_, si) => (
-                        <svg key={si} className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
-                    </div>
+                    <span className="inline-flex rounded-full bg-brand-50 dark:bg-brand-950/40 px-3 py-1 text-xs font-bold text-brand-700 dark:text-brand-300 mb-4">
+                      {t.category}
+                    </span>
                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm mb-5">
-                      &ldquo;{t.text}&rdquo;
+                      {t.text}
                     </p>
                   </div>
                   <div className="flex items-center gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
@@ -308,8 +300,8 @@ export default async function HomePage() {
                       {t.initials}
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm">{t.name}</h4>
-                      <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium">{t.role}</p>
+                      <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm">{t.title}</h4>
+                      <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium">Uso comum no Brasil</p>
                     </div>
                   </div>
                 </div>
@@ -356,7 +348,7 @@ export default async function HomePage() {
               <Link href="/comprimir-pdf" className="text-brand-600 dark:text-brand-400 font-medium hover:underline">
                 comprimir PDF
               </Link>{' '}
-              para reduzir o tamanho rapidamente, sem perder qualidade.
+              para reduzir o tamanho rapidamente, mantendo a qualidade visual.
             </p>
 
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8">
@@ -364,8 +356,8 @@ export default async function HomePage() {
             </h2>
             <div className="space-y-4 mt-4">
               {[
-                { q: 'O site é realmente grátis?', a: 'Sim, todas as ferramentas são 100% gratuitas. Não cobramos nada e não exigimos cadastro.' },
-                { q: 'Meus arquivos ficam salvos no servidor?', a: 'Não. Todos os arquivos são deletados automaticamente após 30 minutos do processamento.' },
+                { q: 'O site é realmente grátis?', a: 'Sim, as ferramentas podem ser usadas gratuitamente e não exigem cadastro.' },
+                { q: 'Meus arquivos ficam salvos no servidor?', a: 'Não como serviço de armazenamento. Os arquivos enviados são temporários e removidos automaticamente após o processamento.' },
                 { q: 'Funciona no celular?', a: 'Sim. O PDFRápido funciona em qualquer dispositivo com navegador de internet.' },
                 { q: 'Existe limite de tamanho de arquivo?', a: 'O limite atual é de 25MB por arquivo. Para arquivos maiores, recomendamos comprimi-los primeiro.' },
               ].map((faq) => (

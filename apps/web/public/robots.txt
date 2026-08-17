@@ -1,9 +1,0 @@
-# robots.txt — PDFRápido
-User-agent: *
-Allow: /
-
-# Sitemap
-Sitemap: https://pdfrapido.com.br/sitemap.xml
-
-# Não indexar arquivos temporários ou API
-Disallow: /api/

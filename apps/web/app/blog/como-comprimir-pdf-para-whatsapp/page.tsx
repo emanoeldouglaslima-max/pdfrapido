@@ -132,7 +132,7 @@ export default function Artigo1Page() {
               <div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">Quer diminuir o tamanho do seu PDF agora mesmo?</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Reduza o tamanho do seu documento em segundos com nosso compressor inteligente. 100% grátis, sem limites e com exclusão segura.
+                  Reduza o tamanho do seu documento em segundos com nosso compressor. Grátis, com limite de arquivo informado e exclusão automática.
                 </p>
               </div>
               <div className="pt-2">

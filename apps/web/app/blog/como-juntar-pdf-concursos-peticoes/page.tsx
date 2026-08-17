@@ -138,7 +138,7 @@ export default function Artigo4Page() {
             <div className="bg-brand-50 dark:bg-gray-800 border border-brand-100 dark:border-gray-700 p-8 rounded-3xl text-center space-y-4 my-8 not-prose">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white">Precisa unificar documentos agora?</h3>
               <p className="text-sm text-gray-600 dark:text-gray-300 max-w-lg mx-auto">
-                Use nosso unificador de PDF para juntar todos os seus documentos em um só arquivo. Gratuito, sem limites e com exclusão automática.
+                Use nosso unificador de PDF para juntar seus documentos em um só arquivo. Gratuito, com limite de arquivo informado e exclusão automática.
               </p>
               <div className="pt-2">
                 <Link

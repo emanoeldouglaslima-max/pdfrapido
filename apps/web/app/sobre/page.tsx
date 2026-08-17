@@ -43,13 +43,13 @@ export default function SobrePage() {
                 O <strong>PDFRápido</strong> nasceu com um objetivo muito claro: eliminar a burocracia na hora de lidar com documentos digitais. Sabemos que tarefas simples, como comprimir um PDF para enviar por e-mail ou converter um arquivo para edição, muitas vezes exigem instalações complexas, cadastros demorados ou assinaturas caras.
               </p>
               <p>
-                Acreditamos que a tecnologia deve ser acessível e direta. Por isso, oferecemos uma suíte completa de ferramentas que rodam diretamente pelo seu navegador de forma 100% gratuita, sem limites artificiais e sem a necessidade de criar uma conta.
+                Acreditamos que a tecnologia deve ser acessível e direta. Por isso, oferecemos uma suíte de ferramentas que rodam diretamente pelo navegador de forma gratuita, com limite de arquivo informado antes do envio e sem a necessidade de criar uma conta.
               </p>
             </section>
 
             <section className="space-y-4">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <span>🛡️</span> Segurança e Privacidade Absoluta
+                <span>🛡️</span> Segurança e Privacidade
               </h2>
               <p>
                 Tratamos os seus arquivos com a seriedade que eles merecem. Todos os documentos enviados para nossas ferramentas passam por conexões criptografadas (HTTPS/SSL), garantindo que ninguém no caminho possa interceptar seus dados.

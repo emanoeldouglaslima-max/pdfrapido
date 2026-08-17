@@ -3,7 +3,7 @@ export const TOOLS = [
     slug: 'comprimir-pdf',
     name: 'Comprimir PDF',
     shortName: 'Comprimir',
-    description: 'Reduza o tamanho do PDF sem perder qualidade. Ideal para enviar por e-mail ou WhatsApp.',
+    description: 'Reduza o tamanho do PDF mantendo a qualidade visual. Ideal para enviar por e-mail ou WhatsApp.',
     icon: '🗜️',
     color: 'bg-blue-50',
     iconBg: 'bg-blue-100',
