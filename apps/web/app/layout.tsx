@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: '%s | PDFRápido',
   },
   description:
-    'Comprima, converta, junte e divida PDFs online de forma gratuita. Sem cadastro, sem limite, funciona no celular. Ferramentas de PDF rápidas e seguras.',
+    'Comprima, converta, junte e divida PDFs online de forma gratuita. Sem cadastro, funciona no celular. Ferramentas de PDF rápidas e seguras para o público brasileiro.',
   keywords: [
     'converter pdf', 'comprimir pdf', 'pdf online grátis',
     'pdf para word', 'pdf para jpg', 'juntar pdf', 'dividir pdf',

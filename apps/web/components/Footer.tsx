@@ -22,7 +22,7 @@ export default function Footer() {
               <Logo className="invert brightness-200" />
             </Link>
             <p className="mt-2 text-sm text-gray-500 max-w-xs leading-relaxed">
-              As melhores ferramentas de PDF online, rápidas, seguras e 100% gratuitas para o público brasileiro. Seus arquivos são excluídos automaticamente.
+              Ferramentas de PDF gratuitas para converter, comprimir, juntar e organizar seus documentos. Seus arquivos são excluídos automaticamente após o processamento.
             </p>
             {/* Selos de segurança */}
             <div className="flex items-center gap-3 mt-3">
@@ -144,13 +144,7 @@ export default function Footer() {
         {/* Barra inferior */}
         <div className="mt-12 pt-6 border-t border-gray-800/50 text-xs text-gray-600 text-center flex flex-col sm:flex-row justify-between items-center gap-4">
           <span>© {new Date().getFullYear()} PDFRápido. Todos os direitos reservados.</span>
-          <span className="flex items-center gap-1.5">
-            Feito com
-            <svg className="w-3.5 h-3.5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-            </svg>
-            para brasileiros
-          </span>
+          <span>Feito para brasileiros 🇧🇷</span>
         </div>
       </div>
     </footer>

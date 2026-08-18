@@ -15,6 +15,7 @@ export default function RatingWidget({ toolName }: RatingWidgetProps) {
     setRating(value);
     setSubmitted(true);
     try {
+      // Armazena localmente o feedback do usuário neste dispositivo
       localStorage.setItem(`pdfrapido_rating_${toolName}`, value.toString());
     } catch {}
   };
@@ -25,7 +26,7 @@ export default function RatingWidget({ toolName }: RatingWidgetProps) {
         Essa ferramenta foi útil para você?
       </h4>
       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-        Avalie o {toolName} e ajude outros usuários brasileiros!
+        Deixe sua avaliação pessoal sobre o {toolName}.
       </p>
 
       {!submitted ? (
@@ -37,7 +38,7 @@ export default function RatingWidget({ toolName }: RatingWidgetProps) {
               onClick={() => handleRate(star)}
               onMouseEnter={() => setHovered(star)}
               onMouseLeave={() => setHovered(null)}
-              aria-label={`Avaliar com ${star} estrelas`}
+              aria-label={`Avaliar com ${star} estrela${star > 1 ? 's' : ''}`}
               className="p-1 transition-transform hover:scale-125 focus:outline-none"
             >
               <svg
@@ -59,7 +60,7 @@ export default function RatingWidget({ toolName }: RatingWidgetProps) {
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
           </svg>
-          Obrigado pela sua avaliação! ({rating}/5 estrelas)
+          Obrigado pelo seu feedback! ({rating}/5 estrelas)
         </div>
       )}
     </div>
