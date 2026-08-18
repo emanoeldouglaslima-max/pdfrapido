@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/como-comprimir-pdf-para-whatsapp',
   },
+  openGraph: {
+    title: 'Como Comprimir PDF para o WhatsApp sem Perder Qualidade',
+    description: 'Aprenda a reduzir o tamanho de seus documentos PDF para enviar pelo WhatsApp respeitando os limites do aplicativo e mantendo a qualidade de leitura.',
+    url: 'https://pdfrapido.com.br/blog/como-comprimir-pdf-para-whatsapp',
+    type: 'article',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@pdfrapido',
+    title: 'Como Comprimir PDF para o WhatsApp sem Perder Qualidade',
+    description: 'Aprenda a reduzir o tamanho de seus documentos PDF para enviar pelo WhatsApp respeitando os limites do aplicativo.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  }
 };
 
 export default function Artigo1Page() {
@@ -145,7 +159,7 @@ export default function Artigo1Page() {
               </div>
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">3. Dicas avançadas para manter a qualidade de leitura</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">4. Dicas avançadas para manter a qualidade de leitura</h2>
             <ul className="list-disc pl-5 space-y-2">
               <li><strong>Sempre selecione &quot;Documento&quot;:</strong> Evite enviar PDFs a partir de links externos se puder anexar como arquivo local. O WhatsApp lê o formato de forma nativa e facilita a vida de quem está lendo.</li>
               <li><strong>Dê nomes curtos e sem caracteres especiais:</strong> Arquivos com nomes excessivamente longos ou com muitos símbolos podem apresentar falhas no download dentro do WhatsApp de alguns modelos de celular Android.</li>

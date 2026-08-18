@@ -3,7 +3,10 @@ import Script from 'next/script';
 import CookieBanner from '../components/CookieBanner';
 import './globals.css';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrapido.com.br';
+const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrapido.com.br';
+const SITE_URL = rawSiteUrl.includes('xn--') || rawSiteUrl.includes('pdfrápido') 
+  ? 'https://pdfrapido.com.br' 
+  : rawSiteUrl;
 const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-8269194570705692';
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID;
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;

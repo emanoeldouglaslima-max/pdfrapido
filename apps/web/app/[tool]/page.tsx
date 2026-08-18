@@ -30,15 +30,17 @@ const SEO_CONTENT: Record<string, {
     h2: 'Como comprimir PDF online grátis?',
     why: 'Comprimir PDF é essencial para enviar arquivos por e-mail, WhatsApp ou economizar espaço de armazenamento. Nosso compressor reduz o tamanho do PDF otimizando a estrutura interna e compactando imagens embutidas, mantendo o texto nítido.',
     how: [
-      'Clique no botão de upload ou arraste o seu PDF para a área de seleção.',
-      'Escolha o nível de compressão desejado (médio recomendado).',
-      'Clique em "Comprimir PDF agora" para iniciar o processamento.',
-      'Baixe o seu PDF reduzido em instantes.'
+      'Clique no botão de upload ou arraste o seu PDF (limite de 25MB) para a área de seleção.',
+      'Escolha o nível de compressão desejado (a compressão média é o padrão recomendado).',
+      'Clique em "Comprimir PDF agora" para iniciar o processamento na nuvem.',
+      'Aguarde a otimização e baixe o seu arquivo PDF reduzido em instantes.'
     ],
     faq: [
-      { q: 'Quanto posso reduzir o tamanho de um PDF?', a: 'PDFs contendo muitas imagens podem ser reduzidos em até 80% do tamanho original. Arquivos contendo apenas texto têm uma redução menor.' },
-      { q: 'A compressão reduz a qualidade das imagens?', a: 'O nível de compressão médio oferece o melhor equilíbrio, reduzindo o peso do arquivo enquanto mantém as imagens nítidas para leitura.' },
-      { q: 'O site armazena os meus documentos?', a: 'Não como serviço de armazenamento. Os arquivos enviados são temporários e excluídos automaticamente de nossos servidores após o processamento.' }
+      { q: 'Quanto posso reduzir o tamanho de um PDF?', a: 'PDFs contendo muitas imagens podem ser reduzidos em até 80% do tamanho original. Arquivos contendo apenas texto têm uma redução menor devido à densidade dos caracteres.' },
+      { q: 'A compressão reduz a qualidade das imagens e textos?', a: 'O texto vetorial do PDF permanece intacto e 100% nítido. O nível de compressão médio compacta as imagens internas de 300 DPI para 150 DPI, o que é perfeito para visualização em telas.' },
+      { q: 'Funciona com arquivos digitalizados ou escaneados?', a: 'Sim. Se você tirou fotos de um documento ou o escaneou, o arquivo final costuma ser muito pesado. Nosso compressor é ideal para reamostrar essas imagens e encolher o arquivo.' },
+      { q: 'Qual a diferença entre os níveis de compressão?', a: 'A compressão baixa prioriza a qualidade máxima de imagem. A média busca o melhor custo-benefício (equilíbrio peso/nitidez). A alta reduz bastante o peso, ideal para envios onde a qualidade da imagem não é o foco principal.' },
+      { q: 'Meus arquivos ficam guardados?', a: 'Não. Todos os arquivos enviados são mantidos em memória temporária de processamento e excluídos de forma automática e permanente logo após o download ou por meio de nossa rotina a cada 30 minutos.' }
     ]
   },
   'converter-pdf-para-word': {
@@ -79,7 +81,9 @@ const SEO_CONTENT: Record<string, {
     ],
     faq: [
       { q: 'Cada página vira uma imagem JPG separada?', a: 'Sim. Se o seu arquivo PDF tiver 5 páginas, a ferramenta gerará 5 imagens JPG individuais empacotadas em um único arquivo .zip para facilitar o download.' },
-      { q: 'A ferramenta suporta PDFs grandes?', a: 'Sim, você pode converter PDFs de até 25MB de forma totalmente gratuita.' }
+      { q: 'A ferramenta suporta PDFs grandes?', a: 'Sim, você pode converter PDFs de até 25MB de forma totalmente gratuita.' },
+      { q: 'Qual a diferença entre 150 DPI e 300 DPI?', a: 'DPI indica pontos por polegada. 150 DPI é ideal para telas, e-mails e WhatsApp porque gera arquivos mais leves. 300 DPI é recomendado se você planeja imprimir as imagens, gerando maior nível de nitidez.' },
+      { q: 'As imagens são excluídas depois da conversão?', a: 'Sim, todos os arquivos temporários são apagados imediatamente do nosso servidor após o processamento e download.' }
     ]
   },
   'converter-word-para-pdf': {
@@ -89,13 +93,16 @@ const SEO_CONTENT: Record<string, {
     h2: 'Como converter Word para PDF online?',
     why: 'A conversão de documentos do Word para PDF é altamente recomendada antes de enviar currículos, propostas comerciais ou relatórios formais. O PDF garante que o destinatário veja a formatação exata que você criou, independentemente do sistema operacional.',
     how: [
-      'Arraste e solte o arquivo Word (.docx ou .doc) na área indicada.',
-      'Aguarde o processamento do documento pelo nosso conversor.',
-      'Baixe o documento em PDF finalizado.'
+      'Selecione ou arraste o arquivo Word (.docx ou .doc) de até 25MB na área indicada.',
+      'Aguarde enquanto a nossa API converte a estrutura do documento.',
+      'Baixe o documento em PDF finalizado e pronto para uso em segundos.'
     ],
     faq: [
-      { q: 'A formatação do Word é alterada na conversão?', a: 'Não. Nosso conversor preserva o layout original do documento, incluindo fontes, tabelas, imagens e espaçamento.' },
-      { q: 'Posso converter de qualquer dispositivo?', a: 'Sim. A conversão é feita na nuvem, funcionando direto pelo navegador do celular, tablet ou computador.' }
+      { q: 'A formatação do Word é alterada na conversão?', a: 'Não. Nosso conversor busca preservar o layout original do documento, incluindo fontes, alinhamentos, espaçamento de parágrafo e imagens embutidas.' },
+      { q: 'Funciona com arquivos .doc antigos ou apenas .docx?', a: 'O conversor é compatível com ambas as extensões (.doc, criado em versões anteriores do Microsoft Word, e .docx, padrão das versões modernas).' },
+      { q: 'O que acontece com imagens e tabelas do Word?', a: 'Imagens e tabelas são convertidas de forma nativa e desenhadas nas respectivas páginas do arquivo PDF final.' },
+      { q: 'Preciso pagar para usar?', a: 'Não. O serviço é 100% gratuito, sem limite de uso e sem necessidade de criar conta ou realizar cadastros.' },
+      { q: 'O site é seguro para documentos pessoais?', a: 'Sim. Os uploads e downloads ocorrem por conexões criptografadas (HTTPS) e todos os arquivos são deletados permanentemente do servidor logo após o processamento.' }
     ]
   },
   'converter-jpg-para-pdf': {
@@ -105,13 +112,17 @@ const SEO_CONTENT: Record<string, {
     h2: 'Como converter imagens para PDF online?',
     why: 'Converter fotos e imagens para PDF facilita o envio de comprovantes, digitalizações manuais ou fotos de documentos para portais do governo, faculdades ou escritórios, unindo múltiplas capturas em um único arquivo profissional.',
     how: [
-      'Selecione uma ou mais imagens (JPG, PNG ou WebP) do seu aparelho.',
-      'Escolha a orientação das páginas (Retrato ou Paisagem).',
-      'Clique em "Imagem para PDF agora" e baixe o seu documento unificado.'
+      'Selecione uma ou mais imagens (JPG, PNG ou WebP) do seu aparelho (limite de 20 arquivos).',
+      'Defina a orientação desejada para o PDF de saída (Retrato ou Paisagem).',
+      'Clique em "Imagem para PDF agora" para processar as fotos.',
+      'Faça o download do seu documento PDF consolidado.'
     ],
     faq: [
-      { q: 'Posso enviar fotos em formatos misturados?', a: 'Sim. Você pode enviar arquivos JPG, JPEG, PNG e WebP simultaneamente. O sistema converterá todos e os adicionará na sequência correta no PDF.' },
-      { q: 'As imagens perdem a qualidade?', a: 'A qualidade original das fotos é preservada ao máximo, com dimensionamento adequado para o formato de página A4.' }
+      { q: 'Posso enviar fotos em formatos misturados?', a: 'Sim. Você pode enviar arquivos JPG, JPEG, PNG e WebP simultaneamente. O sistema converterá todas e as adicionará na sequência correta no PDF.' },
+      { q: 'As imagens perdem a qualidade?', a: 'A qualidade original das fotos é preservada ao máximo, com dimensionamento adequado para o formato de página A4 padrão.' },
+      { q: 'Posso juntar várias imagens em um único PDF?', a: 'Sim. Você pode fazer o upload de até 20 imagens de uma vez para gerar um único arquivo PDF contendo todas as páginas em sequência.' },
+      { q: 'Existe uma ordem específica das imagens no PDF?', a: 'Sim. As fotos são organizadas no PDF final de acordo com a ordem em que foram selecionadas ou enviadas na área de upload.' },
+      { q: 'Qual o limite de tamanho aceito pela ferramenta?', a: 'O limite é de 25MB no tamanho total acumulado dos arquivos de imagem por envio.' }
     ]
   },
   'juntar-pdf': {
@@ -121,13 +132,16 @@ const SEO_CONTENT: Record<string, {
     h2: 'Como juntar PDFs em um único arquivo?',
     why: 'Juntar PDFs é o recurso ideal para unificar petições judiciais, juntar contratos e anexos, consolidar relatórios de equipes ou organizar capítulos dispersos de uma apostila em um único documento centralizado.',
     how: [
-      'Selecione dois ou mais PDFs que deseja juntar.',
-      'Ordene a sequência das ferramentas enviando os arquivos na ordem que deseja lê-los.',
-      'Clique em "Juntar PDF agora" e faça o download do PDF unificado.'
+      'Selecione dois ou mais PDFs (máximo de 20 arquivos) que deseja juntar.',
+      'Ordene a sequência das ferramentas enviando os arquivos na ordem que deseja combiná-los.',
+      'Clique em "Juntar PDF agora" e aguarde o processamento.',
+      'Faça o download do PDF unificado resultante.'
     ],
     faq: [
       { q: 'Quantos arquivos PDF posso juntar de uma vez?', a: 'Você pode enviar e unir até 20 arquivos em uma única operação, respeitando o limite total acumulado de 25MB.' },
-      { q: 'É seguro juntar documentos confidenciais?', a: 'Sim. A comunicação é encriptada por SSL e todos os arquivos enviados são excluídos automaticamente de nossos servidores após o processamento.' }
+      { q: 'É seguro juntar documentos confidenciais?', a: 'Sim. A comunicação é encriptada por SSL e todos os arquivos enviados são excluídos automaticamente de nossos servidores após o processamento.' },
+      { q: 'Posso reordenar a sequência antes de juntar?', a: 'Os arquivos são mesclados de acordo com a sequência de upload. Para ordenar, basta enviar primeiro o documento que deve ser a primeira página e na sequência os demais.' },
+      { q: 'Funciona com PDFs protegidos por senha?', a: 'Se algum dos PDFs selecionados estiver protegido por senha de leitura, você precisará remover a senha dele antes de tentar juntá-lo aos demais.' }
     ]
   },
   'dividir-pdf': {
@@ -137,13 +151,16 @@ const SEO_CONTENT: Record<string, {
     h2: 'Como dividir PDF e extrair páginas online?',
     why: 'Dividir um PDF permite isolar apenas as folhas que interessam, como a página de assinatura de um contrato longo ou separar capítulos específicos de um e-book para estudos rápidos.',
     how: [
-      'Faça o upload do PDF que você deseja dividir.',
+      'Faça o upload do PDF (limite de 25MB) que você deseja dividir.',
       'Escolha a regra de divisão: a cada N páginas, extrair uma página específica ou extrair um intervalo de páginas.',
-      'Inicie a divisão e baixe os arquivos separados (caso gere mais de um arquivo, eles virão agrupados em um ZIP).'
+      'Clique em "Dividir PDF agora" para processar.',
+      'Baixe os arquivos separados (se gerado mais de um arquivo, eles virão agrupados em um ZIP).'
     ],
     faq: [
-      { q: 'Como faço para extrair apenas a página 3 do meu PDF?', a: 'Escolha o modo "Extrair página específica", digite o número 3 no campo de texto e clique para processar.' },
-      { q: 'Os arquivos divididos mantêm os links e formatação?', a: 'Sim. O processo de divisão preserva a estrutura interna do PDF original, incluindo links clicáveis, texto selecionável e cores.' }
+      { q: 'Como faço para extrair apenas a página 3 do meu PDF?', a: 'Escolha o modo "Extrair página específica", digite o número 3 no campo correspondente e inicie o processamento.' },
+      { q: 'Os arquivos divididos mantêm os links e formatação?', a: 'Sim. O processo de divisão preserva a estrutura interna do PDF original, incluindo links clicáveis, texto selecionável e cores.' },
+      { q: 'O que acontece se eu escolher um intervalo inválido?', a: 'O sistema retornará um erro informando que as páginas selecionadas estão fora dos limites do documento enviado.' },
+      { q: 'Os PDFs gerados vêm em arquivos separados?', a: 'Sim. Se você extrair múltiplas páginas isoladas, o sistema empacotará todos os arquivos PDF gerados em um arquivo compactado ZIP para facilitar o download de uma só vez.' }
     ]
   },
   'transcrever-video-em-texto': {

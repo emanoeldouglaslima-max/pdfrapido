@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/como-assinar-pdf-certificado-digital',
   },
+  openGraph: {
+    title: 'Como Assinar PDF com Certificado Digital ou Assinatura Eletrônica Grátis',
+    description: 'Descubra como assinar documentos em formato PDF usando o certificado digital gratuito do Gov.br ou assinaturas eletrônicas seguras e com validade jurídica.',
+    url: 'https://pdfrapido.com.br/blog/como-assinar-pdf-certificado-digital',
+    type: 'article',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@pdfrapido',
+    title: 'Como Assinar PDF com Certificado Digital ou Assinatura Eletrônica Grátis',
+    description: 'Descubra como assinar documentos em formato PDF usando o certificado digital gratuito do Gov.br ou assinaturas eletrônicas seguras e com validade jurídica.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  }
 };
 
 export default function Artigo5Page() {

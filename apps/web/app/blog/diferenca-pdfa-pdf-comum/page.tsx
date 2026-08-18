@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/diferenca-pdfa-pdf-comum',
   },
+  openGraph: {
+    title: 'Diferença entre PDF/A e PDF Comum: Quando Usar Cada Um?',
+    description: 'Entenda o que é o formato PDF/A, a diferença em relação ao PDF tradicional e as exigências em concursos públicos e processos judiciais (PJe).',
+    url: 'https://pdfrapido.com.br/blog/diferenca-pdfa-pdf-comum',
+    type: 'article',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@pdfrapido',
+    title: 'Diferença entre PDF/A e PDF Comum: Quando Usar Cada Um?',
+    description: 'Entenda o que é o formato PDF/A, a diferença em relação ao PDF tradicional e as exigências em concursos públicos e processos judiciais (PJe).',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  }
 };
 
 export default function Artigo6Page() {

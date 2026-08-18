@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/extrair-paginas-de-pdf',
   },
+  openGraph: {
+    title: 'Como Extrair Apenas Algumas Páginas de um PDF Longo no Mac e Windows',
+    description: 'Aprenda a fracionar arquivos PDF grandes e salvar páginas específicas como novos arquivos separados usando softwares nativos e gratuitos.',
+    url: 'https://pdfrapido.com.br/blog/extrair-paginas-de-pdf',
+    type: 'article',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@pdfrapido',
+    title: 'Como Extrair Apenas Algumas Páginas de um PDF Longo no Mac e Windows',
+    description: 'Aprenda a fracionar arquivos PDF grandes e salvar páginas específicas como novos arquivos separados usando softwares nativos e gratuitos.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  }
 };
 
 export default function Artigo9Page() {

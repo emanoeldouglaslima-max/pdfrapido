@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/como-converter-pdf-em-word-no-celular',
   },
+  openGraph: {
+    title: 'Como Converter PDF em Word no Celular de Forma Gratuita',
+    description: 'Descubra como transformar arquivos PDF em documentos editáveis do Word (.docx) diretamente do seu celular Android ou iPhone, sem gastar nada.',
+    url: 'https://pdfrapido.com.br/blog/como-converter-pdf-em-word-no-celular',
+    type: 'article',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@pdfrapido',
+    title: 'Como Converter PDF em Word no Celular de Forma Gratuita',
+    description: 'Descubra como transformar arquivos PDF em documentos editáveis do Word (.docx) diretamente do seu celular Android ou iPhone, sem gastar nada.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  }
 };
 
 export default function Artigo2Page() {

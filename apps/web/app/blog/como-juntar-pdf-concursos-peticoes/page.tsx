@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/como-juntar-pdf-concursos-peticoes',
   },
+  openGraph: {
+    title: 'Como Juntar Vários PDFs em um Só Documento para Concursos e Petições',
+    description: 'Aprenda a unificar e organizar documentos PDF para envio em editais de concursos públicos, petições jurídicas no PJe e processos seletivos.',
+    url: 'https://pdfrapido.com.br/blog/como-juntar-pdf-concursos-peticoes',
+    type: 'article',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@pdfrapido',
+    title: 'Como Juntar Vários PDFs em um Só Documento para Concursos e Petições',
+    description: 'Aprenda a unificar e organizar documentos PDF para envio em editais de concursos públicos, petições jurídicas no PJe e processos seletivos.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  }
 };
 
 export default function Artigo4Page() {

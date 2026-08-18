@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/como-reduzir-tamanho-pdf-windows',
   },
+  openGraph: {
+    title: 'Como Reduzir o Tamanho do PDF no Windows sem Instalar Programas',
+    description: 'Descubra como comprimir e diminuir o tamanho de arquivos PDF pesados no Windows 10 e 11 usando ferramentas nativas e truques de navegador.',
+    url: 'https://pdfrapido.com.br/blog/como-reduzir-tamanho-pdf-windows',
+    type: 'article',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@pdfrapido',
+    title: 'Como Reduzir o Tamanho do PDF no Windows sem Instalar Programas',
+    description: 'Descubra como comprimir e diminuir o tamanho de arquivos PDF pesados no Windows 10 e 11 usando ferramentas nativas e truques de navegador.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  }
 };
 
 export default function Artigo10Page() {

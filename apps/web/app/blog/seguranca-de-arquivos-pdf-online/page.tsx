@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/seguranca-de-arquivos-pdf-online',
   },
+  openGraph: {
+    title: 'Segurança e Privacidade de PDFs Online: É Seguro?',
+    description: 'Descubra como o PDFRápido protege seus arquivos com criptografia HTTPS, exclusão automática e total conformidade com a LGPD.',
+    url: 'https://pdfrapido.com.br/blog/seguranca-de-arquivos-pdf-online',
+    type: 'article',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@pdfrapido',
+    title: 'Segurança e Privacidade de PDFs Online: É Seguro?',
+    description: 'Descubra como o PDFRápido protege seus arquivos com criptografia HTTPS, exclusão automática e total conformidade com a LGPD.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  }
 };
 
 export default function Artigo3Page() {

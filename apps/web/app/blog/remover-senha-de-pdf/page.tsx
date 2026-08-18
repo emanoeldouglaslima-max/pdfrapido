@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/remover-senha-de-pdf',
   },
+  openGraph: {
+    title: 'Como Remover a Senha de um PDF que Você Esqueceu ou Precisa Editar',
+    description: 'Aprenda a remover a senha de abertura ou restrições de edição e impressão de um arquivo PDF usando métodos legais e seguros no computador ou celular.',
+    url: 'https://pdfrapido.com.br/blog/remover-senha-de-pdf',
+    type: 'article',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@pdfrapido',
+    title: 'Como Remover a Senha de um PDF que Você Esqueceu ou Precisa Editar',
+    description: 'Aprenda a remover a senha de abertura ou restrições de edição e impressão de um arquivo PDF usando métodos legais e seguros no computador ou celular.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  }
 };
 
 export default function Artigo7Page() {

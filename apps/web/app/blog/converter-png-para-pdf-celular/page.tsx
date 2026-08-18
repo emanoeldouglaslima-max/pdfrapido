@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog/converter-png-para-pdf-celular',
   },
+  openGraph: {
+    title: 'Como Converter Imagens PNG para PDF no Celular sem Aplicativos',
+    description: 'Aprenda a transformar fotos e imagens em formato PNG ou JPG em arquivos PDF usando recursos integrados do Android e iOS, sem instalar nada.',
+    url: 'https://pdfrapido.com.br/blog/converter-png-para-pdf-celular',
+    type: 'article',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@pdfrapido',
+    title: 'Como Converter Imagens PNG para PDF no Celular sem Aplicativos',
+    description: 'Aprenda a transformar fotos e imagens em formato PNG ou JPG em arquivos PDF usando recursos integrados do Android e iOS, sem instalar nada.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
+  }
 };
 
 export default function Artigo8Page() {
