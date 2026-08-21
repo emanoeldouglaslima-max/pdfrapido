@@ -122,12 +122,15 @@ Retorne OBRIGATORIAMENTE um JSON válido com esta estrutura exata:
   ]
 }`;
 
+  const ext = path.extname(audioPath).toLowerCase();
+  const mimeType = ext === '.wav' ? 'audio/wav' : ext === '.ogg' ? 'audio/ogg' : 'audio/mp3';
+
   const response = await ai.models.generateContent({
     model: 'gemini-2.5-flash',
     contents: [
       {
         inlineData: {
-          mimeType: 'audio/mp3',
+          mimeType,
           data: base64Audio,
         },
       },
@@ -141,16 +144,25 @@ Retorne OBRIGATORIAMENTE um JSON válido com esta estrutura exata:
   });
 
   const responseText = response.text || '{}';
-  const cleanJson = responseText.replace(/^```json\s*/, '').replace(/\s*```$/, '').trim();
-  const parsed = JSON.parse(cleanJson);
+  const cleanJson = responseText.replace(/```json/gi, '').replace(/```/g, '').trim();
+  let parsed: any = {};
+  try {
+    parsed = JSON.parse(cleanJson);
+  } catch {
+    parsed = { transcript: responseText, summary: [], segments: [] };
+  }
 
-  const text = parsed.transcript || '';
+  const text = parsed.transcript || responseText || '';
   const summary = parsed.summary || [];
-  const segments: TranscriptionSegment[] = (parsed.segments || []).map((s: any) => ({
+  let segments: TranscriptionSegment[] = (parsed.segments || []).map((s: any) => ({
     start: Number(s.start) || 0,
     end: Number(s.end) || 0,
     text: String(s.text || '').trim(),
   }));
+
+  if (segments.length === 0 && text) {
+    segments = [{ start: 0, end: 10, text }];
+  }
 
   logger.info('Transcrição com Gemini 2.5 Flash concluída', {
     wordCount: text.split(/\s+/).length,
@@ -170,7 +182,11 @@ export async function transcribeAudio(
     try {
       return await transcribeWithGemini(audioPath, language);
     } catch (err) {
-      logger.warn('Falha no Gemini 2.5 Flash, tentando fallback...', { error: (err as Error).message });
+      logger.error('Erro na transcrição com Gemini 2.5 Flash:', { error: (err as Error).message });
+      if (!process.env.OPENAI_API_KEY && !process.env.GROQ_API_KEY) {
+        throw new Error(`Erro no Gemini 2.5 Flash: ${(err as Error).message}`);
+      }
+      logger.info('Tentando fallback para OpenAI/Groq...');
     }
   }
 
@@ -178,8 +194,8 @@ export async function transcribeAudio(
   const openaiKey = process.env.OPENAI_API_KEY;
   const groqKey = process.env.GROQ_API_KEY;
 
-  if (!openaiKey && !groqKey) {
-    throw new Error('GEMINI_API_KEY, OPENAI_API_KEY ou GROQ_API_KEY não configurada nas variáveis de ambiente do servidor.');
+  if (!openaiKey && !groqKey && !process.env.GEMINI_API_KEY) {
+    throw new Error('GEMINI_API_KEY não configurada nas variáveis de ambiente do servidor Render.');
   }
 
   const isGroq = !openaiKey && !!groqKey;
