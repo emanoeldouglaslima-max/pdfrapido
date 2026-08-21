@@ -11,6 +11,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@google/genai": "^2.18.0",
     "@pdfsmaller/pdf-encrypt": "^1.2.0",
     "archiver": "^6.0.1",
     "bull": "^4.12.2",

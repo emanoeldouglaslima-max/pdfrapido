@@ -84,16 +84,102 @@ function formatSrtTime(totalSeconds: number): string {
   return `${hours}:${mins}:${secs},${ms}`;
 }
 
-// ── Transcrever áudio com Whisper API (OpenAI ou Groq) ───────────────────────
+// ── Transcrever áudio com Google Gemini 2.5 Flash ────────────────────────────
+export async function transcribeWithGemini(
+  audioPath: string,
+  language: string = 'pt'
+): Promise<{ text: string; segments: TranscriptionSegment[]; summary?: string[] }> {
+  const geminiKey = process.env.GEMINI_API_KEY;
+  if (!geminiKey) throw new Error('GEMINI_API_KEY não configurada');
+
+  const { GoogleGenAI } = await import('@google/genai');
+  const ai = new GoogleGenAI({ apiKey: geminiKey });
+  const audioBuffer = await fs.promises.readFile(audioPath);
+  const base64Audio = audioBuffer.toString('base64');
+
+  logger.info('Enviando áudio para Google Gemini 2.5 Flash...', {
+    file: path.basename(audioPath),
+    sizeMB: (audioBuffer.length / (1024 * 1024)).toFixed(2),
+  });
+
+  const prompt = `Você é um motor profissional de transcrição de áudio e inteligência artificial de última geração.
+Analise com precisão o áudio anexado e faça a transcrição completa no idioma falado (preferencialmente ${language}).
+Gere a transcrição fiel, com segmentação temporal e um resumo conciso.
+
+Retorne OBRIGATORIAMENTE um JSON válido com esta estrutura exata:
+{
+  "transcript": "Transcrição completa e contínua de todo o áudio com pontuação adequada.",
+  "summary": [
+    "Resumo dos pontos centrais abordados no áudio",
+    "Segundo ponto de destaque ou conclusão"
+  ],
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 4.5,
+      "text": "Frase falada neste intervalo de tempo..."
+    }
+  ]
+}`;
+
+  const response = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents: [
+      {
+        inlineData: {
+          mimeType: 'audio/mp3',
+          data: base64Audio,
+        },
+      },
+      {
+        text: prompt,
+      },
+    ],
+    config: {
+      responseMimeType: 'application/json',
+    },
+  });
+
+  const responseText = response.text || '{}';
+  const cleanJson = responseText.replace(/^```json\s*/, '').replace(/\s*```$/, '').trim();
+  const parsed = JSON.parse(cleanJson);
+
+  const text = parsed.transcript || '';
+  const summary = parsed.summary || [];
+  const segments: TranscriptionSegment[] = (parsed.segments || []).map((s: any) => ({
+    start: Number(s.start) || 0,
+    end: Number(s.end) || 0,
+    text: String(s.text || '').trim(),
+  }));
+
+  logger.info('Transcrição com Gemini 2.5 Flash concluída', {
+    wordCount: text.split(/\s+/).length,
+    segments: segments.length,
+  });
+
+  return { text, segments, summary };
+}
+
+// ── Transcrever áudio com Whisper API (OpenAI ou Groq) ou Gemini ─────────────
 export async function transcribeAudio(
   audioPath: string,
   language: string = 'pt'
-): Promise<{ text: string; segments: TranscriptionSegment[] }> {
+): Promise<{ text: string; segments: TranscriptionSegment[]; summary?: string[] }> {
+  // 1. Se GEMINI_API_KEY estiver configurada, usa o Gemini 2.5 Flash
+  if (process.env.GEMINI_API_KEY) {
+    try {
+      return await transcribeWithGemini(audioPath, language);
+    } catch (err) {
+      logger.warn('Falha no Gemini 2.5 Flash, tentando fallback...', { error: (err as Error).message });
+    }
+  }
+
+  // 2. Fallback para OpenAI ou Groq Whisper
   const openaiKey = process.env.OPENAI_API_KEY;
   const groqKey = process.env.GROQ_API_KEY;
 
   if (!openaiKey && !groqKey) {
-    throw new Error('OPENAI_API_KEY ou GROQ_API_KEY não configurada nas variáveis de ambiente do servidor.');
+    throw new Error('GEMINI_API_KEY, OPENAI_API_KEY ou GROQ_API_KEY não configurada nas variáveis de ambiente do servidor.');
   }
 
   const isGroq = !openaiKey && !!groqKey;
@@ -193,14 +279,18 @@ export async function processTranscription(
   // 2. Obter duração
   const durationSec = await getAudioDuration(audioPath);
 
-  // 3. Transcrever com Whisper
-  logger.info('Passo 2/3: Transcrevendo com Whisper...', { durationSec });
-  const { text, segments } = await transcribeAudio(audioPath, language);
+  // 3. Transcrever com Gemini ou Whisper
+  logger.info('Passo 2/3: Transcrevendo com IA...', { durationSec });
+  const transcription = await transcribeAudio(audioPath, language);
+  const text = transcription.text;
+  const segments = transcription.segments;
 
   // 4. Gerar outputs
   logger.info('Passo 3/3: Formatando resultados...');
   const subtitles = generateSubtitles(segments);
-  const summary = generateSummary(text);
+  const summary = transcription.summary && transcription.summary.length > 0
+    ? transcription.summary
+    : generateSummary(text);
   const wordCount = text.split(/\s+/).filter(Boolean).length;
   const duration = formatDuration(durationSec);
 
