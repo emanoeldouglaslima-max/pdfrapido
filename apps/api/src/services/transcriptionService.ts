@@ -293,7 +293,7 @@ export async function processTranscription(
   const audioPath = await extractAudio(inputPath, outputDir);
 
   // 2. Obter duração
-  const durationSec = await getAudioDuration(audioPath);
+  let durationSec = await getAudioDuration(audioPath);
 
   // 3. Transcrever com Gemini ou Whisper
   logger.info('Passo 2/3: Transcrevendo com IA...', { durationSec });
@@ -301,8 +301,14 @@ export async function processTranscription(
   const text = transcription.text;
   const segments = transcription.segments;
 
+  // Se a duração via ffprobe for 0, calcula automaticamente através do último segmento temporal da IA
+  if ((!durationSec || durationSec === 0) && segments.length > 0) {
+    const lastSeg = segments[segments.length - 1];
+    durationSec = Math.ceil(lastSeg.end || lastSeg.start || 0);
+  }
+
   // 4. Gerar outputs
-  logger.info('Passo 3/3: Formatando resultados...');
+  logger.info('Passo 3/3: Formatando resultados...', { calculatedDurationSec: durationSec });
   const subtitles = generateSubtitles(segments);
   const summary = transcription.summary && transcription.summary.length > 0
     ? transcription.summary

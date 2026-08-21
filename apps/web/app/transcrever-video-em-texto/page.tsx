@@ -18,8 +18,11 @@ export default function TranscreverVideoPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [statusMessage, setStatusMessage] = useState('');
-  const [activeTab, setActiveTab] = useState<'texto' | 'resumo'>('texto');
+  
+  // Abas: Transcrição por tempo, Texto Completo contínuo, ou Resumo por IA
+  const [activeTab, setActiveTab] = useState<'tempo' | 'completo' | 'resumo'>('tempo');
   const [copied, setCopied] = useState(false);
+  const [copiedParagraphIdx, setCopiedParagraphIdx] = useState<number | null>(null);
   
   // Estado interativo de reprodução e edição
   const [currentTime, setCurrentTime] = useState(0);
@@ -57,7 +60,7 @@ export default function TranscreverVideoPage() {
 
   // Autoscroll para o segmento ativo durante a reprodução
   useEffect(() => {
-    if (!followPlayback || !result || !mediaRef.current || isEditing) return;
+    if (!followPlayback || !result || !mediaRef.current || isEditing || activeTab !== 'tempo') return;
 
     const activeSegIdx = result.segments.findIndex(
       (seg) => currentTime >= seg.start && currentTime <= seg.end
@@ -76,7 +79,7 @@ export default function TranscreverVideoPage() {
         }
       }
     }
-  }, [currentTime, result, followPlayback, isEditing]);
+  }, [currentTime, result, followPlayback, isEditing, activeTab]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -107,6 +110,15 @@ export default function TranscreverVideoPage() {
     }
   };
 
+  // Atualiza duração exata quando os metadados do arquivo carregam no navegador
+  const handleMediaLoaded = (e: React.SyntheticEvent<HTMLAudioElement | HTMLVideoElement>) => {
+    const dur = e.currentTarget.duration;
+    if (dur && !isNaN(dur) && dur > 0) {
+      const formatted = formatTime(Math.round(dur));
+      setResult((prev) => (prev ? { ...prev, duration: formatted } : prev));
+    }
+  };
+
   const handleTranscribe = async () => {
     if (!file) return;
     setIsProcessing(true);
@@ -116,7 +128,7 @@ export default function TranscreverVideoPage() {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('language', language);
-    formData.append('model', modelMode); // Whale (large), Dolphin (medium), Cheetah (tiny)
+    formData.append('model', modelMode);
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://pdfrapido-api.onrender.com';
 
@@ -133,7 +145,7 @@ export default function TranscreverVideoPage() {
 
       const { jobId } = await response.json();
       setProgress(25);
-      setStatusMessage('Áudio enviado! Iniciando transcrição com Whisper AI...');
+      setStatusMessage('Áudio enviado! Processando com Google Gemini IA...');
 
       // Polling para acompanhar o status do job
       const pollInterval = setInterval(async () => {
@@ -145,20 +157,19 @@ export default function TranscreverVideoPage() {
 
           if (statusData.status === 'processing') {
             setProgress((prev) => Math.min(prev + 5, 90));
-            setStatusMessage('IA processando a fala e criando as legendas...');
+            setStatusMessage('IA processando a fala e estruturando o texto...');
           } else if (statusData.status === 'done' && statusData.data) {
             clearInterval(pollInterval);
             setProgress(100);
             setIsProcessing(false);
 
-            // Se o backend não retornou segments brutos, criamos um mock estruturado baseado nos tempos formatados
             let segments = statusData.data.segments || [];
             if (segments.length === 0 && statusData.data.subtitles) {
-              segments = statusData.data.subtitles.map((sub: any, idx: number) => {
+              segments = statusData.data.subtitles.map((sub: any) => {
                 const parts = sub.time.split('→').map((t: string) => t.trim());
                 const parseTime = (timeStr: string) => {
                   const [m, s] = timeStr.split(':').map(Number);
-                  return m * 60 + s;
+                  return (m || 0) * 60 + (s || 0);
                 };
                 return {
                   start: parseTime(parts[0]),
@@ -168,11 +179,18 @@ export default function TranscreverVideoPage() {
               });
             }
 
+            // Duração calculada do backend ou dos segmentos
+            let calculatedDuration = statusData.data.duration || '00:00';
+            if (calculatedDuration === '00:00' && segments.length > 0) {
+              const lastSec = Math.ceil(segments[segments.length - 1].end || 0);
+              if (lastSec > 0) calculatedDuration = formatTime(lastSec);
+            }
+
             setResult({
               transcript: statusData.data.transcript || 'Nenhum texto detectado.',
               summary: statusData.data.summary || ['Transcrição concluída com sucesso.'],
               wordCount: statusData.data.wordCount || 0,
-              duration: statusData.data.duration || '00:00',
+              duration: calculatedDuration,
               subtitles: statusData.data.subtitles || [],
               segments: segments,
             });
@@ -182,7 +200,7 @@ export default function TranscreverVideoPage() {
             alert(`Erro no processamento da IA: ${statusData.error || 'Falha na transcrição'}`);
           }
         } catch {
-          // Erros de conexão do polling temporários são ignorados
+          // Ignora erros temporários de conexão durante o polling
         }
       }, 2000);
 
@@ -192,16 +210,28 @@ export default function TranscreverVideoPage() {
     }
   };
 
+  const getEditableText = () => {
+    if (!result) return '';
+    if (result.segments && result.segments.length > 0) {
+      return result.segments.map((s) => s.text).join('\n\n');
+    }
+    return result.transcript;
+  };
+
   const handleCopy = () => {
     if (!result) return;
-    const fullText = result.segments.map((s) => s.text).join(' ');
-    navigator.clipboard.writeText(fullText);
+    navigator.clipboard.writeText(getEditableText());
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const downloadFile = (content: string, name: string, type: string) => {
-    const blob = new Blob([content], { type });
+  const handleCopyParagraph = (text: string, idx: number) => {
+    navigator.clipboard.writeText(text);
+    setCopiedParagraphIdx(idx);
+    setTimeout(() => setCopiedParagraphIdx(null), 2000);
+  };
+
+  const downloadBlob = (blob: Blob, name: string) => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = name;
@@ -209,49 +239,151 @@ export default function TranscreverVideoPage() {
     URL.revokeObjectURL(a.href);
   };
 
-  // Downloads baseados no texto editável atual do usuário
-  const getEditableText = () => {
-    if (!result) return '';
-    return result.segments.map((s) => s.text).join(' ');
-  };
-
+  // 1. Download em TXT
   const handleDownloadTxt = () => {
     if (!result || !file) return;
-    downloadFile(getEditableText(), `${file.name.replace(/\.[^/.]+$/, '')}_transcricao.txt`, 'text/plain;charset=utf-8');
+    const textContent = getEditableText();
+    const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+    downloadBlob(blob, `${file.name.replace(/\.[^/.]+$/, '')}_transcricao.txt`);
   };
 
-  const handleDownloadSrt = () => {
+  // 2. Download em Word (.DOCX)
+  const handleDownloadDocx = async () => {
     if (!result || !file) return;
-    const formatSrtTime = (totalSec: number) => {
-      const hrs = Math.floor(totalSec / 3600).toString().padStart(2, '0');
-      const mins = Math.floor((totalSec % 3600) / 60).toString().padStart(2, '0');
-      const secs = Math.floor(totalSec % 60).toString().padStart(2, '0');
-      const ms = Math.round((totalSec % 1) * 1000).toString().padStart(3, '0');
-      return `${hrs}:${mins}:${secs},${ms}`;
-    };
+    try {
+      const { Document, Packer, Paragraph, TextRun, HeadingLevel } = await import('docx');
+      const textContent = getEditableText();
+      const rawParagraphs = textContent.split(/\n+/).filter(Boolean);
+      const paragraphsList = rawParagraphs.length > 0 ? rawParagraphs : [textContent];
 
-    const srt = result.segments
-      .map((s, i) => `${i + 1}\n${formatSrtTime(s.start)} --> ${formatSrtTime(s.end)}\n${s.text}\n`)
-      .join('\n');
+      const doc = new Document({
+        sections: [
+          {
+            properties: {},
+            children: [
+              new Paragraph({
+                text: 'Transcrição de Áudio — PDFRápido',
+                heading: HeadingLevel.HEADING_1,
+                spacing: { after: 120 },
+              }),
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: `Arquivo: ${file.name} | Duração: ${result.duration} | Palavras: ${result.wordCount}`,
+                    italics: true,
+                    color: '666666',
+                    size: 20,
+                  }),
+                ],
+                spacing: { after: 300 },
+              }),
+              ...paragraphsList.map(
+                (p) =>
+                  new Paragraph({
+                    children: [new TextRun({ text: p, size: 23 })],
+                    spacing: { after: 200 },
+                  })
+              ),
+            ],
+          },
+        ],
+      });
 
-    downloadFile(srt, `${file.name.replace(/\.[^/.]+$/, '')}_legendas.srt`, 'text/plain;charset=utf-8');
+      const blob = await Packer.toBlob(doc);
+      downloadBlob(blob, `${file.name.replace(/\.[^/.]+$/, '')}_transcricao.docx`);
+    } catch (err: any) {
+      alert('Erro ao gerar documento Word: ' + err.message);
+    }
   };
 
-  const handleDownloadVtt = () => {
+  // 3. Download em PDF (.PDF)
+  const handleDownloadPdf = async () => {
     if (!result || !file) return;
-    const formatVttTime = (totalSec: number) => {
-      const hrs = Math.floor(totalSec / 3600).toString().padStart(2, '0');
-      const mins = Math.floor((totalSec % 3600) / 60).toString().padStart(2, '0');
-      const secs = Math.floor(totalSec % 60).toString().padStart(2, '0');
-      const ms = Math.round((totalSec % 1) * 1000).toString().padStart(3, '0');
-      return `${hrs}:${mins}:${secs}.${ms}`;
-    };
+    try {
+      const { PDFDocument, StandardFonts, rgb } = await import('pdf-lib');
+      const pdfDoc = await PDFDocument.create();
+      const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+      const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-    const vtt = `WEBVTT\n\n` + result.segments
-      .map((s, i) => `${i + 1}\n${formatVttTime(s.start)} --> ${formatVttTime(s.end)}\n${s.text}\n`)
-      .join('\n');
+      const margin = 50;
+      const pageWidth = 595.28; // A4
+      const pageHeight = 841.89; // A4
+      const contentWidth = pageWidth - margin * 2;
+      const fontSize = 10;
+      const lineHeight = 14;
 
-    downloadFile(vtt, `${file.name.replace(/\.[^/.]+$/, '')}_legendas.vtt`, 'text/vtt;charset=utf-8');
+      let page = pdfDoc.addPage([pageWidth, pageHeight]);
+      let y = pageHeight - margin;
+
+      // Cabeçalho PDF
+      page.drawText('PDFRápido — Transcrição de Áudio / Vídeo', {
+        x: margin,
+        y,
+        size: 15,
+        font: fontBold,
+        color: rgb(0.12, 0.12, 0.18),
+      });
+      y -= 20;
+
+      page.drawText(`Arquivo: ${file.name}  |  Duração: ${result.duration}  |  Palavras: ${result.wordCount}`, {
+        x: margin,
+        y,
+        size: 8.5,
+        font: font,
+        color: rgb(0.45, 0.45, 0.5),
+      });
+      y -= 20;
+
+      page.drawLine({
+        start: { x: margin, y },
+        end: { x: pageWidth - margin, y },
+        thickness: 0.8,
+        color: rgb(0.85, 0.85, 0.9),
+      });
+      y -= 18;
+
+      // Parágrafos
+      const textContent = getEditableText();
+      const rawParagraphs = textContent.split(/\n+/).filter(Boolean);
+      const paragraphs = rawParagraphs.length > 0 ? rawParagraphs : [textContent];
+
+      for (const paragraph of paragraphs) {
+        const words = paragraph.split(' ');
+        let currentLine = '';
+
+        for (const word of words) {
+          const testLine = currentLine ? `${currentLine} ${word}` : word;
+          const width = font.widthOfTextAtSize(testLine, fontSize);
+
+          if (width > contentWidth && currentLine) {
+            if (y < margin + lineHeight) {
+              page = pdfDoc.addPage([pageWidth, pageHeight]);
+              y = pageHeight - margin;
+            }
+            page.drawText(currentLine, { x: margin, y, size: fontSize, font, color: rgb(0.15, 0.15, 0.15) });
+            y -= lineHeight;
+            currentLine = word;
+          } else {
+            currentLine = testLine;
+          }
+        }
+
+        if (currentLine) {
+          if (y < margin + lineHeight) {
+            page = pdfDoc.addPage([pageWidth, pageHeight]);
+            y = pageHeight - margin;
+          }
+          page.drawText(currentLine, { x: margin, y, size: fontSize, font, color: rgb(0.15, 0.15, 0.15) });
+          y -= lineHeight + 7;
+        }
+      }
+
+      const pdfBytes = await pdfDoc.save();
+      const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
+      downloadBlob(blob, `${file.name.replace(/\.[^/.]+$/, '')}_transcricao.pdf`);
+    } catch (err: any) {
+      alert('Erro ao gerar PDF: ' + err.message);
+    }
   };
 
   const formatSize = (bytes: number) => {
@@ -259,14 +391,12 @@ export default function TranscreverVideoPage() {
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
-  // Formata tempo (segundos) em MM:SS
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60).toString().padStart(2, '0');
     const s = Math.floor(seconds % 60).toString().padStart(2, '0');
     return `${m}:${s}`;
   };
 
-  // Evento de clique para pular no tempo do áudio/vídeo
   const handleJumpToTime = (start: number) => {
     if (mediaRef.current) {
       mediaRef.current.currentTime = start;
@@ -274,7 +404,6 @@ export default function TranscreverVideoPage() {
     }
   };
 
-  // Atualiza texto editado de um segmento específico
   const handleSegmentTextChange = (index: number, newText: string) => {
     if (!result) return;
     const updatedSegments = [...result.segments];
@@ -282,7 +411,6 @@ export default function TranscreverVideoPage() {
     setResult({ ...result, segments: updatedSegments });
   };
 
-  // Filtra segmentos por termo de busca
   const getFilteredSegments = () => {
     if (!result) return [];
     if (!searchTerm.trim()) return result.segments;
@@ -293,6 +421,29 @@ export default function TranscreverVideoPage() {
 
   const filteredSegments = getFilteredSegments();
   const isVideo = file?.type.startsWith('video/');
+
+  // Agrupa os segmentos em parágrafos naturais e fluídos para a aba "Texto Completo"
+  const getFullParagraphs = () => {
+    if (!result) return [];
+    const text = getEditableText();
+    const split = text.split(/\n+/).map((p) => p.trim()).filter(Boolean);
+    if (split.length > 1) return split;
+
+    // Se veio um bloco único contínuo, quebra inteligentemente por sentenças para facilitar leitura
+    const sentences = text.split(/(?<=[.?!])\s+/);
+    const paragraphs: string[] = [];
+    let cur = '';
+
+    for (const s of sentences) {
+      cur = cur ? `${cur} ${s}` : s;
+      if (cur.length > 250) {
+        paragraphs.push(cur);
+        cur = '';
+      }
+    }
+    if (cur) paragraphs.push(cur);
+    return paragraphs.length > 0 ? paragraphs : [text];
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
@@ -308,7 +459,7 @@ export default function TranscreverVideoPage() {
             Transcrição de Áudio e Vídeo
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-            Converta palestras, reuniões, aulas e vídeos em texto limpo, resumos gerados por IA e legendas SRT/VTT. 
+            Converta palestras, reuniões, aulas e vídeos em texto limpo, resumos por IA e exporte em PDF ou Word (.docx).
           </p>
         </div>
 
@@ -364,7 +515,7 @@ export default function TranscreverVideoPage() {
               </button>
             </div>
 
-            {/* Configurações Extra do Modelo */}
+            {/* Configurações Extra */}
             <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-150 dark:border-gray-800 p-6 shadow-sm space-y-6">
               <div>
                 <h3 className="text-xs font-bold text-gray-450 dark:text-gray-455 uppercase tracking-widest mb-4">Ajustes da Transcrição</h3>
@@ -386,9 +537,9 @@ export default function TranscreverVideoPage() {
                     </select>
                   </div>
 
-                  {/* Nível do Modelo (Whale/Dolphin/Cheetah similar ao TurboScribe) */}
+                  {/* Motor IA */}
                   <div>
-                    <label className="block text-xs font-bold text-gray-600 dark:text-gray-300 mb-2">Modo do Motor IA</label>
+                    <label className="block text-xs font-bold text-gray-600 dark:text-gray-300 mb-2">Motor de Inteligência Artificial</label>
                     <div className="grid grid-cols-1 gap-2">
                       <button
                         onClick={() => setModelMode('whale')}
@@ -398,40 +549,10 @@ export default function TranscreverVideoPage() {
                             : 'border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
                         }`}
                       >
-                        <span className="text-xl">🐋</span>
+                        <span className="text-xl">⚡</span>
                         <div>
-                          <p className="text-xs font-bold text-gray-900 dark:text-white">Whale (Whisper Large)</p>
-                          <p className="text-[10px] text-gray-400">Precisão máxima e pontuação inteligente.</p>
-                        </div>
-                      </button>
-
-                      <button
-                        onClick={() => setModelMode('dolphin')}
-                        className={`flex items-start gap-3 p-3 rounded-xl border text-left transition-all ${
-                          modelMode === 'dolphin'
-                            ? 'border-brand-500 bg-brand-50/20 dark:bg-brand-950/20 ring-1 ring-brand-500'
-                            : 'border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
-                        }`}
-                      >
-                        <span className="text-xl">🐬</span>
-                        <div>
-                          <p className="text-xs font-bold text-gray-900 dark:text-white">Dolphin (Whisper Medium)</p>
-                          <p className="text-[10px] text-gray-400">Equilibrado. Boa precisão e velocidade.</p>
-                        </div>
-                      </button>
-
-                      <button
-                        onClick={() => setModelMode('cheetah')}
-                        className={`flex items-start gap-3 p-3 rounded-xl border text-left transition-all ${
-                          modelMode === 'cheetah'
-                            ? 'border-brand-500 bg-brand-50/20 dark:bg-brand-950/20 ring-1 ring-brand-500'
-                            : 'border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
-                        }`}
-                      >
-                        <span className="text-xl">🐆</span>
-                        <div>
-                          <p className="text-xs font-bold text-gray-900 dark:text-white">Cheetah (Whisper Tiny)</p>
-                          <p className="text-[10px] text-gray-400">Velocidade extrema em segundos.</p>
+                          <p className="text-xs font-bold text-gray-900 dark:text-white">Google Gemini 2.5 Flash</p>
+                          <p className="text-[10px] text-gray-400">Precisão máxima, pontuação e resumo por IA.</p>
                         </div>
                       </button>
                     </div>
@@ -446,7 +567,7 @@ export default function TranscreverVideoPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                  Processamento em servidores rápidos
+                  Exporta diretamente em PDF, Word e TXT
                 </div>
               </div>
             </div>
@@ -491,7 +612,7 @@ export default function TranscreverVideoPage() {
               </div>
               <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-150 dark:border-gray-800 p-4 shadow-sm text-center">
                 <p className="text-2xl font-extrabold text-gray-800 dark:text-white">{result.segments.length}</p>
-                <p className="text-xs text-gray-400 mt-0.5">Parágrafos</p>
+                <p className="text-xs text-gray-400 mt-0.5">Trechos Temporais</p>
               </div>
               <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-150 dark:border-gray-800 p-4 shadow-sm text-center">
                 <p className="text-2xl font-extrabold text-green-500">100%</p>
@@ -502,7 +623,7 @@ export default function TranscreverVideoPage() {
             {/* Layout Principal Duas Colunas */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               
-              {/* Coluna Esquerda: Player e Informações */}
+              {/* Coluna Esquerda: Player e Exportações */}
               <div className="space-y-4">
                 <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-150 dark:border-gray-800 p-5 shadow-sm space-y-4">
                   <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Player de Mídia</h3>
@@ -514,6 +635,7 @@ export default function TranscreverVideoPage() {
                         ref={mediaRef as any}
                         src={fileUrl}
                         controls
+                        onLoadedMetadata={handleMediaLoaded}
                         onTimeUpdate={(e) => setCurrentTime((e.target as any).currentTime)}
                         className="w-full max-h-56 object-contain"
                       />
@@ -524,6 +646,7 @@ export default function TranscreverVideoPage() {
                           ref={mediaRef as any}
                           src={fileUrl}
                           controls
+                          onLoadedMetadata={handleMediaLoaded}
                           onTimeUpdate={(e) => setCurrentTime((e.target as any).currentTime)}
                           className="w-full"
                         />
@@ -555,58 +678,84 @@ export default function TranscreverVideoPage() {
                   <div className="border-t border-gray-100 dark:border-gray-850 pt-3 space-y-2 text-xs text-gray-500">
                     <p className="truncate"><span className="font-semibold">Arquivo:</span> {file?.name}</p>
                     <p><span className="font-semibold">Tamanho:</span> {file && formatSize(file.size)}</p>
-                    <p><span className="font-semibold">Formato:</span> {file?.type || 'Desconhecido'}</p>
+                    <p><span className="font-semibold">Duração:</span> {result.duration}</p>
                   </div>
                 </div>
 
-                {/* Opções de Download Premium */}
+                {/* Opções de Download Aprimoradas (PDF, DOCX, TXT) */}
                 <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-150 dark:border-gray-800 p-5 shadow-sm space-y-3">
                   <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Exportar Resultados</h3>
-                  <div className="grid grid-cols-1 gap-2">
+                  <div className="grid grid-cols-1 gap-2.5">
+                    {/* Botão Baixar em PDF */}
+                    <button
+                      onClick={handleDownloadPdf}
+                      className="w-full flex items-center justify-between px-4 py-3.5 bg-brand-50 hover:bg-brand-100 dark:bg-brand-950/40 dark:hover:bg-brand-900/50 border border-brand-200 dark:border-brand-800/60 rounded-2xl text-xs font-bold text-brand-700 dark:text-brand-300 transition-all shadow-sm group"
+                    >
+                      <span className="flex items-center gap-2">
+                        <span className="text-base">📄</span>
+                        <span>Baixar em PDF (.PDF)</span>
+                      </span>
+                      <span className="bg-brand-200/60 dark:bg-brand-800 px-2 py-0.5 rounded text-[10px] font-extrabold uppercase">PDF</span>
+                    </button>
+
+                    {/* Botão Baixar em Word */}
+                    <button
+                      onClick={handleDownloadDocx}
+                      className="w-full flex items-center justify-between px-4 py-3.5 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/40 dark:hover:bg-indigo-900/50 border border-indigo-200 dark:border-indigo-800/60 rounded-2xl text-xs font-bold text-indigo-700 dark:text-indigo-300 transition-all shadow-sm group"
+                    >
+                      <span className="flex items-center gap-2">
+                        <span className="text-base">📝</span>
+                        <span>Baixar em Word (.DOCX)</span>
+                      </span>
+                      <span className="bg-indigo-200/60 dark:bg-indigo-800 px-2 py-0.5 rounded text-[10px] font-extrabold uppercase">DOCX</span>
+                    </button>
+
+                    {/* Botão Baixar em TXT */}
                     <button
                       onClick={handleDownloadTxt}
-                      className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 transition-all"
+                      className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-2xl text-xs font-bold text-gray-700 dark:text-gray-200 transition-all border border-gray-150 dark:border-gray-800"
                     >
-                      <span>📝 Baixar Texto (.TXT)</span>
-                      <span className="text-gray-400">TXT</span>
-                    </button>
-                    <button
-                      onClick={handleDownloadSrt}
-                      className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 transition-all"
-                    >
-                      <span>🎬 Baixar Legendas (.SRT)</span>
-                      <span className="text-gray-400">SRT</span>
-                    </button>
-                    <button
-                      onClick={handleDownloadVtt}
-                      className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 transition-all"
-                    >
-                      <span>🎥 Baixar Legendas WebVTT</span>
-                      <span className="text-gray-400">VTT</span>
+                      <span className="flex items-center gap-2">
+                        <span className="text-base">📋</span>
+                        <span>Baixar Texto (.TXT)</span>
+                      </span>
+                      <span className="text-gray-400 text-[10px] uppercase font-bold">TXT</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* Coluna Direita: Editor Interativo e Resumo */}
+              {/* Coluna Direita: Abas (Tempo, Texto Completo, Resumo) */}
               <div className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-3xl border border-gray-150 dark:border-gray-800 shadow-sm overflow-hidden flex flex-col">
                 
-                {/* Header do Menu */}
+                {/* Header com as 3 Abas */}
                 <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-gray-100 dark:border-gray-850">
-                  <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl">
+                  <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-2xl">
                     <button
-                      onClick={() => setActiveTab('texto')}
-                      className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
-                        activeTab === 'texto'
+                      onClick={() => setActiveTab('tempo')}
+                      className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+                        activeTab === 'tempo'
                           ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm'
                           : 'text-gray-500 hover:text-gray-800 dark:hover:text-white'
                       }`}
                     >
-                      📝 Transcrição & Editor
+                      ⏱️ Transcrição por Tempo
                     </button>
+
+                    <button
+                      onClick={() => setActiveTab('completo')}
+                      className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+                        activeTab === 'completo'
+                          ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm'
+                          : 'text-gray-500 hover:text-gray-800 dark:hover:text-white'
+                      }`}
+                    >
+                      📄 Texto Completo
+                    </button>
+
                     <button
                       onClick={() => setActiveTab('resumo')}
-                      className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                      className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
                         activeTab === 'resumo'
                           ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm'
                           : 'text-gray-500 hover:text-gray-800 dark:hover:text-white'
@@ -617,7 +766,7 @@ export default function TranscreverVideoPage() {
                   </div>
 
                   <div className="flex items-center gap-3">
-                    {/* Botão Copiar */}
+                    {/* Botão Copiar Tudo */}
                     <button
                       onClick={handleCopy}
                       className="px-3.5 py-2 bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400 hover:opacity-90 rounded-xl text-xs font-bold transition-all"
@@ -627,11 +776,9 @@ export default function TranscreverVideoPage() {
                   </div>
                 </div>
 
-                {/* Área de Filtros e Busca (Apenas na aba Transcrição) */}
-                {activeTab === 'texto' && (
+                {/* Filtro e Busca na aba de Tempo */}
+                {activeTab === 'tempo' && (
                   <div className="bg-gray-50/50 dark:bg-gray-950/30 border-b border-gray-100 dark:border-gray-850 px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
-                    
-                    {/* Campo de Busca */}
                     <div className="relative w-full sm:w-64">
                       <input
                         type="text"
@@ -646,7 +793,6 @@ export default function TranscreverVideoPage() {
                     </div>
 
                     <div className="flex items-center gap-4">
-                      {/* Checkbox Follow Playback */}
                       <label className="flex items-center gap-2 text-xs font-bold text-gray-500 cursor-pointer">
                         <input
                           type="checkbox"
@@ -657,7 +803,6 @@ export default function TranscreverVideoPage() {
                         Seguir reprodução
                       </label>
 
-                      {/* Modo Editor Toggle */}
                       <button
                         onClick={() => setIsEditing(!isEditing)}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all ${
@@ -666,7 +811,7 @@ export default function TranscreverVideoPage() {
                             : 'border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
                         }`}
                       >
-                        {isEditing ? '🔒 Travar Texto' : '✏️ Editar Texto'}
+                        {isEditing ? '🔒 Travar' : '✏️ Editar'}
                       </button>
                     </div>
                   </div>
@@ -675,7 +820,8 @@ export default function TranscreverVideoPage() {
                 {/* Conteúdo da Aba */}
                 <div className="p-6 flex-grow">
                   
-                  {activeTab === 'texto' && (
+                  {/* 1. Aba Transcrição por Tempo */}
+                  {activeTab === 'tempo' && (
                     <div
                       ref={segmentsContainerRef}
                       className="space-y-4 max-h-[500px] overflow-y-auto pr-2 scrollbar-thin"
@@ -699,7 +845,7 @@ export default function TranscreverVideoPage() {
                                   : 'border-transparent hover:bg-gray-50/50 dark:hover:bg-gray-800/20'
                               }`}
                             >
-                              {/* Tempo */}
+                              {/* Botão de Tempo */}
                               <button
                                 onClick={() => handleJumpToTime(seg.start)}
                                 className={`shrink-0 flex items-center gap-1 font-mono text-[11px] font-bold px-2.5 py-1.5 rounded-lg border shadow-sm transition-all active:scale-95 ${
@@ -715,7 +861,7 @@ export default function TranscreverVideoPage() {
                                 {formatTime(seg.start)}
                               </button>
 
-                              {/* Texto do Bloco (Editável vs Leitura) */}
+                              {/* Texto */}
                               <div className="flex-1 w-full">
                                 {isEditing ? (
                                   <textarea
@@ -741,6 +887,28 @@ export default function TranscreverVideoPage() {
                     </div>
                   )}
 
+                  {/* 2. Aba Texto Completo (Parágrafos Fluídos e Contínuos) */}
+                  {activeTab === 'completo' && (
+                    <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 scrollbar-thin">
+                      <div className="bg-gray-50 dark:bg-gray-950/40 p-6 rounded-2xl border border-gray-150 dark:border-gray-850 space-y-5">
+                        {getFullParagraphs().map((paragraph, pIdx) => (
+                          <div key={pIdx} className="group relative">
+                            <p className="text-sm md:text-base leading-relaxed text-gray-800 dark:text-gray-200 font-normal">
+                              {paragraph}
+                            </p>
+                            <button
+                              onClick={() => handleCopyParagraph(paragraph, pIdx)}
+                              className="opacity-0 group-hover:opacity-100 transition-opacity mt-1.5 text-[11px] font-bold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1"
+                            >
+                              {copiedParagraphIdx === pIdx ? '✅ Parágrafo copiado!' : '📋 Copiar parágrafo'}
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 3. Aba Resumo por IA */}
                   {activeTab === 'resumo' && (
                     <div className="space-y-4">
                       <h4 className="text-sm font-bold text-gray-500 uppercase tracking-widest">Tópicos Sintetizados por IA</h4>
