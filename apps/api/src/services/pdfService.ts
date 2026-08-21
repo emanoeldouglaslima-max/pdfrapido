@@ -61,6 +61,9 @@ export async function compressPdf(
           continue;
         }
 
+        // Só substituir se de fato reduziu (evitar aumentar o tamanho)
+        if (compressedBytes.length >= rawBytes.length) continue;
+
         // Atualizar metadados de tamanho e formato no dicionário antes de instanciar o novo stream
         dict.set(PDFName.of('Length'), PDFNumber.of(compressedBytes.length));
         dict.set(PDFName.of('Filter'), PDFName.of('DCTDecode'));
@@ -76,14 +79,38 @@ export async function compressPdf(
     }
   }
 
+  if (imgCompressedCount === 0) {
+    logger.info('Nenhuma imagem comprimível encontrada — aplicando apenas otimização estrutural', { level });
+  }
+
   const compressedBuffer = await pdfDoc.save({
     useObjectStreams: true, // compressão estrutural de objetos
   });
 
-  // Salvar resultado
+  const compressedSize = compressedBuffer.length;
+
+  // ── CORREÇÃO CRÍTICA: se o resultado for maior ou igual ao original,
+  // devolver o arquivo original sem alterações (evita "PDF maior após compressão")
+  if (compressedSize >= originalSize) {
+    logger.warn('PDF comprimido ficou maior ou igual ao original — devolvendo arquivo original', {
+      original: formatBytes(originalSize),
+      compressed: formatBytes(compressedSize),
+      level,
+      imagesCompressed: imgCompressedCount,
+    });
+    // Salvar o original no outputPath para que o download funcione normalmente
+    await fs.promises.writeFile(outputPath, originalBuffer);
+
+    return {
+      originalSize,
+      compressedSize: originalSize, // reportar tamanho real
+      reduction: '0%',
+    };
+  }
+
+  // Salvar resultado comprimido
   await fs.promises.writeFile(outputPath, compressedBuffer);
 
-  const compressedSize = compressedBuffer.length;
   const reduction = reductionPercent(originalSize, compressedSize);
 
   logger.info('PDF comprimido', {
@@ -102,6 +129,7 @@ export async function compressPdf(
 }
 
 // ── PDF → JPG (usando pdfjs-dist + canvas, sem Ghostscript) ──────────────────────
+
 export async function pdfToJpg(
   inputPath: string,
   outputDir: string,
