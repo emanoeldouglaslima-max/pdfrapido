@@ -44,61 +44,33 @@ export default function Header() {
           <Logo />
         </Link>
 
-        {/* Links rápidos — desktop */}
+        {/* Links rápidos — desktop com a mesma mecânica nativa */}
         <nav className="hidden md:flex items-center gap-1 text-sm font-semibold text-gray-600 dark:text-gray-300">
-          <Link
-            href="/comprimir-pdf"
-            className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
-              pathname === '/comprimir-pdf' ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800' : ''
-            }`}
-          >
-            Comprimir
-            {pathname === '/comprimir-pdf' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />}
-          </Link>
-
-          <Link
-            href="/converter-pdf-para-word"
-            className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
-              pathname === '/converter-pdf-para-word' ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800' : ''
-            }`}
-          >
-            PDF para Word
-            {pathname === '/converter-pdf-para-word' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />}
-          </Link>
-
-          {/* Link Principal Destacado: Transcrever Vídeo */}
-          <Link
-            href="/transcrever-video-em-texto"
-            className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 flex items-center gap-1.5 font-bold ${
-              pathname === '/transcrever-video-em-texto'
-                ? 'text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-gray-800'
-                : 'text-brand-600 dark:text-brand-400 bg-brand-50/60 dark:bg-brand-950/40 hover:bg-brand-100/70 dark:hover:bg-brand-900/60'
-            }`}
-          >
-            <span className="text-xs">🎙️</span>
-            Transcrever Vídeo
-            {pathname === '/transcrever-video-em-texto' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />}
-          </Link>
-
-          <Link
-            href="/converter-pdf-para-jpg"
-            className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
-              pathname === '/converter-pdf-para-jpg' ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800' : ''
-            }`}
-          >
-            PDF para JPG
-            {pathname === '/converter-pdf-para-jpg' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />}
-          </Link>
-
-          <Link
-            href="/juntar-pdf"
-            className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
-              pathname === '/juntar-pdf' ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800' : ''
-            }`}
-          >
-            Juntar PDF
-            {pathname === '/juntar-pdf' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />}
-          </Link>
+          {[
+            { slug: 'comprimir-pdf', name: 'Comprimir' },
+            { slug: 'converter-pdf-para-word', name: 'PDF para Word' },
+            { slug: 'converter-pdf-para-jpg', name: 'PDF para JPG' },
+            { slug: 'converter-word-para-pdf', name: 'Word para PDF' },
+            { slug: 'transcrever-video-em-texto', name: 'Transcrever Vídeo' },
+          ].map((t) => {
+            const isActive = pathname === `/${t.slug}`;
+            return (
+              <Link
+                key={t.slug}
+                href={`/${t.slug}`}
+                className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
+                  isActive
+                    ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800'
+                    : ''
+                }`}
+              >
+                {t.name}
+                {isActive && (
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />
+                )}
+              </Link>
+            );
+          })}
 
           {/* Separador visual */}
           <span className="w-px h-4 bg-gray-200 dark:bg-gray-700 mx-1" />
