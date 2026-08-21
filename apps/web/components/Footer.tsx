@@ -19,7 +19,7 @@ export default function Footer() {
           {/* Coluna 1 — Logo e descrição */}
           <div className="flex flex-col gap-3">
             <Link href="/" className="inline-block hover:opacity-90 transition-opacity">
-              <Logo className="invert brightness-200" />
+              <Logo forceDark />
             </Link>
             <p className="mt-2 text-sm text-gray-500 max-w-xs leading-relaxed">
               Ferramentas de PDF gratuitas para converter, comprimir, juntar e organizar seus documentos. Seus arquivos são excluídos automaticamente após o processamento.

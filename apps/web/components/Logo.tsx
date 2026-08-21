@@ -1,11 +1,11 @@
 'use client';
 
-export default function Logo({ className = '' }: { className?: string }) {
+export default function Logo({ className = '', forceDark = false }: { className?: string; forceDark?: boolean }) {
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      {/* Ícone SVG da Logo com gradiente e glow */}
-      <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-brand-600 via-indigo-500 to-violet-500 shadow-lg shadow-brand-300/40 transition-all duration-300 hover:scale-105 hover:shadow-brand-400/50">
-        {/* Raio (representando velocidade/rápido) */}
+      {/* Ícone SVG da Logo com gradiente oficial e glow */}
+      <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-brand-600 via-indigo-500 to-violet-500 shadow-lg shadow-brand-500/30 transition-all duration-300 hover:scale-105">
+        {/* Raio (velocidade/rápido) */}
         <svg
           className="w-5 h-5 text-white drop-shadow-sm"
           fill="none"
@@ -25,8 +25,8 @@ export default function Logo({ className = '' }: { className?: string }) {
         </span>
       </div>
       <div className="flex flex-col text-left">
-        <span className="text-xl font-extrabold tracking-tight leading-none text-gray-900 dark:text-white">
-          PDF<span className="bg-gradient-to-r from-brand-600 to-violet-600 dark:from-brand-400 dark:to-violet-400 bg-clip-text text-transparent">Rápido</span>
+        <span className={`text-xl font-extrabold tracking-tight leading-none ${forceDark ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
+          PDF<span className="bg-gradient-to-r from-brand-500 to-violet-500 dark:from-brand-400 dark:to-violet-400 bg-clip-text text-transparent">Rápido</span>
         </span>
         <span className="text-[10px] text-gray-400 font-bold tracking-widest mt-0.5">
           ONLINE & GRÁTIS
