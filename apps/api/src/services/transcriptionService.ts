@@ -125,25 +125,49 @@ Retorne OBRIGATORIAMENTE um JSON válido com esta estrutura exata:
   const ext = path.extname(audioPath).toLowerCase();
   const mimeType = ext === '.wav' ? 'audio/wav' : ext === '.ogg' ? 'audio/ogg' : 'audio/mp3';
 
-  const response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash',
-    contents: [
-      {
-        inlineData: {
-          mimeType,
-          data: base64Audio,
-        },
-      },
-      {
-        text: prompt,
-      },
-    ],
-    config: {
-      responseMimeType: 'application/json',
-    },
-  });
+  // Sistema de Retry com Exponential Backoff para contornar picos temporários de alta demanda (503/429)
+  let responseText = '';
+  const maxRetries = 3;
 
-  const responseText = response.text || '{}';
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      logger.info(`Tentativa ${attempt}/${maxRetries} de transcrição no Gemini 2.5 Flash...`);
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: [
+          {
+            inlineData: {
+              mimeType,
+              data: base64Audio,
+            },
+          },
+          {
+            text: prompt,
+          },
+        ],
+        config: {
+          responseMimeType: 'application/json',
+        },
+      });
+
+      responseText = response.text || '{}';
+      break; // Sucesso!
+    } catch (err: any) {
+      const errMsg = err?.message || String(err);
+      const isOverloaded = errMsg.includes('503') || errMsg.includes('high demand') || errMsg.includes('429');
+
+      logger.warn(`Erro na tentativa ${attempt} do Gemini: ${errMsg}`);
+
+      if (attempt < maxRetries && isOverloaded) {
+        const waitTime = attempt * 2000;
+        logger.info(`Aguardando ${waitTime}ms para reprocessar...`);
+        await new Promise((resolve) => setTimeout(resolve, waitTime));
+      } else {
+        throw err;
+      }
+    }
+  }
+
   const cleanJson = responseText.replace(/```json/gi, '').replace(/```/g, '').trim();
   let parsed: any = {};
   try {
