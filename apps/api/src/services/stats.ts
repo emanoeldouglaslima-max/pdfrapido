@@ -47,6 +47,7 @@ export async function recordConversion(
       'merge': 'merge_count',
       'split': 'split_count',
       'transcribe': 'transcribe_count',
+      'protect': 'protect_count',
     };
 
     const admin = require('firebase-admin');

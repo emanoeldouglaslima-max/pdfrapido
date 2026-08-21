@@ -7,6 +7,8 @@ import { promisify } from 'util';
 import archiver from 'archiver';
 import { logger } from '../middleware/logger';
 import { reductionPercent, formatBytes } from '../utils/fileNamer';
+import { encryptPDF } from '@pdfsmaller/pdf-encrypt';
+
 
 
 const execAsync = promisify(exec);
@@ -449,3 +451,29 @@ export function zipFiles(filePaths: string[], outputZip: string): Promise<void> 
     archive.finalize();
   });
 }
+
+// ── PROTEGER PDF COM SENHA ──────────────────────────────────────────────────
+export async function protectPdf(
+  inputPath: string,
+  outputPath: string,
+  password?: string
+): Promise<void> {
+  const originalBuffer = await fs.promises.readFile(inputPath);
+
+  if (!password) {
+    // Se não informou senha, apenas copia o arquivo original
+    await fs.promises.writeFile(outputPath, originalBuffer);
+    return;
+  }
+
+  try {
+    // Criptografar PDF com senha usando WebCrypto (pure JS)
+    const encryptedBytes = await encryptPDF(new Uint8Array(originalBuffer), password);
+    await fs.promises.writeFile(outputPath, Buffer.from(encryptedBytes));
+    logger.info('PDF protegido com senha com sucesso', { path: outputPath });
+  } catch (err) {
+    logger.error('Erro ao proteger PDF com senha', { error: (err as Error).message });
+    throw new Error('Falha ao proteger PDF com senha. O arquivo pode estar corrompido.');
+  }
+}
+

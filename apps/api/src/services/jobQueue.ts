@@ -9,6 +9,7 @@ import { processPdfToJpg } from '../jobs/processors/pdfToJpgProcessor';
 import { processWordToPdf } from '../jobs/processors/wordToPdfProcessor';
 import { processJpgToPdf } from '../jobs/processors/jpgToPdfProcessor';
 import { processTranscribe } from '../jobs/processors/transcribeProcessor';
+import { processProtect } from '../jobs/processors/protectProcessor';
 
 export type JobType =
   | 'compress'
@@ -18,7 +19,8 @@ export type JobType =
   | 'jpg-to-pdf'
   | 'merge'
   | 'split'
-  | 'transcribe';
+  | 'transcribe'
+  | 'protect';
 
 export interface JobPayload {
   jobId: string;
@@ -74,6 +76,7 @@ async function processJob(data: JobPayload): Promise<JobResult> {
     case 'merge':         return processMerge(fakeJob);
     case 'split':         return processSplit(fakeJob);
     case 'transcribe':    return processTranscribe(fakeJob);
+    case 'protect':       return processProtect(fakeJob);
     default:
       throw new Error(`Tipo de job desconhecido: ${data.type}`);
   }
@@ -124,6 +127,7 @@ export async function initQueue(): Promise<void> {
         case 'merge':         return processMerge(job);
         case 'split':         return processSplit(job);
         case 'transcribe':    return processTranscribe(job);
+        case 'protect':       return processProtect(job);
         default:
           throw new Error(`Tipo de job desconhecido: ${job.data.type}`);
       }

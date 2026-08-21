@@ -42,6 +42,24 @@ router.post(
   }
 );
 
+// ── POST /api/protect ────────────────────────────────────────────────────────
+router.post(
+  '/protect',
+  toolRateLimiter,
+  upload.single('file'),
+  fileValidator(['pdf']),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const jobId = generateJobId();
+      const originalName = req.file!.originalname;
+      const filename = sanitizeFilename(originalName);
+      const inputPath = await saveInputFile(jobId, filename, req.file!.buffer);
+      const password = (req.body.password as string) || '';
+      res.json(await enqueueJob('protect', jobId, inputPath, { password }, originalName));
+    } catch (err) { next(err); }
+  }
+);
+
 // ── POST /api/pdf-to-word ─────────────────────────────────────────────────────
 router.post(
   '/pdf-to-word',
