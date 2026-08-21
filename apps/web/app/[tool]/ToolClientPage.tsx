@@ -202,9 +202,9 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
           {/* Opções específicas por ferramenta */}
           {toolSlug === 'comprimir-pdf' && (
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nível de compressão</label>
+              <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">Nível de compressão</label>
               <select
-                className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
                 value={opts.level || 'medio'}
                 onChange={(e) => setOpts({ ...opts, level: e.target.value })}
               >
@@ -217,9 +217,9 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
 
           {toolSlug === 'converter-pdf-para-jpg' && (
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Qualidade da imagem</label>
+              <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">Qualidade da imagem</label>
               <select
-                className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
                 value={opts.dpi || '150'}
                 onChange={(e) => setOpts({ ...opts, dpi: e.target.value })}
               >
@@ -231,9 +231,9 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
 
           {toolSlug === 'converter-jpg-para-pdf' && (
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Orientação da página</label>
+              <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">Orientação da página</label>
               <select
-                className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
                 value={opts.orientation || 'portrait'}
                 onChange={(e) => setOpts({ ...opts, orientation: e.target.value })}
               >
@@ -245,9 +245,9 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
 
           {toolSlug === 'dividir-pdf' && (
             <div className="mt-4 space-y-3">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Como dividir?</label>
+              <label className="block text-sm font-bold text-gray-800 dark:text-gray-200">Como dividir o PDF?</label>
               <select
-                className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
                 value={opts.mode || 'every'}
                 onChange={(e) => setOpts({ ...opts, mode: e.target.value })}
               >
@@ -260,7 +260,7 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
                   type="number"
                   min="1"
                   placeholder="Número de páginas por parte"
-                  className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
                   value={opts.pages || ''}
                   onChange={(e) => setOpts({ ...opts, pages: e.target.value })}
                 />
@@ -271,7 +271,7 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
                     type="number"
                     min="1"
                     placeholder="Página inicial"
-                    className="flex-1 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
                     value={opts.from || ''}
                     onChange={(e) => setOpts({ ...opts, from: e.target.value })}
                   />
@@ -279,7 +279,7 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
                     type="number"
                     min="1"
                     placeholder="Página final"
-                    className="flex-1 border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    className="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
                     value={opts.to || ''}
                     onChange={(e) => setOpts({ ...opts, to: e.target.value })}
                   />
@@ -290,7 +290,7 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
                   type="number"
                   min="1"
                   placeholder="Número da página"
-                  className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
                   value={opts.page || ''}
                   onChange={(e) => setOpts({ ...opts, page: e.target.value })}
                 />
@@ -301,25 +301,25 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
           {/* Opções específicas: Proteger PDF com Senha (Correção #9) */}
           {toolSlug === 'proteger-pdf' && (
             <div className="mt-4 space-y-3">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-bold text-gray-800 dark:text-gray-200">
                 🔑 Senha de proteção
               </label>
               <input
                 type="password"
                 placeholder="Digite a senha"
-                className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
                 value={opts.password || ''}
                 onChange={(e) => setOpts({ ...opts, password: e.target.value })}
               />
               <input
                 type="password"
                 placeholder="Confirme a senha"
-                className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
                 value={opts.passwordConfirm || ''}
                 onChange={(e) => setOpts({ ...opts, passwordConfirm: e.target.value })}
               />
               {opts.password && opts.passwordConfirm && opts.password !== opts.passwordConfirm && (
-                <p className="text-xs text-red-500 dark:text-red-400 flex items-center gap-1.5">
+                <p className="text-xs text-red-500 dark:text-red-400 flex items-center gap-1.5 font-semibold">
                   <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
