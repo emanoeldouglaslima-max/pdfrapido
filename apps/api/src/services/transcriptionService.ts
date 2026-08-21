@@ -24,6 +24,7 @@ export interface TranscriptionResult {
   duration: string;
   subtitles: { time: string; text: string }[];
   summary: string[];
+  segments?: TranscriptionSegment[];
 }
 
 // ── Extrair áudio de vídeo/áudio → MP3 mono 16kHz ────────────────────────────
@@ -206,6 +207,7 @@ export async function processTranscription(
     duration,
     subtitles,
     summary,
+    segments,
   };
   fs.writeFileSync(path.join(outputDir, 'result.json'), JSON.stringify(result, null, 2), 'utf-8');
 

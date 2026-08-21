@@ -1,17 +1,32 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
+interface Segment {
+  start: number;
+  end: number;
+  text: string;
+}
+
 export default function TranscreverVideoPage() {
   const [file, setFile] = useState<File | null>(null);
-  const [language, setLanguage] = useState<'pt' | 'en' | 'es'>('pt');
+  const [fileUrl, setFileUrl] = useState<string>('');
+  const [language, setLanguage] = useState<string>('pt');
+  const [modelMode, setModelMode] = useState<'whale' | 'dolphin' | 'cheetah'>('whale');
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [statusMessage, setStatusMessage] = useState('');
-  const [activeTab, setActiveTab] = useState<'texto' | 'legendas' | 'resumo'>('texto');
+  const [activeTab, setActiveTab] = useState<'texto' | 'resumo'>('texto');
   const [copied, setCopied] = useState(false);
+  
+  // Estado interativo de reprodução e edição
+  const [currentTime, setCurrentTime] = useState(0);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [followPlayback, setFollowPlayback] = useState(true);
 
   const [result, setResult] = useState<{
     transcript: string;
@@ -19,44 +34,93 @@ export default function TranscreverVideoPage() {
     wordCount: number;
     duration: string;
     subtitles: { time: string; text: string }[];
+    segments: Segment[];
   } | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const mediaRef = useRef<HTMLAudioElement | HTMLVideoElement>(null);
+  const segmentsContainerRef = useRef<HTMLDivElement>(null);
+
+  // Libera a URL do arquivo de mídia temporário ao desmontar
+  useEffect(() => {
+    return () => {
+      if (fileUrl) URL.revokeObjectURL(fileUrl);
+    };
+  }, [fileUrl]);
+
+  // Sincroniza a velocidade do player
+  useEffect(() => {
+    if (mediaRef.current) {
+      mediaRef.current.playbackRate = playbackSpeed;
+    }
+  }, [playbackSpeed, result]);
+
+  // Autoscroll para o segmento ativo durante a reprodução
+  useEffect(() => {
+    if (!followPlayback || !result || !mediaRef.current || isEditing) return;
+
+    const activeSegIdx = result.segments.findIndex(
+      (seg) => currentTime >= seg.start && currentTime <= seg.end
+    );
+
+    if (activeSegIdx !== -1) {
+      const activeEl = document.getElementById(`segment-${activeSegIdx}`);
+      if (activeEl && segmentsContainerRef.current) {
+        const container = segmentsContainerRef.current;
+        const rect = activeEl.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        const isVisible = rect.top >= containerRect.top && rect.bottom <= containerRect.bottom;
+
+        if (!isVisible) {
+          activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    }
+  }, [currentTime, result, followPlayback, isEditing]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
       const selected = e.target.files[0];
       if (selected.size > 100 * 1024 * 1024) {
-        alert('Arquivo maior que 100MB.');
+        alert('Arquivo maior que 100MB. Escolha um arquivo menor.');
         return;
       }
       setFile(selected);
       setResult(null);
+      if (fileUrl) URL.revokeObjectURL(fileUrl);
+      setFileUrl(URL.createObjectURL(selected));
     }
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     if (e.dataTransfer.files?.[0]) {
-      setFile(e.dataTransfer.files[0]);
+      const selected = e.dataTransfer.files[0];
+      if (selected.size > 100 * 1024 * 1024) {
+        alert('Arquivo maior que 100MB. Escolha um arquivo menor.');
+        return;
+      }
+      setFile(selected);
       setResult(null);
+      if (fileUrl) URL.revokeObjectURL(fileUrl);
+      setFileUrl(URL.createObjectURL(selected));
     }
   };
 
   const handleTranscribe = async () => {
     if (!file) return;
     setIsProcessing(true);
-    setProgress(15);
-    setStatusMessage('Enviando arquivo de mídia...');
+    setProgress(10);
+    setStatusMessage('Enviando arquivo para o servidor de IA...');
 
     const formData = new FormData();
     formData.append('file', file);
     formData.append('language', language);
+    formData.append('model', modelMode); // Whale (large), Dolphin (medium), Cheetah (tiny)
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://pdfrapido-api.onrender.com';
 
     try {
-      // 1. Enviar arquivo para enfileirar o job de transcrição
       const response = await fetch(`${apiUrl}/api/transcribe`, {
         method: 'POST',
         body: formData,
@@ -68,10 +132,10 @@ export default function TranscreverVideoPage() {
       }
 
       const { jobId } = await response.json();
-      setProgress(30);
-      setStatusMessage('Extraindo áudio e processando com Whisper AI...');
+      setProgress(25);
+      setStatusMessage('Áudio enviado! Iniciando transcrição com Whisper AI...');
 
-      // 2. Fazer polling do resultado a cada 1.5 segundos
+      // Polling para acompanhar o status do job
       const pollInterval = setInterval(async () => {
         try {
           const statusRes = await fetch(`${apiUrl}/api/transcribe/result/${jobId}`);
@@ -80,38 +144,58 @@ export default function TranscreverVideoPage() {
           const statusData = await statusRes.json();
 
           if (statusData.status === 'processing') {
-            setProgress((prev) => Math.min(prev + 10, 85));
-            setStatusMessage('Transcrevendo áudio com Whisper IA...');
+            setProgress((prev) => Math.min(prev + 5, 90));
+            setStatusMessage('IA processando a fala e criando as legendas...');
           } else if (statusData.status === 'done' && statusData.data) {
             clearInterval(pollInterval);
             setProgress(100);
             setIsProcessing(false);
+
+            // Se o backend não retornou segments brutos, criamos um mock estruturado baseado nos tempos formatados
+            let segments = statusData.data.segments || [];
+            if (segments.length === 0 && statusData.data.subtitles) {
+              segments = statusData.data.subtitles.map((sub: any, idx: number) => {
+                const parts = sub.time.split('→').map((t: string) => t.trim());
+                const parseTime = (timeStr: string) => {
+                  const [m, s] = timeStr.split(':').map(Number);
+                  return m * 60 + s;
+                };
+                return {
+                  start: parseTime(parts[0]),
+                  end: parseTime(parts[1] || parts[0]),
+                  text: sub.text,
+                };
+              });
+            }
+
             setResult({
               transcript: statusData.data.transcript || 'Nenhum texto detectado.',
-              summary: statusData.data.summary || ['Transcrição concluída.'],
+              summary: statusData.data.summary || ['Transcrição concluída com sucesso.'],
               wordCount: statusData.data.wordCount || 0,
               duration: statusData.data.duration || '00:00',
               subtitles: statusData.data.subtitles || [],
+              segments: segments,
             });
           } else if (statusData.status === 'failed') {
             clearInterval(pollInterval);
             setIsProcessing(false);
-            alert(`Erro no processamento: ${statusData.error || 'Falha na transcrição'}`);
+            alert(`Erro no processamento da IA: ${statusData.error || 'Falha na transcrição'}`);
           }
         } catch {
-          // Erro de rede temporário no polling — continuar tentando
+          // Erros de conexão do polling temporários são ignorados
         }
-      }, 1500);
+      }, 2000);
 
     } catch (err: any) {
       setIsProcessing(false);
-      alert(`Falha no upload: ${err.message || 'Verifique a conexão com o servidor'}`);
+      alert(`Falha no upload: ${err.message || 'Verifique sua conexão com a API'}`);
     }
   };
 
   const handleCopy = () => {
     if (!result) return;
-    navigator.clipboard.writeText(result.transcript);
+    const fullText = result.segments.map((s) => s.text).join(' ');
+    navigator.clipboard.writeText(fullText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -125,17 +209,49 @@ export default function TranscreverVideoPage() {
     URL.revokeObjectURL(a.href);
   };
 
+  // Downloads baseados no texto editável atual do usuário
+  const getEditableText = () => {
+    if (!result) return '';
+    return result.segments.map((s) => s.text).join(' ');
+  };
+
   const handleDownloadTxt = () => {
     if (!result || !file) return;
-    downloadFile(result.transcript, `${file.name.replace(/\.[^/.]+$/, '')}_transcricao.txt`, 'text/plain;charset=utf-8');
+    downloadFile(getEditableText(), `${file.name.replace(/\.[^/.]+$/, '')}_transcricao.txt`, 'text/plain;charset=utf-8');
   };
 
   const handleDownloadSrt = () => {
     if (!result || !file) return;
-    const srt = result.subtitles
-      .map((s, i) => `${i + 1}\n${s.time.replace('→', '-->')}\n${s.text}\n`)
+    const formatSrtTime = (totalSec: number) => {
+      const hrs = Math.floor(totalSec / 3600).toString().padStart(2, '0');
+      const mins = Math.floor((totalSec % 3600) / 60).toString().padStart(2, '0');
+      const secs = Math.floor(totalSec % 60).toString().padStart(2, '0');
+      const ms = Math.round((totalSec % 1) * 1000).toString().padStart(3, '0');
+      return `${hrs}:${mins}:${secs},${ms}`;
+    };
+
+    const srt = result.segments
+      .map((s, i) => `${i + 1}\n${formatSrtTime(s.start)} --> ${formatSrtTime(s.end)}\n${s.text}\n`)
       .join('\n');
+
     downloadFile(srt, `${file.name.replace(/\.[^/.]+$/, '')}_legendas.srt`, 'text/plain;charset=utf-8');
+  };
+
+  const handleDownloadVtt = () => {
+    if (!result || !file) return;
+    const formatVttTime = (totalSec: number) => {
+      const hrs = Math.floor(totalSec / 3600).toString().padStart(2, '0');
+      const mins = Math.floor((totalSec % 3600) / 60).toString().padStart(2, '0');
+      const secs = Math.floor(totalSec % 60).toString().padStart(2, '0');
+      const ms = Math.round((totalSec % 1) * 1000).toString().padStart(3, '0');
+      return `${hrs}:${mins}:${secs}.${ms}`;
+    };
+
+    const vtt = `WEBVTT\n\n` + result.segments
+      .map((s, i) => `${i + 1}\n${formatVttTime(s.start)} --> ${formatVttTime(s.end)}\n${s.text}\n`)
+      .join('\n');
+
+    downloadFile(vtt, `${file.name.replace(/\.[^/.]+$/, '')}_legendas.vtt`, 'text/vtt;charset=utf-8');
   };
 
   const formatSize = (bytes: number) => {
@@ -143,33 +259,69 @@ export default function TranscreverVideoPage() {
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
+  // Formata tempo (segundos) em MM:SS
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  };
+
+  // Evento de clique para pular no tempo do áudio/vídeo
+  const handleJumpToTime = (start: number) => {
+    if (mediaRef.current) {
+      mediaRef.current.currentTime = start;
+      mediaRef.current.play();
+    }
+  };
+
+  // Atualiza texto editado de um segmento específico
+  const handleSegmentTextChange = (index: number, newText: string) => {
+    if (!result) return;
+    const updatedSegments = [...result.segments];
+    updatedSegments[index].text = newText;
+    setResult({ ...result, segments: updatedSegments });
+  };
+
+  // Filtra segmentos por termo de busca
+  const getFilteredSegments = () => {
+    if (!result) return [];
+    if (!searchTerm.trim()) return result.segments;
+    return result.segments.map((seg, idx) => ({ ...seg, originalIdx: idx })).filter((seg) =>
+      seg.text.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  };
+
+  const filteredSegments = getFilteredSegments();
+  const isVideo = file?.type.startsWith('video/');
+
   return (
-    <div className="min-h-screen flex flex-col bg-[#f5f5f7] dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
       <Header />
 
-      <main className="flex-grow max-w-5xl mx-auto w-full px-4 py-8 md:py-12">
-
-        {/* ─── Título ─── */}
-        <div className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-            Transcrever Vídeo em Texto
+      <main className="flex-grow max-w-6xl mx-auto w-full px-4 py-8 md:py-12">
+        {/* Título */}
+        <div className="mb-8 text-center max-w-2xl mx-auto">
+          <span className="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest bg-brand-50 dark:bg-brand-950/40 border border-brand-100 dark:border-brand-800/60 px-3.5 py-1.5 rounded-full shadow-sm">
+            🎙️ Inteligência Artificial Integrada
+          </span>
+          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white mt-4">
+            Transcrição de Áudio e Vídeo
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Envie um vídeo ou áudio e receba o texto, legendas SRT e resumo por IA.
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+            Converta palestras, reuniões, aulas e vídeos em texto limpo, resumos gerados por IA e legendas SRT/VTT. 
           </p>
         </div>
 
-        {/* ─── Estado: Upload ─── */}
+        {/* ─── ESTADO: Upload Inicial ─── */}
         {!result && !isProcessing && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-
-            {/* Card Upload (2 colunas) */}
-            <div className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/80 dark:border-gray-800 p-6 shadow-sm">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {/* Card de Drop / Upload */}
+            <div className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-3xl border border-gray-150 dark:border-gray-800 p-6 md:p-8 shadow-sm flex flex-col justify-between">
               <div
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-gray-900 dark:hover:border-gray-400 rounded-xl p-10 text-center cursor-pointer transition-all group"
+                className="border-2 border-dashed border-gray-200 dark:border-gray-700 hover:border-brand-500 dark:hover:border-brand-400 rounded-2xl p-12 text-center cursor-pointer transition-all duration-300 group bg-gray-50/50 dark:bg-gray-800/30"
               >
                 <input
                   type="file"
@@ -179,216 +331,443 @@ export default function TranscreverVideoPage() {
                   className="hidden"
                 />
 
-                <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-brand-100 to-indigo-100 dark:from-brand-900/30 dark:to-indigo-900/30 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300">
                   {file ? '📎' : '🎥'}
                 </div>
 
                 {file ? (
-                  <>
-                    <p className="font-bold text-gray-900 dark:text-white text-sm">{file.name}</p>
-                    <p className="text-xs text-gray-400 mt-1">{formatSize(file.size)} — Clique para trocar</p>
-                  </>
+                  <div className="space-y-2">
+                    <p className="font-bold text-gray-800 dark:text-white text-base truncate max-w-md mx-auto">{file.name}</p>
+                    <p className="text-xs text-brand-600 dark:text-brand-400 font-semibold">{formatSize(file.size)}</p>
+                    <p className="text-xs text-gray-400">Clique ou arraste outro para substituir</p>
+                  </div>
                 ) : (
-                  <>
-                    <p className="font-bold text-gray-900 dark:text-white text-sm">Arraste ou clique para selecionar</p>
-                    <p className="text-xs text-gray-400 mt-1">MP4, WEBM, MOV, MP3, WAV — até 100MB</p>
-                  </>
+                  <div className="space-y-2">
+                    <p className="font-bold text-gray-850 dark:text-white text-base">Arraste seu vídeo ou áudio aqui</p>
+                    <p className="text-xs text-gray-400">ou <span className="text-brand-600 dark:text-brand-400 underline font-semibold">clique para procurar</span> no seu dispositivo</p>
+                    <p className="text-[11px] text-gray-400">MP4, WEBM, MOV, MP3, WAV, M4A · Limite: 100MB</p>
+                  </div>
                 )}
               </div>
 
-              {/* Botão Transcrever */}
+              {/* Botão de Transcrição */}
               <button
                 onClick={handleTranscribe}
                 disabled={!file}
-                className={`mt-5 w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all ${
+                className={`mt-6 w-full py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-200 ${
                   file
-                    ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 shadow-md active:scale-[0.99]'
-                    : 'bg-gray-200 dark:bg-gray-800 text-gray-400 cursor-not-allowed'
+                    ? 'bg-brand-600 hover:bg-brand-500 text-white shadow-lg shadow-brand-100 dark:shadow-none active:scale-[0.99] cursor-pointer'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-650 cursor-not-allowed'
                 }`}
               >
-                Transcrever Agora
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
+                Começar transcrição gratuita 🚀
               </button>
             </div>
 
-            {/* Card Configurações (1 coluna) */}
-            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/80 dark:border-gray-800 p-6 shadow-sm space-y-5">
-              <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Configurações</h3>
-
+            {/* Configurações Extra do Modelo */}
+            <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-150 dark:border-gray-800 p-6 shadow-sm space-y-6">
               <div>
-                <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Idioma do áudio</label>
-                <select
-                  value={language}
-                  onChange={(e) => setLanguage(e.target.value as 'pt' | 'en' | 'es')}
-                  className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2.5 text-sm font-medium focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:outline-none"
-                >
-                  <option value="pt">Português (BR)</option>
-                  <option value="en">Inglês</option>
-                  <option value="es">Espanhol</option>
-                </select>
+                <h3 className="text-xs font-bold text-gray-450 dark:text-gray-455 uppercase tracking-widest mb-4">Ajustes da Transcrição</h3>
+                <div className="space-y-4">
+                  {/* Idioma */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 dark:text-gray-300 mb-1.5">Idioma do Áudio</label>
+                    <select
+                      value={language}
+                      onChange={(e) => setLanguage(e.target.value)}
+                      className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-3.5 py-2.5 text-sm font-semibold focus:ring-2 focus:ring-brand-500 focus:outline-none"
+                    >
+                      <option value="pt">Português (BR)</option>
+                      <option value="en">Inglês</option>
+                      <option value="es">Espanhol</option>
+                      <option value="fr">Francês</option>
+                      <option value="de">Alemão</option>
+                      <option value="it">Italiano</option>
+                    </select>
+                  </div>
+
+                  {/* Nível do Modelo (Whale/Dolphin/Cheetah similar ao TurboScribe) */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 dark:text-gray-300 mb-2">Modo do Motor IA</label>
+                    <div className="grid grid-cols-1 gap-2">
+                      <button
+                        onClick={() => setModelMode('whale')}
+                        className={`flex items-start gap-3 p-3 rounded-xl border text-left transition-all ${
+                          modelMode === 'whale'
+                            ? 'border-brand-500 bg-brand-50/20 dark:bg-brand-950/20 ring-1 ring-brand-500'
+                            : 'border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
+                        }`}
+                      >
+                        <span className="text-xl">🐋</span>
+                        <div>
+                          <p className="text-xs font-bold text-gray-900 dark:text-white">Whale (Whisper Large)</p>
+                          <p className="text-[10px] text-gray-400">Precisão máxima e pontuação inteligente.</p>
+                        </div>
+                      </button>
+
+                      <button
+                        onClick={() => setModelMode('dolphin')}
+                        className={`flex items-start gap-3 p-3 rounded-xl border text-left transition-all ${
+                          modelMode === 'dolphin'
+                            ? 'border-brand-500 bg-brand-50/20 dark:bg-brand-950/20 ring-1 ring-brand-500'
+                            : 'border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
+                        }`}
+                      >
+                        <span className="text-xl">🐬</span>
+                        <div>
+                          <p className="text-xs font-bold text-gray-900 dark:text-white">Dolphin (Whisper Medium)</p>
+                          <p className="text-[10px] text-gray-400">Equilibrado. Boa precisão e velocidade.</p>
+                        </div>
+                      </button>
+
+                      <button
+                        onClick={() => setModelMode('cheetah')}
+                        className={`flex items-start gap-3 p-3 rounded-xl border text-left transition-all ${
+                          modelMode === 'cheetah'
+                            ? 'border-brand-500 bg-brand-50/20 dark:bg-brand-950/20 ring-1 ring-brand-500'
+                            : 'border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
+                        }`}
+                      >
+                        <span className="text-xl">🐆</span>
+                        <div>
+                          <p className="text-xs font-bold text-gray-900 dark:text-white">Cheetah (Whisper Tiny)</p>
+                          <p className="text-[10px] text-gray-400">Velocidade extrema em segundos.</p>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Mini cards de info */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-3 text-center">
-                  <p className="text-xl font-extrabold text-gray-900 dark:text-white">5s</p>
-                  <p className="text-[10px] text-gray-400 font-medium mt-0.5">Tempo médio</p>
-                </div>
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-3 text-center">
-                  <p className="text-xl font-extrabold text-gray-900 dark:text-white">98%</p>
-                  <p className="text-[10px] text-gray-400 font-medium mt-0.5">Precisão IA</p>
-                </div>
-              </div>
-
-              <div className="space-y-2 text-xs text-gray-500 dark:text-gray-400">
+              <div className="bg-gray-50 dark:bg-gray-800/40 rounded-2xl p-4 space-y-2.5 text-xs text-gray-500 dark:text-gray-400 border border-gray-100 dark:border-gray-800">
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                  Sem cadastro necessário
+                  Sem limites diários artificiais
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                  Arquivos excluídos automaticamente após processamento
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                  Exporta TXT, SRT e PDF
+                  Processamento em servidores rápidos
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* ─── Estado: Processando ─── */}
+        {/* ─── ESTADO: Processando / Transcrevendo ─── */}
         {isProcessing && (
-          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/80 dark:border-gray-800 p-10 shadow-sm text-center">
-            <div className="w-16 h-16 mx-auto mb-5 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-3xl animate-pulse">
+          <div className="max-w-xl mx-auto bg-white dark:bg-gray-900 rounded-3xl border border-gray-150 dark:border-gray-800 p-8 md:p-12 shadow-sm text-center space-y-6 animate-pulse">
+            <div className="w-20 h-20 mx-auto rounded-3xl bg-brand-50 dark:bg-brand-900/30 flex items-center justify-center text-4xl shadow-inner animate-bounce">
               🎙️
             </div>
-            <h3 className="font-bold text-gray-900 dark:text-white">{statusMessage}</h3>
-
-            <div className="mt-5 max-w-sm mx-auto bg-gray-100 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
-              <div
-                className="bg-gray-900 dark:bg-white h-full rounded-full transition-all duration-700 ease-out"
-                style={{ width: `${progress}%` }}
-              />
+            <div className="space-y-2">
+              <h3 className="font-extrabold text-lg text-gray-850 dark:text-white">{statusMessage}</h3>
+              <p className="text-xs text-gray-400">Isso pode levar de alguns segundos a minutos dependendo do tamanho do arquivo.</p>
             </div>
-            <span className="text-xs font-bold text-gray-400 mt-2 block">{progress}%</span>
+
+            <div className="relative pt-1">
+              <div className="overflow-hidden h-2.5 text-xs flex rounded-full bg-gray-150 dark:bg-gray-800">
+                <div
+                  style={{ width: `${progress}%` }}
+                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-brand-500 to-indigo-500 rounded-full transition-all duration-500 ease-out"
+                />
+              </div>
+              <span className="text-xs font-extrabold text-brand-600 dark:text-brand-400 mt-2 block">{progress}% concluído</span>
+            </div>
           </div>
         )}
 
-        {/* ─── Estado: Resultado ─── */}
+        {/* ─── ESTADO: Dashboard de Resultado Interativo ─── */}
         {result && !isProcessing && (
-          <div className="space-y-4 animate-fade-in">
-
-            {/* Barra de métricas */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/80 dark:border-gray-800 p-4 shadow-sm text-center">
-                <p className="text-2xl font-extrabold text-gray-900 dark:text-white">{result.wordCount}</p>
-                <p className="text-[11px] text-gray-400 font-medium">Palavras</p>
+          <div className="space-y-6 animate-fade-in">
+            {/* Cards de Métricas */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-150 dark:border-gray-800 p-4 shadow-sm text-center">
+                <p className="text-2xl font-extrabold text-gray-800 dark:text-white">{result.wordCount}</p>
+                <p className="text-xs text-gray-400 mt-0.5">Palavras</p>
               </div>
-              <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/80 dark:border-gray-800 p-4 shadow-sm text-center">
-                <p className="text-2xl font-extrabold text-gray-900 dark:text-white">{result.duration}</p>
-                <p className="text-[11px] text-gray-400 font-medium">Duração</p>
+              <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-150 dark:border-gray-800 p-4 shadow-sm text-center">
+                <p className="text-2xl font-extrabold text-gray-800 dark:text-white">{result.duration}</p>
+                <p className="text-xs text-gray-400 mt-0.5">Duração do Áudio</p>
               </div>
-              <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/80 dark:border-gray-800 p-4 shadow-sm text-center">
-                <p className="text-2xl font-extrabold text-gray-900 dark:text-white">{result.subtitles.length}</p>
-                <p className="text-[11px] text-gray-400 font-medium">Segmentos</p>
+              <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-150 dark:border-gray-800 p-4 shadow-sm text-center">
+                <p className="text-2xl font-extrabold text-gray-800 dark:text-white">{result.segments.length}</p>
+                <p className="text-xs text-gray-400 mt-0.5">Parágrafos</p>
               </div>
-              <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/80 dark:border-gray-800 p-4 shadow-sm text-center">
-                <p className="text-2xl font-extrabold text-gray-900 dark:text-white">✓</p>
-                <p className="text-[11px] text-gray-400 font-medium">Concluído</p>
+              <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-150 dark:border-gray-800 p-4 shadow-sm text-center">
+                <p className="text-2xl font-extrabold text-green-500">100%</p>
+                <p className="text-xs text-gray-400 mt-0.5">Concluído</p>
               </div>
             </div>
 
-            {/* Card principal de resultado */}
-            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-sm overflow-hidden">
+            {/* Layout Principal Duas Colunas */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              
+              {/* Coluna Esquerda: Player e Informações */}
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-150 dark:border-gray-800 p-5 shadow-sm space-y-4">
+                  <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Player de Mídia</h3>
+                  
+                  {/* Container de mídia dinâmica */}
+                  <div className="rounded-xl overflow-hidden bg-slate-900 flex items-center justify-center p-3 shadow-inner">
+                    {isVideo ? (
+                      <video
+                        ref={mediaRef as any}
+                        src={fileUrl}
+                        controls
+                        onTimeUpdate={(e) => setCurrentTime((e.target as any).currentTime)}
+                        className="w-full max-h-56 object-contain"
+                      />
+                    ) : (
+                      <div className="w-full py-4 text-center">
+                        <span className="text-4xl block mb-3 animate-pulse">🎵</span>
+                        <audio
+                          ref={mediaRef as any}
+                          src={fileUrl}
+                          controls
+                          onTimeUpdate={(e) => setCurrentTime((e.target as any).currentTime)}
+                          className="w-full"
+                        />
+                      </div>
+                    )}
+                  </div>
 
-              {/* Header com abas e ações */}
-              <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4 border-b border-gray-100 dark:border-gray-800">
-                {/* Abas */}
-                <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
-                  {(['texto', 'legendas', 'resumo'] as const).map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => setActiveTab(tab)}
-                      className={`px-3 py-1.5 rounded-md text-xs font-bold capitalize transition-all ${
-                        activeTab === tab
-                          ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-sm'
-                          : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'
-                      }`}
-                    >
-                      {tab === 'texto' ? '📝 Texto' : tab === 'legendas' ? '⏱️ SRT' : '💡 Resumo'}
-                    </button>
-                  ))}
+                  {/* Controle de Velocidade */}
+                  <div className="flex items-center justify-between text-xs border-t border-gray-100 dark:border-gray-850 pt-3">
+                    <span className="font-semibold text-gray-500">Velocidade:</span>
+                    <div className="flex gap-1.5">
+                      {[0.5, 1, 1.25, 1.5, 2].map((speed) => (
+                        <button
+                          key={speed}
+                          onClick={() => setPlaybackSpeed(speed)}
+                          className={`px-2 py-1 rounded-md font-bold transition-all ${
+                            playbackSpeed === speed
+                              ? 'bg-brand-600 text-white'
+                              : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                          }`}
+                        >
+                          {speed}x
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Info do Arquivo */}
+                  <div className="border-t border-gray-100 dark:border-gray-850 pt-3 space-y-2 text-xs text-gray-500">
+                    <p className="truncate"><span className="font-semibold">Arquivo:</span> {file?.name}</p>
+                    <p><span className="font-semibold">Tamanho:</span> {file && formatSize(file.size)}</p>
+                    <p><span className="font-semibold">Formato:</span> {file?.type || 'Desconhecido'}</p>
+                  </div>
                 </div>
 
-                {/* Botões de ação */}
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={handleCopy}
-                    className="px-3 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-xs font-bold text-gray-700 dark:text-gray-200 transition-all"
-                  >
-                    {copied ? '✅ Copiado' : '📋 Copiar'}
-                  </button>
-                  <button
-                    onClick={handleDownloadTxt}
-                    className="px-3 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg text-xs font-bold text-gray-700 dark:text-gray-200 transition-all"
-                  >
-                    📄 TXT
-                  </button>
-                  <button
-                    onClick={handleDownloadSrt}
-                    className="px-3 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 rounded-lg text-xs font-bold transition-all shadow-sm"
-                  >
-                    🎬 Baixar SRT
-                  </button>
+                {/* Opções de Download Premium */}
+                <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-150 dark:border-gray-800 p-5 shadow-sm space-y-3">
+                  <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Exportar Resultados</h3>
+                  <div className="grid grid-cols-1 gap-2">
+                    <button
+                      onClick={handleDownloadTxt}
+                      className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 transition-all"
+                    >
+                      <span>📝 Baixar Texto (.TXT)</span>
+                      <span className="text-gray-400">TXT</span>
+                    </button>
+                    <button
+                      onClick={handleDownloadSrt}
+                      className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 transition-all"
+                    >
+                      <span>🎬 Baixar Legendas (.SRT)</span>
+                      <span className="text-gray-400">SRT</span>
+                    </button>
+                    <button
+                      onClick={handleDownloadVtt}
+                      className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 transition-all"
+                    >
+                      <span>🎥 Baixar Legendas WebVTT</span>
+                      <span className="text-gray-400">VTT</span>
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              {/* Conteúdo da aba */}
-              <div className="p-5">
-                {activeTab === 'texto' && (
-                  <textarea
-                    readOnly
-                    value={result.transcript}
-                    className="w-full h-56 bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl p-4 text-sm text-gray-800 dark:text-gray-200 leading-relaxed focus:outline-none resize-none"
-                  />
-                )}
+              {/* Coluna Direita: Editor Interativo e Resumo */}
+              <div className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-3xl border border-gray-150 dark:border-gray-800 shadow-sm overflow-hidden flex flex-col">
+                
+                {/* Header do Menu */}
+                <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-gray-100 dark:border-gray-850">
+                  <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl">
+                    <button
+                      onClick={() => setActiveTab('texto')}
+                      className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                        activeTab === 'texto'
+                          ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm'
+                          : 'text-gray-500 hover:text-gray-800 dark:hover:text-white'
+                      }`}
+                    >
+                      📝 Transcrição & Editor
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('resumo')}
+                      className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                        activeTab === 'resumo'
+                          ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm'
+                          : 'text-gray-500 hover:text-gray-800 dark:hover:text-white'
+                      }`}
+                    >
+                      💡 Resumo por IA
+                    </button>
+                  </div>
 
-                {activeTab === 'legendas' && (
-                  <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
-                    {result.subtitles.map((sub, i) => (
-                      <div key={i} className="flex items-start gap-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
-                        <span className="shrink-0 text-[11px] font-mono font-bold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-md">
-                          {sub.time}
-                        </span>
-                        <p className="text-sm text-gray-700 dark:text-gray-300">{sub.text}</p>
-                      </div>
-                    ))}
+                  <div className="flex items-center gap-3">
+                    {/* Botão Copiar */}
+                    <button
+                      onClick={handleCopy}
+                      className="px-3.5 py-2 bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400 hover:opacity-90 rounded-xl text-xs font-bold transition-all"
+                    >
+                      {copied ? '✅ Copiado!' : '📋 Copiar tudo'}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Área de Filtros e Busca (Apenas na aba Transcrição) */}
+                {activeTab === 'texto' && (
+                  <div className="bg-gray-50/50 dark:bg-gray-950/30 border-b border-gray-100 dark:border-gray-850 px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    
+                    {/* Campo de Busca */}
+                    <div className="relative w-full sm:w-64">
+                      <input
+                        type="text"
+                        placeholder="Buscar palavras..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs rounded-xl pl-8 pr-3 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none placeholder-gray-400"
+                      />
+                      <svg className="w-3.5 h-3.5 absolute left-2.5 top-2.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                      {/* Checkbox Follow Playback */}
+                      <label className="flex items-center gap-2 text-xs font-bold text-gray-500 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={followPlayback}
+                          onChange={(e) => setFollowPlayback(e.target.checked)}
+                          className="rounded text-brand-600 focus:ring-brand-500 border-gray-300"
+                        />
+                        Seguir reprodução
+                      </label>
+
+                      {/* Modo Editor Toggle */}
+                      <button
+                        onClick={() => setIsEditing(!isEditing)}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-bold transition-all ${
+                          isEditing
+                            ? 'bg-brand-600 border-brand-600 text-white shadow-sm shadow-brand-100 dark:shadow-none'
+                            : 'border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                        }`}
+                      >
+                        {isEditing ? '🔒 Travar Texto' : '✏️ Editar Texto'}
+                      </button>
+                    </div>
                   </div>
                 )}
 
-                {activeTab === 'resumo' && (
-                  <ul className="space-y-3">
-                    {result.summary.map((point, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
-                        <span className="shrink-0 w-6 h-6 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-500">{i + 1}</span>
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                {/* Conteúdo da Aba */}
+                <div className="p-6 flex-grow">
+                  
+                  {activeTab === 'texto' && (
+                    <div
+                      ref={segmentsContainerRef}
+                      className="space-y-4 max-h-[500px] overflow-y-auto pr-2 scrollbar-thin"
+                    >
+                      {filteredSegments.length === 0 ? (
+                        <div className="text-center py-10 text-gray-400 text-sm">
+                          Nenhum trecho correspondente à busca.
+                        </div>
+                      ) : (
+                        filteredSegments.map((seg, i) => {
+                          const idx = (seg as any).originalIdx !== undefined ? (seg as any).originalIdx : i;
+                          const isActive = currentTime >= seg.start && currentTime <= seg.end;
+                          
+                          return (
+                            <div
+                              key={idx}
+                              id={`segment-${idx}`}
+                              className={`group relative flex flex-col md:flex-row gap-3 items-start p-3 rounded-2xl border transition-all duration-200 ${
+                                isActive
+                                  ? 'border-brand-500 bg-brand-50/10 dark:bg-brand-950/20 ring-1 ring-brand-500 shadow-sm shadow-brand-50'
+                                  : 'border-transparent hover:bg-gray-50/50 dark:hover:bg-gray-800/20'
+                              }`}
+                            >
+                              {/* Tempo */}
+                              <button
+                                onClick={() => handleJumpToTime(seg.start)}
+                                className={`shrink-0 flex items-center gap-1 font-mono text-[11px] font-bold px-2.5 py-1.5 rounded-lg border shadow-sm transition-all active:scale-95 ${
+                                  isActive
+                                    ? 'bg-brand-600 border-brand-600 text-white'
+                                    : 'bg-white dark:bg-gray-800 border-gray-150 dark:border-gray-700 text-gray-500 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-white'
+                                }`}
+                                title="Pular áudio para este trecho"
+                              >
+                                <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M8 5v14l11-7z" />
+                                </svg>
+                                {formatTime(seg.start)}
+                              </button>
+
+                              {/* Texto do Bloco (Editável vs Leitura) */}
+                              <div className="flex-1 w-full">
+                                {isEditing ? (
+                                  <textarea
+                                    value={seg.text}
+                                    rows={1}
+                                    onChange={(e) => handleSegmentTextChange(idx, e.target.value)}
+                                    className="w-full text-sm bg-gray-50 dark:bg-gray-950 border border-gray-250 dark:border-gray-850 rounded-xl px-3 py-2 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-brand-500 resize-y"
+                                  />
+                                ) : (
+                                  <p className={`text-sm leading-relaxed transition-colors duration-200 ${
+                                    isActive
+                                      ? 'text-gray-900 dark:text-white font-medium'
+                                      : 'text-gray-650 dark:text-gray-300'
+                                  }`}>
+                                    {seg.text}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })
+                      )}
+                    </div>
+                  )}
+
+                  {activeTab === 'resumo' && (
+                    <div className="space-y-4">
+                      <h4 className="text-sm font-bold text-gray-500 uppercase tracking-widest">Tópicos Sintetizados por IA</h4>
+                      <ul className="space-y-3">
+                        {result.summary.map((point, i) => (
+                          <li key={i} className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-gray-800/40 rounded-2xl border border-gray-100 dark:border-gray-850">
+                            <span className="shrink-0 w-7 h-7 rounded-full bg-brand-100 dark:bg-brand-900/30 flex items-center justify-center text-xs font-bold text-brand-700 dark:text-brand-400">
+                              {i + 1}
+                            </span>
+                            <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">{point}</p>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                </div>
               </div>
+
             </div>
 
-            {/* Botão de nova transcrição */}
+            {/* Nova Transcrição */}
             <button
-              onClick={() => { setResult(null); setFile(null); }}
-              className="w-full py-3 bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 rounded-2xl text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:border-gray-400 dark:hover:border-gray-600 transition-all shadow-sm"
+              onClick={() => { setResult(null); setFile(null); setFileUrl(''); }}
+              className="w-full py-4 bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-850 border border-gray-200/80 dark:border-gray-800 rounded-2xl text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition-all shadow-sm"
             >
-              + Transcrever outro arquivo
+              + Transcrever novo arquivo de áudio ou vídeo
             </button>
           </div>
         )}
