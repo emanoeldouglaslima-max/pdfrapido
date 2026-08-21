@@ -84,19 +84,30 @@ function formatSrtTime(totalSeconds: number): string {
   return `${hours}:${mins}:${secs},${ms}`;
 }
 
-// ── Transcrever áudio com Whisper API ─────────────────────────────────────────
+// ── Transcrever áudio com Whisper API (OpenAI ou Groq) ───────────────────────
 export async function transcribeAudio(
   audioPath: string,
   language: string = 'pt'
 ): Promise<{ text: string; segments: TranscriptionSegment[] }> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    throw new Error('OPENAI_API_KEY não configurada no .env');
+  const openaiKey = process.env.OPENAI_API_KEY;
+  const groqKey = process.env.GROQ_API_KEY;
+
+  if (!openaiKey && !groqKey) {
+    throw new Error('OPENAI_API_KEY ou GROQ_API_KEY não configurada nas variáveis de ambiente do servidor.');
   }
 
-  const openai = new OpenAI({ apiKey });
+  const isGroq = !openaiKey && !!groqKey;
+  const apiKey = (openaiKey || groqKey) as string;
+
+  const openai = new OpenAI({
+    apiKey,
+    ...(isGroq ? { baseURL: 'https://api.groq.com/openai/v1' } : {}),
+  });
+
+  const model = isGroq ? 'whisper-large-v3' : 'whisper-1';
 
   logger.info('Enviando áudio para Whisper API...', {
+    provider: isGroq ? 'Groq (Whisper V3)' : 'OpenAI (Whisper-1)',
     file: path.basename(audioPath),
     language,
   });
@@ -104,7 +115,7 @@ export async function transcribeAudio(
   // Obter transcrição com timestamps (verbose_json retorna segmentos)
   const response = await openai.audio.transcriptions.create({
     file: fs.createReadStream(audioPath),
-    model: 'whisper-1',
+    model,
     language,
     response_format: 'verbose_json',
     timestamp_granularities: ['segment'],
