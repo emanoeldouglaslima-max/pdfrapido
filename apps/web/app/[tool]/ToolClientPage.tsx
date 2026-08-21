@@ -173,16 +173,23 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
             disabled={false}
           />
 
-          {/* Arquivos selecionados — preview com nome, tamanho e ícone (Correção #2) */}
+          {/* Arquivos selecionados — preview com alto contraste, ícone, nome e tamanho */}
           {files.length > 0 && (
-            <div className="mt-4 space-y-2">
+            <div className="mt-4 space-y-2.5">
               {files.map((f, i) => (
-                <div key={i} className="flex items-center gap-3 bg-brand-50 dark:bg-brand-950/30 border border-brand-100 dark:border-brand-800/40 rounded-xl px-4 py-2.5 text-sm animate-fade-in">
-                  <svg className="w-5 h-5 text-brand-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  <span className="text-gray-700 dark:text-gray-200 truncate flex-1 font-medium">{f.name}</span>
-                  <span className="text-brand-600 dark:text-brand-400 flex-shrink-0 text-xs font-bold bg-brand-100 dark:bg-brand-900/40 px-2 py-0.5 rounded-full">
+                <div
+                  key={i}
+                  className="flex items-center gap-3.5 bg-slate-100 dark:bg-gray-800/90 border border-slate-200 dark:border-gray-700 rounded-xl px-4 py-3 text-sm shadow-sm animate-fade-in"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-brand-100 dark:bg-brand-900/60 flex items-center justify-center flex-shrink-0 text-brand-700 dark:text-brand-400">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <span className="text-gray-900 dark:text-gray-50 font-bold truncate flex-1 tracking-tight text-sm">
+                    {f.name}
+                  </span>
+                  <span className="text-brand-800 dark:text-brand-200 font-extrabold text-xs bg-brand-200/70 dark:bg-brand-800/80 px-2.5 py-1 rounded-lg border border-brand-300 dark:border-brand-700 flex-shrink-0">
                     {f.size >= 1024 * 1024
                       ? `${(f.size / (1024 * 1024)).toFixed(1)} MB`
                       : `${(f.size / 1024).toFixed(0)} KB`}
