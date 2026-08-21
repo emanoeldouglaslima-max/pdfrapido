@@ -247,12 +247,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 // Geração de páginas estáticas em tempo de build (SSG)
 export async function generateStaticParams() {
-  return TOOLS.map((t) => ({
-    tool: t.slug,
-  }));
+  return TOOLS
+    .filter((t) => t.slug !== 'transcrever-video-em-texto')
+    .map((t) => ({
+      tool: t.slug,
+    }));
 }
 
 export default function ToolPage({ params }: PageProps) {
+  // Evita conflito com a rota estática dedicada
+  if (params.tool === 'transcrever-video-em-texto') {
+    notFound();
+  }
+
   const tool = TOOLS.find((t) => t.slug === params.tool);
   
   if (!tool) {
