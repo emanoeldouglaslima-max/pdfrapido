@@ -179,6 +179,27 @@ const SEO_CONTENT: Record<string, {
       { q: 'É preciso se cadastrar para transcrever um vídeo?', a: 'Não. No PDFRápido você pode converter seu vídeo ou áudio em texto 100% grátis e sem precisar criar conta.' },
       { q: 'Quais formatos de arquivo são aceitos?', a: 'Aceitamos arquivos de vídeo como MP4, WEBM, MOV, AVI e áudios como MP3, WAV e M4A de até 100MB.' }
     ]
+  },
+  // Correção #9: SEO da nova ferramenta Proteger PDF com Senha
+  'proteger-pdf': {
+    title: 'Proteger PDF com Senha Online Grátis — Criptografar PDF',
+    description: 'Adicione uma senha ao seu arquivo PDF online e grátis. Proteja documentos confidenciais contra acesso não autorizado. Sem cadastro, rápido e seguro.',
+    keywords: 'proteger pdf com senha,senha para pdf,bloquear pdf,criptografar pdf,pdf com senha online,adicionar senha pdf',
+    h2: 'Como proteger um PDF com senha online?',
+    why: 'Proteger um PDF com senha é essencial para garantir a privacidade de documentos confidenciais como contratos, prontuários, extratos bancários e relatórios internos. Com o PDFRápido você adiciona criptografia AES-128 ao seu arquivo em segundos, sem precisar instalar nenhum software.',
+    how: [
+      'Selecione ou arraste o arquivo PDF (limite de 25MB) que deseja proteger.',
+      'Digite a senha de sua escolha no campo indicado.',
+      'Confirme a senha para evitar erros de digitação.',
+      'Clique em "Proteger PDF agora" e baixe seu arquivo protegido com criptografia.'
+    ],
+    faq: [
+      { q: 'Qual tipo de criptografia é utilizado?', a: 'Utilizamos criptografia AES-128, padrão amplamente suportado por todos os leitores de PDF modernos, incluindo Adobe Acrobat, Foxit Reader, browsers e apps mobile.' },
+      { q: 'Posso abrir o PDF protegido em qualquer dispositivo?', a: 'Sim. O PDF protegido pode ser aberto em qualquer leitor de PDF compatível com senha — desde que você forneça a senha correta.' },
+      { q: 'A ferramenta é gratuita?', a: 'Sim, 100% gratuita. Sem limite de uso, sem cadastro e sem cobranças ocultas.' },
+      { q: 'Meus arquivos ficam armazenados?', a: 'Não. Todos os arquivos são excluídos automaticamente de nossos servidores imediatamente após o processamento e download.' },
+      { q: 'Posso remover a senha depois?', a: 'Sim. Se você precisar remover a proteção, use nossa ferramenta complementar de remoção de senha ou serviços especializados, desde que você conheça a senha original.' }
+    ]
   }
 };
 

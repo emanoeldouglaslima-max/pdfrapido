@@ -75,8 +75,19 @@ export const TOOLS = [
     shortName: 'Vídeo em Texto',
     description: 'Converta vídeos (MP4, WEBM, MOV) e áudios em texto e legendas (.SRT) online com inteligência artificial.',
     icon: '🎙️',
-    color: 'bg-emerald-50',
+    color: 'bg-emerald-50',   // Correção #6: era 'bg-gray-50' cinza — agora esmeralda vibrante
     iconBg: 'bg-emerald-100',
     keywords: ['transcrever vídeo', 'vídeo para texto', 'converter áudio em texto', 'gerar legenda srt'],
+  },
+  // Correção #9: Nova ferramenta — muito solicitada e complementa "Remover senha" do blog
+  {
+    slug: 'proteger-pdf',
+    name: 'Proteger PDF com Senha',
+    shortName: 'Proteger PDF',
+    description: 'Adicione uma senha de proteção ao seu PDF para impedir acesso não autorizado. Rápido, seguro e gratuito.',
+    icon: '🔒',
+    color: 'bg-slate-50',
+    iconBg: 'bg-slate-100',
+    keywords: ['proteger pdf com senha', 'senha para pdf', 'bloquear pdf', 'criptografar pdf'],
   },
 ];

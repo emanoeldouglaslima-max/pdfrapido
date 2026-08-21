@@ -1,0 +1,42 @@
+{
+  "name": "PDFRápido — Ferramentas de PDF Online",
+  "short_name": "PDFRápido",
+  "description": "Comprima, converta, junte e divida PDFs online grátis. Sem cadastro, sem instalação.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/apple-icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Comprimir PDF",
+      "url": "/comprimir-pdf",
+      "description": "Reduza o tamanho do seu PDF"
+    },
+    {
+      "name": "PDF para Word",
+      "url": "/converter-pdf-para-word",
+      "description": "Converta PDF em documento Word"
+    },
+    {
+      "name": "Juntar PDF",
+      "url": "/juntar-pdf",
+      "description": "Una vários PDFs em um"
+    }
+  ],
+  "categories": ["productivity", "utilities"]
+}

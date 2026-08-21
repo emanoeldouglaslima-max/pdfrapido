@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 export default function Header() {
   const pathname = usePathname();
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   // Inicializa o tema do localStorage/sistema
   useEffect(() => {
@@ -17,6 +18,11 @@ export default function Header() {
     const isDark = document.documentElement.classList.contains('dark');
     setTheme(savedTheme === 'dark' || isDark ? 'dark' : 'light');
   }, []);
+
+  // Fecha menu mobile ao trocar de rota
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   // Alterna o tema
   const toggleTheme = () => {
@@ -38,7 +44,7 @@ export default function Header() {
           <Logo />
         </Link>
 
-        {/* Links rápidos para as principais ferramentas */}
+        {/* Links rápidos — desktop */}
         <nav className="hidden md:flex items-center gap-1 text-sm font-semibold text-gray-600 dark:text-gray-300">
           {TOOLS.slice(0, 4).map((t) => {
             const isActive = pathname === `/${t.slug}`;
@@ -92,7 +98,7 @@ export default function Header() {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {pathname !== '/' && (
             <Link
               href="/"
@@ -122,15 +128,88 @@ export default function Header() {
             )}
           </button>
 
-          {/* Badge animado "100% Grátis" */}
-          <span className="flex items-center gap-1.5 text-xs bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1.5 rounded-full font-bold shadow-md shadow-green-200 dark:shadow-none hover:shadow-lg transition-all duration-200 cursor-default">
+          {/* Badge animado "100% Grátis" — oculto em mobile para dar espaço ao menu */}
+          <span className="hidden sm:flex items-center gap-1.5 text-xs bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1.5 rounded-full font-bold shadow-md shadow-green-200 dark:shadow-none hover:shadow-lg transition-all duration-200 cursor-default">
             <svg className="w-3 h-3 animate-bounce-slow" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
             </svg>
             100% Grátis
           </span>
+
+          {/* Botão hamburguer — apenas mobile */}
+          <button
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
+            aria-expanded={mobileOpen}
+            className="md:hidden p-2 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 transition-all duration-200 active:scale-95"
+          >
+            {mobileOpen ? (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
+          </button>
         </div>
       </div>
+
+      {/* Menu mobile — dropdown */}
+      {mobileOpen && (
+        <nav className="md:hidden border-t border-gray-100 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm px-4 py-3 flex flex-col gap-1 animate-fade-in">
+          {TOOLS.map((t) => {
+            const isActive = pathname === `/${t.slug}`;
+            return (
+              <Link
+                key={t.slug}
+                href={`/${t.slug}`}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  isActive
+                    ? 'bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-brand-600 dark:hover:text-brand-400'
+                }`}
+              >
+                <span className="text-base">{t.icon}</span>
+                {t.name}
+              </Link>
+            );
+          })}
+
+          <div className="h-px bg-gray-100 dark:bg-gray-800 my-1" />
+
+          <Link
+            href="/blog"
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
+              pathname.startsWith('/blog')
+                ? 'bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400'
+                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+            }`}
+          >
+            <span className="text-base">📰</span>
+            Blog
+          </Link>
+          <Link
+            href="/sobre"
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
+              pathname === '/sobre'
+                ? 'bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400'
+                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+            }`}
+          >
+            <span className="text-base">ℹ️</span>
+            Sobre
+          </Link>
+          <Link
+            href="/contato"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200"
+          >
+            <span className="text-base">✉️</span>
+            Contato
+          </Link>
+        </nav>
+      )}
     </header>
   );
 }

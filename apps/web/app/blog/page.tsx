@@ -4,10 +4,35 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Blog — Dicas, Guias e Tutoriais de PDF',
+  title: 'Blog — Dicas, Guias e Tutoriais de PDF | PDFRápido',
   description: 'Leia artigos completos sobre compressão de PDF, conversão para Word no celular, segurança de dados e organização de documentos digitais.',
+  keywords: 'blog pdf, dicas pdf, tutoriais pdf, guias pdf online, converter pdf, comprimir pdf',
   alternates: {
     canonical: 'https://pdfrapido.com.br/blog',
+  },
+  openGraph: {
+    title: 'Blog — Dicas, Guias e Tutoriais de PDF | PDFRápido',
+    description: 'Leia artigos completos sobre compressão de PDF, conversão para Word no celular, segurança de dados e organização de documentos digitais.',
+    url: 'https://pdfrapido.com.br/blog', // Correção #4: era 'pdfrapido.com.br' (raiz)
+    siteName: 'PDFRápido',
+    locale: 'pt_BR',
+    type: 'website',
+    images: [
+      {
+        // Correção #5: og:image estava ausente no blog
+        url: 'https://pdfrapido.com.br/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Blog PDFRápido — Dicas e Tutoriais de PDF',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@pdfrapido',
+    title: 'Blog — Dicas, Guias e Tutoriais de PDF | PDFRápido',
+    description: 'Leia artigos completos sobre compressão de PDF, conversão para Word no celular, segurança de dados e organização de documentos digitais.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
   },
 };
 
@@ -337,6 +362,44 @@ export default function BlogListingPage({ searchParams }: PageProps) {
           )}
         </div>
       </main>
+
+      {/* Correção #8: Newsletter para fidelização de usuários */}
+      <section className="bg-gradient-to-br from-indigo-600 via-brand-600 to-violet-600 dark:from-indigo-900 dark:via-brand-900 dark:to-violet-900 py-14 px-4">
+        <div className="max-w-2xl mx-auto text-center">
+          <span className="inline-flex items-center gap-2 bg-white/20 text-white text-xs font-bold px-3 py-1.5 rounded-full mb-4 tracking-wide">
+            📬 Newsletter Semanal
+          </span>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-white leading-tight">
+            Receba dicas de PDF direto no seu e-mail
+          </h2>
+          <p className="mt-3 text-sm text-indigo-100 max-w-md mx-auto">
+            Novos tutoriais toda semana sobre como gerenciar documentos, converter arquivos e aumentar sua produtividade digital.
+          </p>
+          <form
+            action="https://formspree.io/f/newsletter"
+            method="POST"
+            className="mt-7 flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+          >
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="Seu melhor e-mail"
+              className="flex-1 bg-white/95 dark:bg-gray-900/80 border border-white/30 text-gray-900 dark:text-white rounded-full px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-white/60 placeholder-gray-400 dark:placeholder-gray-500 shadow-sm"
+            />
+            <button
+              type="submit"
+              className="bg-white text-brand-700 font-bold px-6 py-3 rounded-full text-sm shadow-lg hover:bg-indigo-50 active:scale-95 transition-all duration-200 whitespace-nowrap"
+            >
+              Quero receber ✉️
+            </button>
+          </form>
+          <p className="mt-3 text-[11px] text-indigo-200">
+            Sem spam. Cancele quando quiser. Seus dados são protegidos pela LGPD.
+          </p>
+        </div>
+      </section>
+
       <Footer />
     </>
   );

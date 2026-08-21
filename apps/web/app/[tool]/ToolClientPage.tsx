@@ -101,6 +101,18 @@ const TOOL_CONFIG: Record<string, {
       return fd;
     },
   },
+  // Correção #9: Nova ferramenta Proteger PDF com Senha
+  'proteger-pdf': {
+    endpoint: 'protect',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste o PDF que deseja proteger com senha',
+    buildFormData: (files, opts) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      fd.append('password', opts.password || '');
+      return fd;
+    },
+  },
 };
 
 interface ToolClientPageProps {
@@ -161,13 +173,20 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
             disabled={false}
           />
 
-          {/* Arquivos selecionados */}
+          {/* Arquivos selecionados — preview com nome, tamanho e ícone (Correção #2) */}
           {files.length > 0 && (
             <div className="mt-4 space-y-2">
               {files.map((f, i) => (
-                <div key={i} className="flex items-center justify-between bg-gray-50 dark:bg-gray-800 rounded-lg px-4 py-2 text-sm">
-                  <span className="text-gray-700 dark:text-gray-200 truncate">{f.name}</span>
-                  <span className="text-gray-400 dark:text-gray-500 flex-shrink-0 ml-3">{(f.size / 1024).toFixed(0)} KB</span>
+                <div key={i} className="flex items-center gap-3 bg-brand-50 dark:bg-brand-950/30 border border-brand-100 dark:border-brand-800/40 rounded-xl px-4 py-2.5 text-sm animate-fade-in">
+                  <svg className="w-5 h-5 text-brand-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <span className="text-gray-700 dark:text-gray-200 truncate flex-1 font-medium">{f.name}</span>
+                  <span className="text-brand-600 dark:text-brand-400 flex-shrink-0 text-xs font-bold bg-brand-100 dark:bg-brand-900/40 px-2 py-0.5 rounded-full">
+                    {f.size >= 1024 * 1024
+                      ? `${(f.size / (1024 * 1024)).toFixed(1)} MB`
+                      : `${(f.size / 1024).toFixed(0)} KB`}
+                  </span>
                 </div>
               ))}
             </div>
@@ -272,6 +291,37 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
             </div>
           )}
 
+          {/* Opções específicas: Proteger PDF com Senha (Correção #9) */}
+          {toolSlug === 'proteger-pdf' && (
+            <div className="mt-4 space-y-3">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                🔑 Senha de proteção
+              </label>
+              <input
+                type="password"
+                placeholder="Digite a senha"
+                className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                value={opts.password || ''}
+                onChange={(e) => setOpts({ ...opts, password: e.target.value })}
+              />
+              <input
+                type="password"
+                placeholder="Confirme a senha"
+                className="w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                value={opts.passwordConfirm || ''}
+                onChange={(e) => setOpts({ ...opts, passwordConfirm: e.target.value })}
+              />
+              {opts.password && opts.passwordConfirm && opts.password !== opts.passwordConfirm && (
+                <p className="text-xs text-red-500 dark:text-red-400 flex items-center gap-1.5">
+                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                  As senhas não coincidem
+                </p>
+              )}
+            </div>
+          )}
+
           {/* Erro */}
           {errorMsg && (
             <div className="mt-4 p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800/50 rounded-xl text-sm text-red-600 dark:text-red-400">
@@ -279,11 +329,12 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
             </div>
           )}
 
-          {/* Botão processar */}
+          {/* Botão processar — com tooltip quando desabilitado (Correção #3) */}
           <button
             onClick={handleUpload}
             disabled={files.length === 0}
-            className="btn-primary w-full mt-5 text-base py-3.5"
+            title={files.length === 0 ? 'Selecione um arquivo para continuar' : undefined}
+            className="btn-primary w-full mt-5 text-base py-3.5 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {tool.icon} {tool.name} agora
           </button>
