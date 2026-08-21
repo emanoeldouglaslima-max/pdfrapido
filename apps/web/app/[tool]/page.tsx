@@ -164,11 +164,11 @@ const SEO_CONTENT: Record<string, {
     ]
   },
   'transcrever-video-em-texto': {
-    title: 'Transcrever Vídeo em Texto Online Grátis — Gerar Legendas SRT',
-    description: 'Converta vídeos (MP4, WEBM, MOV) e áudios em texto e legendas SRT online com inteligência artificial. Sem cadastro, com limite de arquivo informado antes do envio.',
-    keywords: 'transcrever vídeo,vídeo para texto,converter áudio em texto,gerar legenda srt,whisper ai online,transcrever áudio mp3',
+    title: 'Transcrever Vídeo em Texto Online Grátis — PDFRápido',
+    description: 'Converta vídeos (MP4, WEBM, MOV) e áudios em texto limpo com exportação em PDF e Word. Rápido, seguro e gratuito.',
+    keywords: 'transcrever vídeo,vídeo para texto,converter áudio em texto,áudio para pdf,transcrever áudio mp3,converter vídeo em word',
     h2: 'Como transcrever vídeo e áudio em texto online grátis?',
-    why: 'Transcrever vídeos e gravações em texto é ideal para quem cria conteúdo para o YouTube/Instagram, estudantes que assistem aulas gravadas ou profissionais que precisam de atas de reuniões rápido.',
+    why: 'Transcrever vídeos e gravações em texto é ideal para quem cria conteúdo para a internet, estudantes que assistem aulas gravadas ou profissionais que precisam de atas de reuniões rápido.',
     how: [
       'Faça o upload do vídeo ou áudio nos formatos MP4, WEBM, MOV, MP3 ou WAV.',
       'Selecione o idioma da gravação (Português, Inglês, Espanhol).',

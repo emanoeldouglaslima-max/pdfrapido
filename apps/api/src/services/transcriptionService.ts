@@ -206,20 +206,20 @@ export async function transcribeAudio(
     try {
       return await transcribeWithGemini(audioPath, language);
     } catch (err) {
-      logger.error('Erro na transcrição com Gemini 2.5 Flash:', { error: (err as Error).message });
+      logger.error('Erro na transcrição:', { error: (err as Error).message });
       if (!process.env.OPENAI_API_KEY && !process.env.GROQ_API_KEY) {
-        throw new Error(`Erro no Gemini 2.5 Flash: ${(err as Error).message}`);
+        throw new Error(`Falha no processamento: ${(err as Error).message.replace(/gemini[^\s]*/gi, 'sistema').replace(/models\/[^\s]*/gi, '')}`);
       }
-      logger.info('Tentando fallback para OpenAI/Groq...');
+      logger.info('Tentando fallback...');
     }
   }
 
-  // 2. Fallback para OpenAI ou Groq Whisper
+  // 2. Fallback
   const openaiKey = process.env.OPENAI_API_KEY;
   const groqKey = process.env.GROQ_API_KEY;
 
   if (!openaiKey && !groqKey && !process.env.GEMINI_API_KEY) {
-    throw new Error('GEMINI_API_KEY não configurada nas variáveis de ambiente do servidor Render.');
+    throw new Error('Chave de API não configurada nas variáveis de ambiente do servidor.');
   }
 
   const isGroq = !openaiKey && !!groqKey;

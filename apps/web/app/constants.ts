@@ -73,11 +73,11 @@ export const TOOLS = [
     slug: 'transcrever-video-em-texto',
     name: 'Transcrever Vídeo em Texto',
     shortName: 'Vídeo em Texto',
-    description: 'Converta vídeos (MP4, WEBM, MOV) e áudios em texto e legendas (.SRT) online com inteligência artificial.',
+    description: 'Converta vídeos (MP4, WEBM, MOV) e áudios em texto limpo com exportação em PDF e Word.',
     icon: '🎙️',
-    color: 'bg-emerald-50',   // Correção #6: era 'bg-gray-50' cinza — agora esmeralda vibrante
+    color: 'bg-emerald-50',
     iconBg: 'bg-emerald-100',
-    keywords: ['transcrever vídeo', 'vídeo para texto', 'converter áudio em texto', 'gerar legenda srt'],
+    keywords: ['transcrever vídeo', 'vídeo para texto', 'converter áudio em texto', 'áudio para pdf'],
   },
   // Correção #9: Nova ferramenta — muito solicitada e complementa "Remover senha" do blog
   {

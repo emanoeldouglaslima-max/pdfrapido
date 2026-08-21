@@ -145,7 +145,7 @@ export default function TranscreverVideoPage() {
 
       const { jobId } = await response.json();
       setProgress(25);
-      setStatusMessage('Áudio enviado! Processando com Google Gemini IA...');
+      setStatusMessage('Áudio enviado! Processando transcrição em alta precisão...');
 
       // Polling para acompanhar o status do job
       const pollInterval = setInterval(async () => {
@@ -157,7 +157,7 @@ export default function TranscreverVideoPage() {
 
           if (statusData.status === 'processing') {
             setProgress((prev) => Math.min(prev + 5, 90));
-            setStatusMessage('IA processando a fala e estruturando o texto...');
+            setStatusMessage('Processando a fala e estruturando o texto...');
           } else if (statusData.status === 'done' && statusData.data) {
             clearInterval(pollInterval);
             setProgress(100);
@@ -197,7 +197,7 @@ export default function TranscreverVideoPage() {
           } else if (statusData.status === 'failed') {
             clearInterval(pollInterval);
             setIsProcessing(false);
-            alert(`Erro no processamento da IA: ${statusData.error || 'Falha na transcrição'}`);
+            alert(`Erro no processamento: ${statusData.error || 'Falha na transcrição'}`);
           }
         } catch {
           // Ignora erros temporários de conexão durante o polling
@@ -453,13 +453,13 @@ export default function TranscreverVideoPage() {
         {/* Título */}
         <div className="mb-8 text-center max-w-2xl mx-auto">
           <span className="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest bg-brand-50 dark:bg-brand-950/40 border border-brand-100 dark:border-brand-800/60 px-3.5 py-1.5 rounded-full shadow-sm">
-            🎙️ Inteligência Artificial Integrada
+            ⚡ Reconhecimento Automático de Fala
           </span>
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white mt-4">
             Transcrição de Áudio e Vídeo
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-            Converta palestras, reuniões, aulas e vídeos em texto limpo, resumos por IA e exporte em PDF ou Word (.docx).
+            Converta palestras, reuniões, aulas e vídeos em texto limpo, resumos estruturados e exporte em PDF ou Word (.docx).
           </p>
         </div>
 
@@ -537,24 +537,19 @@ export default function TranscreverVideoPage() {
                     </select>
                   </div>
 
-                  {/* Motor IA */}
+                  {/* Qualidade do Reconhecimento */}
                   <div>
-                    <label className="block text-xs font-bold text-gray-600 dark:text-gray-300 mb-2">Motor de Inteligência Artificial</label>
+                    <label className="block text-xs font-bold text-gray-600 dark:text-gray-300 mb-2">Qualidade do Processamento</label>
                     <div className="grid grid-cols-1 gap-2">
-                      <button
-                        onClick={() => setModelMode('whale')}
-                        className={`flex items-start gap-3 p-3 rounded-xl border text-left transition-all ${
-                          modelMode === 'whale'
-                            ? 'border-brand-500 bg-brand-50/20 dark:bg-brand-950/20 ring-1 ring-brand-500'
-                            : 'border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
-                        }`}
+                      <div
+                        className="flex items-start gap-3 p-3.5 rounded-xl border border-brand-500 bg-brand-50/20 dark:bg-brand-950/20 ring-1 ring-brand-500"
                       >
                         <span className="text-xl">⚡</span>
                         <div>
-                          <p className="text-xs font-bold text-gray-900 dark:text-white">Google Gemini 2.5 Flash</p>
-                          <p className="text-[10px] text-gray-400">Precisão máxima, pontuação e resumo por IA.</p>
+                          <p className="text-xs font-bold text-gray-900 dark:text-white">Alta Fidelidade (Recomendado)</p>
+                          <p className="text-[10px] text-gray-400">Pontuação natural, timestamps precisos e síntese dos pontos-chave.</p>
                         </div>
-                      </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -761,7 +756,7 @@ export default function TranscreverVideoPage() {
                           : 'text-gray-500 hover:text-gray-800 dark:hover:text-white'
                       }`}
                     >
-                      💡 Resumo por IA
+                      💡 Destaques & Síntese
                     </button>
                   </div>
 
@@ -908,10 +903,10 @@ export default function TranscreverVideoPage() {
                     </div>
                   )}
 
-                  {/* 3. Aba Resumo por IA */}
+                  {/* 3. Aba Destaques & Síntese */}
                   {activeTab === 'resumo' && (
                     <div className="space-y-4">
-                      <h4 className="text-sm font-bold text-gray-500 uppercase tracking-widest">Tópicos Sintetizados por IA</h4>
+                      <h4 className="text-sm font-bold text-gray-500 uppercase tracking-widest">Pontos Principais & Conclusões</h4>
                       <ul className="space-y-3">
                         {result.summary.map((point, i) => (
                           <li key={i} className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-gray-800/40 rounded-2xl border border-gray-100 dark:border-gray-850">
