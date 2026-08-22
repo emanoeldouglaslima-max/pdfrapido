@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import AuthorBio from '../../../components/AuthorBio';
 
 export const metadata: Metadata = {
   title: 'Diferença entre PDF/A e PDF Comum: Quando Usar Cada Um?',
@@ -162,6 +163,7 @@ export default function Artigo6Page() {
               <li><strong>No Microsoft Word:</strong> Vá em *Salvar Como* &gt; selecione o tipo de arquivo *PDF* &gt; clique no botão *Opções* &gt; marque a caixa **Compatível com PDF/A** &gt; clique em *Salvar*.</li>
               <li><strong>No LibreOffice / Writer:</strong> Vá em *Arquivo* &gt; *Exportar Como* &gt; *Exportar como PDF* &gt; marque a opção **PDF/A-1b** ou superior &gt; clique em *Exportar*.</li>
             </ul>
+            <AuthorBio authorName="Emanoel Douglas" role="Fundador & Engenheiro de Software" date="14 de julho de 2026" />
           </div>
 
           {/* === ADSENSE SLOT: Final do Artigo (horizontal/responsivo) === */}

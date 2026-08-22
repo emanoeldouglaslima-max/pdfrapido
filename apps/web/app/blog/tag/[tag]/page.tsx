@@ -33,9 +33,18 @@ export async function generateStaticParams() {
     { tag: 'conversão' },
     { tag: 'celular' },
     { tag: 'word' },
+    { tag: 'excel' },
     { tag: 'lgpd' },
     { tag: 'privacidade' },
     { tag: 'concursos' },
-    { tag: 'petições' }
+    { tag: 'petições' },
+    { tag: 'assinatura' },
+    { tag: 'pdf/a' },
+    { tag: 'segurança' },
+    { tag: 'organização' },
+    { tag: 'transcrição' },
+    { tag: 'áudio' },
+    { tag: 'google docs' },
+    { tag: 'gov.br' },
   ];
 }

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import AuthorBio from '../../../components/AuthorBio';
 
 export const metadata: Metadata = {
   title: 'Como Assinar PDF com Certificado Digital ou Assinatura Eletrônica Grátis',
@@ -185,6 +186,7 @@ export default function Artigo5Page() {
             <p>
               Se você recebeu um PDF assinado eletronicamente e quer ter certeza de que ele é autêntico e não foi alterado de forma fraudulenta, utilize o **Validador de Assinaturas do ITI (Instituto Nacional de Tecnologia da Informação)** ou o portal de conformidade de assinaturas. Basta carregar o arquivo e o sistema emitirá um laudo atestando se a assinatura está conforme os padrões nacionais de segurança.
             </p>
+            <AuthorBio authorName="Emanoel Douglas" role="Fundador & Engenheiro de Software" date="15 de julho de 2026" />
           </div>
 
           {/* === ADSENSE SLOT: Final do Artigo (horizontal/responsivo) === */}

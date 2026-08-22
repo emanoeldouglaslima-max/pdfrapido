@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import AuthorBio from '../../../components/AuthorBio';
 
 export const metadata: Metadata = {
   title: 'Como Juntar Vários PDFs em um Só Documento para Concursos e Petições',
@@ -175,6 +176,7 @@ export default function Artigo4Page() {
               <li>Comprima o arquivo final se necessário com o <Link href="/comprimir-pdf" className="text-brand-600 dark:text-brand-400 font-bold hover:underline">Compressor de PDF</Link>.</li>
               <li>Renomeie o arquivo conforme o padrão exigido e faça o upload.</li>
             </ol>
+            <AuthorBio authorName="Emanoel Douglas" role="Fundador & Engenheiro de Software" date="04 de julho de 2026" />
           </div>
 
           {/* === ADSENSE SLOT: Final do Artigo (horizontal/responsivo) === */}

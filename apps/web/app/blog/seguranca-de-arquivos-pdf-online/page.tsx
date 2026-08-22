@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import AuthorBio from '../../../components/AuthorBio';
 
 export const metadata: Metadata = {
   title: 'Segurança e Privacidade de PDFs Online: É Seguro?',
@@ -155,6 +156,7 @@ export default function Artigo3Page() {
               <li><strong>Delete o arquivo local após o uso:</strong> Se você baixou seu PDF em computadores públicos (como de faculdades, lan houses ou no trabalho), certifique-se de esvaziar a lixeira e apagar o arquivo da pasta de Downloads antes de sair.</li>
               <li><strong>Não use ferramentas que exigem cadastro para funções simples:</strong> Plataformas que exigem nome, e-mail e criação de conta para tarefas básicas de edição aumentam a exposição de seus dados pessoais desnecessariamente.</li>
             </ul>
+            <AuthorBio authorName="Emanoel Douglas" role="Fundador & Engenheiro de Software" date="05 de julho de 2026" />
           </div>
 
           {/* === ADSENSE SLOT: Final do Artigo (horizontal/responsivo) === */}

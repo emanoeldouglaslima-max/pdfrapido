@@ -934,6 +934,145 @@ export default function TranscreverVideoPage() {
             </button>
           </div>
         )}
+
+        {/* ========================================================================= */}
+        {/* CONTEÚDO EDITORIAL RICO — GUIA COMPLETO, CASOS DE USO E FAQ (ADSENSE/SEO) */}
+        {/* ========================================================================= */}
+        <section className="mt-16 pt-12 border-t border-gray-200 dark:border-gray-800 space-y-12 text-gray-700 dark:text-gray-300 leading-relaxed max-w-4xl mx-auto">
+          
+          {/* 1. O que é e Como Funciona */}
+          <div className="space-y-4">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+              O que é e como funciona o Transcritor de Vídeo e Áudio em Texto?
+            </h2>
+            <p className="text-base text-gray-600 dark:text-gray-400">
+              O <strong>Transcritor de Vídeo em Texto do PDFRápido</strong> é uma ferramenta online de alta precisão projetada para converter arquivos audiovisuais e faixas sonoras em texto corrido estruturado, pontuado e pesquisável. Utilizando processamento avançado de reconhecimento automático de fala (ASR), o sistema separa as frequências vocais dos ruídos de fundo, transcrevendo falas em português (Brasil), inglês ou espanhol em poucos segundos.
+            </p>
+            <p className="text-base text-gray-600 dark:text-gray-400">
+              Diferente de métodos manuais que exigem pausar o áudio a cada 3 segundos, nossa plataforma processa todo o conteúdo na nuvem e entrega a transcrição dividida em blocos de tempo sincronizados, em parágrafos contínuos para leitura e em tópicos de destaques e síntese para revisão rápida.
+            </p>
+          </div>
+
+          {/* 2. Guia Passo a Passo */}
+          <div className="bg-gray-50 dark:bg-gray-850/60 p-6 md:p-8 rounded-3xl border border-gray-150 dark:border-gray-800 space-y-6">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              <span>📋</span> Como Transcrever Vídeos e Áudios em 4 Passos Simples
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-100 dark:border-gray-800">
+                <span className="w-7 h-7 rounded-full bg-brand-100 dark:bg-brand-900/60 text-brand-700 dark:text-brand-300 font-bold text-xs flex items-center justify-center mb-3">1</span>
+                <h4 className="font-bold text-gray-900 dark:text-white text-sm mb-1">Selecione seu Arquivo</h4>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Arraste gravações em MP4, WEBM, MOV, MP3, M4A, OGG ou WAV de até 100MB diretamente no navegador.</p>
+              </div>
+              <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-100 dark:border-gray-800">
+                <span className="w-7 h-7 rounded-full bg-brand-100 dark:bg-brand-900/60 text-brand-700 dark:text-brand-300 font-bold text-xs flex items-center justify-center mb-3">2</span>
+                <h4 className="font-bold text-gray-900 dark:text-white text-sm mb-1">Defina o Idioma e Modo</h4>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Escolha o idioma nativo da fala e a modalidade de processamento (Baleia para máxima precisão ou Guepardo para ultra velocidade).</p>
+              </div>
+              <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-100 dark:border-gray-800">
+                <span className="w-7 h-7 rounded-full bg-brand-100 dark:bg-brand-900/60 text-brand-700 dark:text-brand-300 font-bold text-xs flex items-center justify-center mb-3">3</span>
+                <h4 className="font-bold text-gray-900 dark:text-white text-sm mb-1">Revise e Edite</h4>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Acompanhe a reprodução sincronizada, faça buscas por palavras-chave ou edite qualquer termo diretamente na tela.</p>
+              </div>
+              <div className="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-100 dark:border-gray-800">
+                <span className="w-7 h-7 rounded-full bg-brand-100 dark:bg-brand-900/60 text-brand-700 dark:text-brand-300 font-bold text-xs flex items-center justify-center mb-3">4</span>
+                <h4 className="font-bold text-gray-900 dark:text-white text-sm mb-1">Exporte em PDF ou Word</h4>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Baixe o documento completo em PDF (.pdf) ou Word (.docx) pronto para ser compartilhado ou arquivado.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. Tabela Comparativa de Formatos */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+              Formatos de Arquivos Suportados e Recomendações
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm border-collapse border border-gray-200 dark:border-gray-800">
+                <thead>
+                  <tr className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white font-bold">
+                    <th className="p-3 border border-gray-200 dark:border-gray-700">Tipo de Mídia</th>
+                    <th className="p-3 border border-gray-200 dark:border-gray-700">Extensões Aceitas</th>
+                    <th className="p-3 border border-gray-200 dark:border-gray-700">Ideal Para</th>
+                    <th className="p-3 border border-gray-200 dark:border-gray-700">Velocidade</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="p-3 border border-gray-200 dark:border-gray-700 font-semibold">Vídeo</td>
+                    <td className="p-3 border border-gray-200 dark:border-gray-700">MP4, WEBM, MOV, MKV</td>
+                    <td className="p-3 border border-gray-200 dark:border-gray-700">Videoaulas, reuniões gravadas, podcasts em vídeo e entrevistas.</td>
+                    <td className="p-3 border border-gray-200 dark:border-gray-700 text-emerald-600 dark:text-emerald-400 font-bold">Rápida</td>
+                  </tr>
+                  <tr className="bg-gray-50/50 dark:bg-gray-850/40">
+                    <td className="p-3 border border-gray-200 dark:border-gray-700 font-semibold">Áudio Comprimido</td>
+                    <td className="p-3 border border-gray-200 dark:border-gray-700">MP3, M4A, AAC, OGG</td>
+                    <td className="p-3 border border-gray-200 dark:border-gray-700">Áudios do WhatsApp, gravador de voz do celular, reuniões sem vídeo.</td>
+                    <td className="p-3 border border-gray-200 dark:border-gray-700 text-emerald-600 dark:text-emerald-400 font-bold">Ultra Rápida</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 border border-gray-200 dark:border-gray-700 font-semibold">Áudio Sem Perdas</td>
+                    <td className="p-3 border border-gray-200 dark:border-gray-700">WAV, FLAC</td>
+                    <td className="p-3 border border-gray-200 dark:border-gray-700">Gravações profissionais de microfone de lapela ou estúdio.</td>
+                    <td className="p-3 border border-gray-200 dark:border-gray-700 text-blue-600 dark:text-blue-400 font-bold">Padrão</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* 4. Segurança e LGPD */}
+          <div className="bg-gray-50 dark:bg-gray-850/60 p-6 md:p-8 rounded-3xl border border-gray-150 dark:border-gray-800 space-y-4">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+              <span>🛡️</span> Privacidade e Segurança de Dados (LGPD)
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              Sabemos que reuniões e gravações de voz frequentemente contêm dados confidenciais, termos contratuais e discussões internas de empresas. Por isso, nossa infraestrutura segue rigorosamente a Lei Geral de Proteção de Dados (LGPD):
+            </p>
+            <ul className="list-disc pl-5 space-y-1.5 text-xs text-gray-500 dark:text-gray-400">
+              <li><strong>Criptografia SSL de 256 bits:</strong> Todos os uploads e downloads trafegam por canais seguros e protegidos.</li>
+              <li><strong>Sem Retenção Permanente:</strong> Os arquivos de mídia e os textos gerados são apagados automaticamente da memória do servidor após o download.</li>
+              <li><strong>Zero Treinamento com Seus Dados:</strong> Suas gravações nunca são utilizadas para treinar modelos públicos de linguagem ou compartilhadas com terceiros.</li>
+            </ul>
+          </div>
+
+          {/* 5. FAQ — Perguntas Frequentes */}
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Perguntas Frequentes sobre Transcrição de Vídeo
+            </h3>
+            <div className="space-y-4">
+              <div className="p-5 bg-white dark:bg-gray-900 rounded-2xl border border-gray-150 dark:border-gray-800">
+                <h4 className="font-bold text-gray-900 dark:text-white text-base mb-1.5">A ferramenta de transcrição é realmente gratuita?</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Sim! O PDFRápido disponibiliza o transcritor de forma 100% gratuita, sem necessidade de cadastro, sem cartão de crédito e sem cobranças ocultas.
+                </p>
+              </div>
+
+              <div className="p-5 bg-white dark:bg-gray-900 rounded-2xl border border-gray-150 dark:border-gray-800">
+                <h4 className="font-bold text-gray-900 dark:text-white text-base mb-1.5">Qual o tamanho máximo de arquivo aceito?</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Você pode enviar arquivos de áudio ou vídeo de até <strong>100MB</strong> por processamento, o que é suficiente para a grande maioria das videoaulas, podcasts e reuniões corporativas.
+                </p>
+              </div>
+
+              <div className="p-5 bg-white dark:bg-gray-900 rounded-2xl border border-gray-150 dark:border-gray-800">
+                <h4 className="font-bold text-gray-900 dark:text-white text-base mb-1.5">Em quais formatos posso baixar o texto final?</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Você pode baixar o resultado em <strong>PDF (.pdf)</strong> formatado com paginação e cabeçalho limpo, em <strong>Word (.docx)</strong> pronto para edição no Microsoft Word/Google Docs, ou em <strong>Texto Puro (.txt)</strong>.
+                </p>
+              </div>
+
+              <div className="p-5 bg-white dark:bg-gray-900 rounded-2xl border border-gray-150 dark:border-gray-800">
+                <h4 className="font-bold text-gray-900 dark:text-white text-base mb-1.5">A transcrição funciona bem em celulares?</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Sim. Nossa interface é 100% responsiva e funciona perfeitamente pelo navegador em smartphones Android, iPhones, iPads e tablets.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </section>
       </main>
 
       <Footer />

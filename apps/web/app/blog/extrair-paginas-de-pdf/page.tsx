@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import AuthorBio from '../../../components/AuthorBio';
 
 export const metadata: Metadata = {
   title: 'Como Extrair Apenas Algumas Páginas de um PDF Longo no Mac e Windows',
@@ -157,6 +158,7 @@ export default function Artigo9Page() {
                 </Link>
               </div>
             </div>
+            <AuthorBio authorName="Emanoel Douglas" role="Fundador & Engenheiro de Software" date="11 de julho de 2026" />
           </div>
 
           {/* === ADSENSE SLOT: Final do Artigo (horizontal/responsivo) === */}

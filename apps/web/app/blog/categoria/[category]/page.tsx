@@ -32,6 +32,8 @@ export async function generateStaticParams() {
     { category: 'whatsapp' },
     { category: 'conversor' },
     { category: 'segurança' },
-    { category: 'organização' }
+    { category: 'organização' },
+    { category: 'produtividade' },
+    { category: 'jurídico' },
   ];
 }

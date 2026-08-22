@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import AuthorBio from '../../../components/AuthorBio';
 
 export const metadata: Metadata = {
   title: 'Como Remover a Senha de um PDF que Você Esqueceu ou Precisa Editar',
@@ -162,6 +163,7 @@ export default function Artigo7Page() {
             <p>
               No PDFRápido, todos os arquivos enviados para qualquer conversão ou compressão trafegam sob encriptação de ponta a ponta (HTTPS) e são **excluídos de forma definitiva e automática de nossos servidores logo após o processamento**, garantindo que seus dados nunca fiquem expostos a terceiros.
             </p>
+            <AuthorBio authorName="Emanoel Douglas" role="Fundador & Engenheiro de Software" date="13 de julho de 2026" />
           </div>
 
           {/* === ADSENSE SLOT: Final do Artigo (horizontal/responsivo) === */}

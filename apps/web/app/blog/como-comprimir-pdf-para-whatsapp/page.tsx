@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import AuthorBio from '../../../components/AuthorBio';
 
 export const metadata: Metadata = {
   title: 'Como Comprimir PDF para o WhatsApp sem Perder Qualidade',
@@ -164,6 +165,7 @@ export default function Artigo1Page() {
               <li><strong>Sempre selecione &quot;Documento&quot;:</strong> Evite enviar PDFs a partir de links externos se puder anexar como arquivo local. O WhatsApp lê o formato de forma nativa e facilita a vida de quem está lendo.</li>
               <li><strong>Dê nomes curtos e sem caracteres especiais:</strong> Arquivos com nomes excessivamente longos ou com muitos símbolos podem apresentar falhas no download dentro do WhatsApp de alguns modelos de celular Android.</li>
             </ul>
+            <AuthorBio authorName="Emanoel Douglas" role="Fundador & Engenheiro de Software" date="07 de julho de 2026" />
           </div>
 
           {/* === ADSENSE SLOT: Final do Artigo (horizontal/responsivo) === */}

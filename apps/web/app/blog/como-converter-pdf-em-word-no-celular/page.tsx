@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
+import AuthorBio from '../../../components/AuthorBio';
 
 export const metadata: Metadata = {
   title: 'Como Converter PDF em Word no Celular de Forma Gratuita',
@@ -158,6 +159,7 @@ export default function Artigo2Page() {
             <p>
               Após baixar o arquivo convertido em `.docx`, se você não tiver o aplicativo pago do Microsoft Word no celular, use o aplicativo gratuito **Google Docs** (Documentos Google). Ele abre qualquer arquivo DOCX nativamente no celular, permitindo que você digite, edite e exporte o arquivo de volta para PDF se precisar enviar o resultado final.
             </p>
+            <AuthorBio authorName="Emanoel Douglas" role="Fundador & Engenheiro de Software" date="06 de julho de 2026" />
           </div>
 
           {/* === ADSENSE SLOT: Final do Artigo (horizontal/responsivo) === */}
