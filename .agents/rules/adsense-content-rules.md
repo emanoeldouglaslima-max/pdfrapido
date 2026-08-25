@@ -1,16 +1,27 @@
-# REGRAS DO PROJETO — QUALIDADE EDITORIAL, GOOGLE ADSENSE E UI/UX
+# REGRAS DO PROJETO & CONSTITUIÇÃO PERMANENTE DO ADSENSE
 
-Este arquivo define os padrões permanentes para este projeto:
+## 💎 REGRA DE OURO: SEM PRESSA, FOCO EM QUALIDADE, PESQUISA E PROFUNDIDADE
+- O agente nunca deve se apressar. O objetivo principal é a excelência técnica, pesquisa aprofundada, código limpo e conformidade estrita com o Google AdSense e SEO.
 
-1. **Google AdSense & Conteúdo Denso**:
-   - Zero Thin-Content: Toda ferramenta possui guia passo a passo, tabela comparativa de formatos, seção LGPD e FAQ com schema JSON-LD.
-   - Blog mantido com 22+ artigos aprofundados com autor verificado (`AuthorBio`).
-   - `sitemap.ts` sempre sincronizado com todas as rotas estáticas.
-2. **Discrição de IA**:
-   - Não divulgar que os textos ou páginas são gerados por IA; nunca expor modelos ou nomes de APIs no frontend.
-3. **UI/UX e Acessibilidade**:
-   - Alto contraste em formulários no modo claro e escuro.
-   - Botão do olhinho para mostrar/ocultar senha em campos protegidos.
-   - Logo oficial no cabeçalho e rodapé sem filtros de distorção de cor.
-4. **Comunicação**:
-   - Sempre enviar link clicável com 1 clique nas respostas ao usuário.
+## 🏛️ OS 16 PILARES MANDATÓRIOS
+1. **Auditoria Diagnóstica Completa** (Crítico, Importante, Recomendado).
+2. **Páginas Institucionais Robustas** (`/sobre`, `/contato`, `/politica-de-privacidade`, `/termos-de-uso`, `/cookies`, `/aviso-legal`) com canais reais e menção a cookies DART.
+3. **Consentimento de Cookies Completo** (Aceitar Todos, Apenas Essenciais, Personalizar) integrado ao Google Consent Mode v2.
+4. **Google Analytics 4 Instrumentado** (`file_uploaded`, `tool_started`, `tool_completed`, `file_downloaded`, `cta_clicked`).
+5. **SEO Técnico & Redirecionamentos 301** para todos os aliases de busca.
+6. **Landing Pages de Ferramentas Densas** com H1, passo a passo, tabela comparativa, segurança LGPD e FAQ com Schema JSON-LD.
+7. **Blog Rico e Aprofundado** com 20 a 25+ artigos longos (1.200 a 1.800 palavras) e componente `<AuthorBio />` com autor verificado (**Emanoel Douglas**).
+8. **Estrutura de Conversão & CTAs** contextuais e naturais.
+9. **Slots de Anúncios AdSense Blindados** contra cliques acidentais com rótulo "Publicidade" e altura mínima reservada contra CLS.
+10. **Core Web Vitals & Velocidade** (Scripts assíncronos, compressão, cache).
+11. **Responsividade Mobile-First** impecável.
+12. **Segurança e Privacidade** com descarte automático de arquivos temporários.
+13. **Página Inicial Categorizada** e explicação em 3 passos simples.
+14. **Grafo de Links Internos** conectado.
+15. **Acessibilidade & Alto Contraste** nos temas claro e escuro.
+16. **Validação 100% Livre de Erros** (`next build` gerando todas as rotas com Exit Code 0).
+
+## 🔒 POLÍTICAS DE SIGILO E IDIOMA
+- Proibido mencionar IA ou nomes de modelos em páginas públicas.
+- Respostas 100% em Português do Brasil.
+- Sempre fornecer link direto e clicável nas respostas ao usuário.
