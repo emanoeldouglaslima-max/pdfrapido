@@ -244,6 +244,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
   };
 }
+const RELATED_STYLES: Record<string, string> = {
+  'comprimir-pdf':             'bg-blue-50/90 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/30 text-blue-900 dark:text-blue-200 hover:bg-blue-100/50 dark:hover:bg-blue-900/50',
+  'converter-pdf-para-word':   'bg-indigo-50/90 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/30 text-indigo-900 dark:text-indigo-200 hover:bg-indigo-100/50 dark:hover:bg-indigo-900/50',
+  'converter-pdf-para-jpg':    'bg-green-50/90 dark:bg-green-950/40 border border-green-100 dark:border-green-900/30 text-green-900 dark:text-green-200 hover:bg-green-100/50 dark:hover:bg-green-900/50',
+  'converter-word-para-pdf':   'bg-purple-50/90 dark:bg-purple-950/40 border border-purple-100 dark:border-purple-900/30 text-purple-900 dark:text-purple-200 hover:bg-purple-100/50 dark:hover:bg-purple-900/50',
+  'converter-jpg-para-pdf':    'bg-yellow-50/90 dark:bg-amber-950/40 border border-yellow-100 dark:border-amber-900/30 text-amber-900 dark:text-amber-200 hover:bg-yellow-100/50 dark:hover:bg-amber-900/50',
+  'juntar-pdf':                'bg-orange-50/90 dark:bg-orange-950/40 border border-orange-100 dark:border-orange-900/30 text-orange-900 dark:text-orange-200 hover:bg-orange-100/50 dark:hover:bg-orange-900/50',
+  'dividir-pdf':               'bg-red-50/90 dark:bg-red-950/40 border border-red-100 dark:border-red-900/30 text-red-900 dark:text-red-200 hover:bg-red-100/50 dark:hover:bg-red-900/50',
+  'transcrever-video-em-texto': 'bg-emerald-50/90 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/30 text-emerald-900 dark:text-emerald-200 hover:bg-emerald-100/50 dark:hover:bg-emerald-900/50',
+  'proteger-pdf':               'bg-slate-50/90 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-900/30 text-slate-900 dark:text-slate-200 hover:bg-slate-100/50 dark:hover:bg-slate-900/50',
+};
 
 // Geração de páginas estáticas em tempo de build (SSG)
 export async function generateStaticParams() {
@@ -431,15 +442,18 @@ export default function ToolPage({ params }: PageProps) {
         <div className="mt-10">
           <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Outras ferramentas gratuitas</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {relatedTools.map((t) => (
-              <Link
-                key={t.slug}
-                href={`/${t.slug}`}
-                className={`${t.color} rounded-xl p-4 hover:shadow-sm transition-all text-sm font-semibold text-gray-800 dark:text-gray-200 hover:text-brand-700 dark:hover:text-brand-400 flex items-center gap-2`}
-              >
-                <span>{t.icon}</span> {t.name}
-              </Link>
-            ))}
+            {relatedTools.map((t) => {
+              const styleClass = RELATED_STYLES[t.slug] || 'bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-200';
+              return (
+                <Link
+                  key={t.slug}
+                  href={`/${t.slug}`}
+                  className={`${styleClass} rounded-xl p-4 hover:shadow-sm transition-all text-sm font-semibold flex items-center gap-2`}
+                >
+                  <span>{t.icon}</span> {t.name}
+                </Link>
+              );
+            })}
           </div>
         </div>
 
