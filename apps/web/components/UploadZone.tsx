@@ -11,6 +11,7 @@ interface UploadZoneProps {
   label?: string;
   sublabel?: string;
   disabled?: boolean;
+  files?: File[];
 }
 
 export default function UploadZone({
@@ -21,6 +22,7 @@ export default function UploadZone({
   label = 'Arraste seu PDF aqui',
   sublabel,
   disabled = false,
+  files = [],
 }: UploadZoneProps) {
   const [error, setError] = useState<string | null>(null);
 
@@ -52,6 +54,10 @@ export default function UploadZone({
   });
 
   const acceptedExtensions = Object.values(accept).flat().join(', ');
+  const hasFiles = files && files.length > 0;
+
+  // Calcula tamanho total dos arquivos selecionados
+  const totalSize = files.reduce((acc, f) => acc + f.size, 0);
 
   return (
     <div>
@@ -64,6 +70,8 @@ export default function UploadZone({
             ? 'border-brand-500 bg-gradient-to-br from-brand-50 to-indigo-50 dark:from-brand-950/30 dark:to-indigo-950/30 scale-[1.02] shadow-inner shadow-brand-100 dark:shadow-none'
             : isDragReject
             ? 'border-red-400 bg-red-50 dark:bg-red-950/20'
+            : hasFiles
+            ? 'border-emerald-500 dark:border-emerald-600 bg-gradient-to-br from-emerald-50/40 to-white dark:from-emerald-950/10 dark:to-gray-900 hover:border-brand-500 shadow-sm'
             : 'border-gray-200 dark:border-gray-700 bg-gradient-to-br from-gray-50/80 to-white dark:from-gray-800/50 dark:to-gray-900 hover:border-brand-400 dark:hover:border-brand-600 hover:bg-gradient-to-br hover:from-brand-50/40 hover:to-white dark:hover:from-brand-950/20 dark:hover:to-gray-900 hover:shadow-sm'
           }
           ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
@@ -77,56 +85,92 @@ export default function UploadZone({
           <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-purple-100 dark:bg-purple-800/20 rounded-full blur-2xl" />
         </div>
 
-        {/* Ícone central animado */}
-        <div className={`
-          relative mx-auto mb-5 w-20 h-20 rounded-2xl flex items-center justify-center
-          transition-all duration-300
-          ${isDragActive && !isDragReject
-            ? 'bg-brand-600 shadow-lg shadow-brand-300 scale-110'
-            : 'bg-gradient-to-br from-brand-100 to-indigo-100 dark:from-brand-900/40 dark:to-indigo-900/40 group-hover:from-brand-200 group-hover:to-indigo-200 dark:group-hover:from-brand-800/50 dark:group-hover:to-indigo-800/50'
-          }
-        `}>
-          {isDragActive && !isDragReject ? (
-            // Ícone de "soltar" com animação
-            <svg className="w-10 h-10 text-white animate-bounce-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
-          ) : isDragReject ? (
-            <svg className="w-10 h-10 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            // Ícone de upload padrão com efeito de subida
-            <svg className="w-10 h-10 text-brand-600 group-hover:animate-float" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-            </svg>
-          )}
-        </div>
+        {/* Estado com arquivos carregados */}
+        {hasFiles && !isDragActive ? (
+          <div className="space-y-4 animate-fade-in">
+            {/* Ícone de arquivo carregado com checkmark */}
+            <div className="relative mx-auto w-20 h-20 rounded-2xl bg-emerald-100 dark:bg-emerald-950/40 flex items-center justify-center shadow-md">
+              <svg className="w-10 h-10 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-black border-2 border-white dark:border-gray-900 shadow-md">
+                ✓
+              </span>
+            </div>
 
-        {/* Texto principal */}
-        <p className={`text-lg font-bold transition-colors duration-200 ${
-          isDragActive && !isDragReject ? 'text-brand-700 dark:text-brand-400' : 'text-gray-700 dark:text-gray-200 group-hover:text-brand-700 dark:group-hover:text-brand-400'
-        }`}>
-          {isDragActive && !isDragReject
-            ? '✨ Solte para processar!'
-            : isDragReject
-            ? '❌ Arquivo não suportado'
-            : label}
-        </p>
+            {/* Títulos e detalhes */}
+            <div className="space-y-1">
+              <h3 className="text-lg font-bold text-gray-800 dark:text-gray-150 leading-snug max-w-xl mx-auto truncate px-4">
+                {files.length === 1 ? files[0].name : `${files.length} arquivos selecionados`}
+              </h3>
+              <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5">
+                <span>{formatBytes(totalSize)}</span>
+                <span>•</span>
+                <span className="text-emerald-600 dark:text-emerald-400">Arquivo Pronto</span>
+              </p>
+            </div>
 
-        <p className="mt-2 text-sm text-gray-400">
-          {sublabel || (
-            <>
-              ou <span className="text-brand-600 dark:text-brand-400 font-semibold underline underline-offset-2">clique para selecionar</span>
-              {' · '}<span className="font-medium">{acceptedExtensions.toUpperCase()}</span>
-              {' · '}máx. <span className="font-medium">{maxSizeMB}MB</span>
-            </>
-          )}
-        </p>
+            {/* Sublabel de instrução */}
+            <p className="text-xs text-gray-500">
+              Arraste outro arquivo ou{' '}
+              <span className="text-brand-600 dark:text-brand-400 font-bold underline underline-offset-2 hover:text-brand-700">
+                clique aqui para trocar
+              </span>
+            </p>
+          </div>
+        ) : (
+          /* Estado padrão de upload ou arrastando */
+          <>
+            {/* Ícone central animado */}
+            <div className={`
+              relative mx-auto mb-5 w-20 h-20 rounded-2xl flex items-center justify-center
+              transition-all duration-300
+              ${isDragActive && !isDragReject
+                ? 'bg-brand-600 shadow-lg shadow-brand-300 scale-110'
+                : 'bg-gradient-to-br from-brand-100 to-indigo-100 dark:from-brand-900/40 dark:to-indigo-900/40 group-hover:from-brand-200 group-hover:to-indigo-200 dark:group-hover:from-brand-800/50 dark:group-hover:to-indigo-800/50'
+              }
+            `}>
+              {isDragActive && !isDragReject ? (
+                <svg className="w-10 h-10 text-white animate-bounce-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+              ) : isDragReject ? (
+                <svg className="w-10 h-10 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-10 h-10 text-brand-600 group-hover:animate-float" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+              )}
+            </div>
 
-        {/* Ícone de segurança */}
-        <div className="mt-4 flex items-center justify-center gap-1.5 text-[11px] text-gray-400">
+            {/* Texto principal */}
+            <p className={`text-lg font-bold transition-colors duration-200 ${
+              isDragActive && !isDragReject ? 'text-brand-700 dark:text-brand-400' : 'text-gray-700 dark:text-gray-200 group-hover:text-brand-700 dark:group-hover:text-brand-400'
+            }`}>
+              {isDragActive && !isDragReject
+                ? '✨ Solte para processar!'
+                : isDragReject
+                ? '❌ Arquivo não suportado'
+                : label}
+            </p>
+
+            <p className="mt-2 text-sm text-gray-400">
+              {sublabel || (
+                <>
+                  ou <span className="text-brand-600 dark:text-brand-400 font-semibold underline underline-offset-2">clique para selecionar</span>
+                  {' · '}<span className="font-medium">{acceptedExtensions.toUpperCase()}</span>
+                  {' · '}máx. <span className="font-medium">{maxSizeMB}MB</span>
+                </>
+              )}
+            </p>
+          </>
+        )}
+
+        {/* Ícone de segurança inferior */}
+        <div className="mt-4 flex items-center justify-center gap-1.5 text-[11px] text-gray-400 select-none">
           <svg className="w-3.5 h-3.5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
           </svg>
@@ -145,4 +189,11 @@ export default function UploadZone({
       )}
     </div>
   );
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes === 0) return '0 B';
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }

@@ -189,10 +189,11 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
             label={config.label}
             sublabel={config.sublabel}
             disabled={false}
+            files={files}
           />
 
-          {/* Arquivos selecionados — preview com alto contraste, ícone, nome e tamanho */}
-          {files.length > 0 && (
+          {/* Arquivos selecionados — listados em lote apenas se a ferramenta aceitar múltiplos arquivos */}
+          {files.length > 0 && config.multiple && (
             <div className="mt-4 space-y-2.5">
               {files.map((f, i) => (
                 <div
