@@ -26,12 +26,57 @@ const nextConfig = {
     ];
   },
 
-  // Redirects canônicos (sem www, com https)
+  // Redirects canônicos e aliases populares de busca (301)
   async redirects() {
     return [
       {
         source: '/index',
         destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/pdf-para-word',
+        destination: '/converter-pdf-para-word',
+        permanent: true,
+      },
+      {
+        source: '/pdf-para-jpg',
+        destination: '/converter-pdf-para-jpg',
+        permanent: true,
+      },
+      {
+        source: '/word-para-pdf',
+        destination: '/converter-word-para-pdf',
+        permanent: true,
+      },
+      {
+        source: '/imagem-para-pdf',
+        destination: '/converter-jpg-para-pdf',
+        permanent: true,
+      },
+      {
+        source: '/jpg-para-pdf',
+        destination: '/converter-jpg-para-pdf',
+        permanent: true,
+      },
+      {
+        source: '/png-para-pdf',
+        destination: '/converter-jpg-para-pdf',
+        permanent: true,
+      },
+      {
+        source: '/video-para-texto',
+        destination: '/transcrever-video-em-texto',
+        permanent: true,
+      },
+      {
+        source: '/audio-para-texto',
+        destination: '/transcrever-video-em-texto',
+        permanent: true,
+      },
+      {
+        source: '/transcrever-audio',
+        destination: '/transcrever-video-em-texto',
         permanent: true,
       },
     ];

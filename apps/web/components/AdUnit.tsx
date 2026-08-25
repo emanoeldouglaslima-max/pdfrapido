@@ -7,6 +7,7 @@ interface AdUnitProps {
   format?: 'auto' | 'fluid' | 'rectangle' | 'horizontal';
   style?: React.CSSProperties;
   className?: string;
+  showLabel?: boolean;
 }
 
 declare global {
@@ -15,7 +16,13 @@ declare global {
   }
 }
 
-export default function AdUnit({ slot, format = 'auto', style, className }: AdUnitProps) {
+export default function AdUnit({
+  slot,
+  format = 'auto',
+  style,
+  className = '',
+  showLabel = true,
+}: AdUnitProps) {
   const adRef = useRef<HTMLModElement>(null);
   const pushed = useRef(false);
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID;
@@ -27,15 +34,13 @@ export default function AdUnit({ slot, format = 'auto', style, className }: AdUn
   );
 
   useEffect(() => {
-    // Push only real, approved ad units. The AdSense account script can still
-    // live in <head> for site review without rendering placeholder ad blocks.
     if (!canShowAds || pushed.current) return;
 
     try {
       pushed.current = true;
       (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {
-      // Silencioso — pode falhar em dev sem AdSense configurado
+    } catch {
+      // Silencioso em caso de bloqueador de anúncios ou ambiente de testes
     }
   }, [canShowAds]);
 
@@ -44,11 +49,18 @@ export default function AdUnit({ slot, format = 'auto', style, className }: AdUn
   }
 
   return (
-    // Wrapper com min-height fixo para evitar CLS
     <div
-      className={className}
-      style={{ minHeight: format === 'rectangle' ? 250 : 90, ...style }}
+      className={`my-6 flex flex-col items-center justify-center ${className}`}
+      style={{
+        minHeight: format === 'rectangle' ? 250 : 90,
+        ...style,
+      }}
     >
+      {showLabel && (
+        <span className="text-[10px] uppercase font-bold tracking-widest text-gray-400 dark:text-gray-500 mb-1.5 select-none">
+          Publicidade
+        </span>
+      )}
       <ins
         ref={adRef}
         className="adsbygoogle"

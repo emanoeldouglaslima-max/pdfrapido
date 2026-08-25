@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import { trackFileUpload, trackToolStart, trackToolComplete, trackDownload } from '../../lib/analytics';
 
 interface Segment {
   start: number;
@@ -90,6 +91,7 @@ export default function TranscreverVideoPage() {
       }
       setFile(selected);
       setResult(null);
+      trackFileUpload('transcrever-video-em-texto', 1, selected.size);
       if (fileUrl) URL.revokeObjectURL(fileUrl);
       setFileUrl(URL.createObjectURL(selected));
     }
@@ -105,6 +107,7 @@ export default function TranscreverVideoPage() {
       }
       setFile(selected);
       setResult(null);
+      trackFileUpload('transcrever-video-em-texto', 1, selected.size);
       if (fileUrl) URL.revokeObjectURL(fileUrl);
       setFileUrl(URL.createObjectURL(selected));
     }
@@ -123,7 +126,8 @@ export default function TranscreverVideoPage() {
     if (!file) return;
     setIsProcessing(true);
     setProgress(10);
-    setStatusMessage('Enviando arquivo para o servidor de IA...');
+    setStatusMessage('Enviando arquivo para o servidor de processamento...');
+    trackToolStart('transcrever-video-em-texto', { language, model: modelMode });
 
     const formData = new FormData();
     formData.append('file', file);
@@ -162,6 +166,7 @@ export default function TranscreverVideoPage() {
             clearInterval(pollInterval);
             setProgress(100);
             setIsProcessing(false);
+            trackToolComplete('transcrever-video-em-texto');
 
             let segments = statusData.data.segments || [];
             if (segments.length === 0 && statusData.data.subtitles) {
@@ -244,6 +249,7 @@ export default function TranscreverVideoPage() {
     if (!result || !file) return;
     const textContent = getEditableText();
     const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+    trackDownload('transcrever-video-em-texto', `${file.name.replace(/\.[^/.]+$/, '')}_transcricao.txt`);
     downloadBlob(blob, `${file.name.replace(/\.[^/.]+$/, '')}_transcricao.txt`);
   };
 
@@ -251,6 +257,7 @@ export default function TranscreverVideoPage() {
   const handleDownloadDocx = async () => {
     if (!result || !file) return;
     try {
+      trackDownload('transcrever-video-em-texto', `${file.name.replace(/\.[^/.]+$/, '')}_transcricao.docx`);
       const { Document, Packer, Paragraph, TextRun, HeadingLevel } = await import('docx');
       const textContent = getEditableText();
       const rawParagraphs = textContent.split(/\n+/).filter(Boolean);
@@ -380,6 +387,7 @@ export default function TranscreverVideoPage() {
 
       const pdfBytes = await pdfDoc.save();
       const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
+      trackDownload('transcrever-video-em-texto', `${file.name.replace(/\.[^/.]+$/, '')}_transcricao.pdf`);
       downloadBlob(blob, `${file.name.replace(/\.[^/.]+$/, '')}_transcricao.pdf`);
     } catch (err: any) {
       alert('Erro ao gerar PDF: ' + err.message);

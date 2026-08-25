@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TOOLS } from '../constants';
 import UploadZone from '../../components/UploadZone';
 import ProgressBar from '../../components/ProgressBar';
 import DownloadCard from '../../components/DownloadCard';
 import { usePdfTool } from '../hooks/usePdfTool';
+import { trackFileUpload, trackToolStart, trackToolComplete } from '../../lib/analytics';
 
 // Configuração específica por ferramenta (lógica interna do cliente)
 const TOOL_CONFIG: Record<string, {
@@ -132,8 +133,23 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
+  useEffect(() => {
+    if (status === 'done') {
+      trackToolComplete(toolSlug);
+    }
+  }, [status, toolSlug]);
+
+  const handleFilesSelected = (newFiles: File[]) => {
+    setFiles(newFiles);
+    if (newFiles.length > 0) {
+      const totalBytes = newFiles.reduce((acc, f) => acc + f.size, 0);
+      trackFileUpload(toolSlug, newFiles.length, totalBytes);
+    }
+  };
+
   const handleUpload = async () => {
     if (files.length === 0) return;
+    trackToolStart(toolSlug, opts);
     const fd = config.buildFormData(files, opts);
     await submit(config.endpoint, fd);
   };
@@ -167,7 +183,7 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
       {status === 'idle' || status === 'failed' ? (
         <>
           <UploadZone
-            onFiles={setFiles}
+            onFiles={handleFilesSelected}
             accept={config.accept}
             multiple={config.multiple}
             label={config.label}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { trackDownload } from '../lib/analytics';
 
 interface DownloadCardProps {
   downloadUrl: string;
@@ -26,6 +27,7 @@ export default function DownloadCard({
 
   const handleDownload = () => {
     setDownloaded(true);
+    trackDownload('download_card', filename);
     const a = document.createElement('a');
     a.href = downloadUrl;
     a.download = filename;
