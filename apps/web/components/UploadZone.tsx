@@ -87,11 +87,18 @@ export default function UploadZone({
 
         {/* Estado com arquivos carregados */}
         {hasFiles && !isDragActive ? (
-          <div className="space-y-4 animate-fade-in">
+          <div className="space-y-4 animate-fade-in relative z-10">
+            {/* Imagem de sobreposição do PDF (30% opacidade / pouco destaque) no fundo */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.25] select-none overflow-hidden -z-10">
+              <svg className="w-56 h-56 text-red-500/20 dark:text-red-500/10 scale-125" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9.5 8.5c0 .8-.7 1.5-1.5 1.5H7v1.5H5.5V9H8c.8 0 1.5.7 1.5 1.5v1zm5 2c0 .8-.7 1.5-1.5 1.5h-2.5V9H13c.8 0 1.5.7 1.5 1.5v3zm4.5-3.5h-3V15h-1.5V9H19v1.5zM9 10.5H8v1h1v-1zm4 1.5h-1v1.5h1V12z" />
+              </svg>
+            </div>
+
             {/* Ícone de arquivo carregado com checkmark */}
-            <div className="relative mx-auto w-20 h-20 rounded-2xl bg-emerald-100 dark:bg-emerald-950/40 flex items-center justify-center shadow-md">
-              <svg className="w-10 h-10 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            <div className="relative mx-auto w-20 h-20 rounded-2xl bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/20 flex items-center justify-center shadow-md">
+              <svg className="w-11 h-11 text-red-600 dark:text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9.5 8.5c0 .8-.7 1.5-1.5 1.5H7v1.5H5.5V9H8c.8 0 1.5.7 1.5 1.5v1zm5 2c0 .8-.7 1.5-1.5 1.5h-2.5V9H13c.8 0 1.5.7 1.5 1.5v3zm4.5-3.5h-3V15h-1.5V9H19v1.5zM9 10.5H8v1h1v-1zm4 1.5h-1v1.5h1V12z" />
               </svg>
               <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-black border-2 border-white dark:border-gray-900 shadow-md">
                 ✓
