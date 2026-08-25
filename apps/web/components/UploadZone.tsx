@@ -87,41 +87,76 @@ export default function UploadZone({
 
         {/* Estado com arquivos carregados */}
         {hasFiles && !isDragActive ? (
-          <div className="space-y-4 animate-fade-in relative z-10">
-            {/* Imagem de sobreposição do PDF (30% opacidade / pouco destaque) no fundo */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.25] select-none overflow-hidden -z-10">
-              <svg className="w-56 h-56 text-red-500/20 dark:text-red-500/10 scale-125" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9.5 8.5c0 .8-.7 1.5-1.5 1.5H7v1.5H5.5V9H8c.8 0 1.5.7 1.5 1.5v1zm5 2c0 .8-.7 1.5-1.5 1.5h-2.5V9H13c.8 0 1.5.7 1.5 1.5v3zm4.5-3.5h-3V15h-1.5V9H19v1.5zM9 10.5H8v1h1v-1zm4 1.5h-1v1.5h1V12z" />
+          <div className="space-y-5 animate-fade-in relative z-10 py-2">
+            {/* 1. Marca d'água de sobreposição no fundo com 30% de opacidade / pouco destaque */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.30] select-none overflow-hidden -z-10">
+              <svg className="w-64 h-64 text-red-500/25 dark:text-red-400/15 scale-125" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
               </svg>
             </div>
 
-            {/* Ícone de arquivo carregado com checkmark */}
-            <div className="relative mx-auto w-20 h-20 rounded-2xl bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/20 flex items-center justify-center shadow-md">
-              <svg className="w-11 h-11 text-red-600 dark:text-red-500" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9.5 8.5c0 .8-.7 1.5-1.5 1.5H7v1.5H5.5V9H8c.8 0 1.5.7 1.5 1.5v1zm5 2c0 .8-.7 1.5-1.5 1.5h-2.5V9H13c.8 0 1.5.7 1.5 1.5v3zm4.5-3.5h-3V15h-1.5V9H19v1.5zM9 10.5H8v1h1v-1zm4 1.5h-1v1.5h1V12z" />
-              </svg>
-              <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-black border-2 border-white dark:border-gray-900 shadow-md">
+            {/* 2. Aura de Brilho Gradiente e Cartão 3D do Ícone */}
+            <div className="relative mx-auto w-24 h-28 flex items-center justify-center select-none">
+              <div className="absolute inset-0 bg-gradient-to-r from-red-500/30 via-brand-500/30 to-purple-500/30 rounded-2xl blur-xl animate-pulse" />
+              
+              {/* Cartão de Documento 3D Interativo */}
+              <div className="relative w-full h-full bg-white dark:bg-gray-800 border-2 border-red-500/80 dark:border-red-500/90 rounded-2xl shadow-xl shadow-red-500/10 flex flex-col justify-between p-3 overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                {/* Orelha dobrada no canto superior direito */}
+                <div className="absolute top-0 right-0 w-6 h-6 bg-red-100 dark:bg-gray-700 border-l border-b border-red-200 dark:border-gray-600 rounded-bl-lg" />
+
+                {/* Linhas simulando texto no documento */}
+                <div className="space-y-1.5 pt-1">
+                  <div className="w-10 h-1.5 bg-red-400/40 rounded-full" />
+                  <div className="w-14 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full" />
+                  <div className="w-8 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full" />
+                </div>
+
+                {/* Badge com a extensão em tipografia vetorial nítida */}
+                <div className="bg-gradient-to-r from-red-600 to-rose-600 text-white font-black text-[11px] tracking-wider uppercase py-1 px-2 rounded-lg text-center shadow-md">
+                  {files[0].name.split('.').pop()?.substring(0, 4) || 'PDF'}
+                </div>
+
+                {/* Linha inferior de detalhe */}
+                <div className="w-full flex justify-between items-center pb-0.5">
+                  <div className="w-3 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+                  <div className="w-6 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+                </div>
+              </div>
+
+              {/* Selo verde de confirmação reluzente */}
+              <span className="absolute -bottom-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-extrabold border-2 border-white dark:border-gray-900 shadow-lg shadow-emerald-500/40 animate-bounce-slow">
                 ✓
               </span>
             </div>
 
-            {/* Títulos e detalhes */}
-            <div className="space-y-1">
-              <h3 className="text-lg font-bold text-gray-800 dark:text-gray-150 leading-snug max-w-xl mx-auto truncate px-4">
-                {files.length === 1 ? files[0].name : `${files.length} arquivos selecionados`}
-              </h3>
-              <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5">
-                <span>{formatBytes(totalSize)}</span>
-                <span>•</span>
-                <span className="text-emerald-600 dark:text-emerald-400">Arquivo Pronto</span>
-              </p>
+            {/* 3. Título do arquivo e meta em alta visibilidade */}
+            <div className="space-y-1.5 pt-1">
+              <div className="inline-flex items-center gap-2 bg-slate-100 dark:bg-gray-800/90 border border-slate-200 dark:border-gray-700 rounded-xl px-4 py-2 text-sm shadow-sm max-w-xl mx-auto">
+                <span className="text-base">📄</span>
+                <span className="font-bold text-gray-900 dark:text-gray-100 truncate max-w-xs md:max-w-md">
+                  {files.length === 1 ? files[0].name : `${files.length} arquivos selecionados`}
+                </span>
+                <span className="text-xs font-bold text-brand-700 dark:text-brand-300 bg-brand-100/80 dark:bg-brand-900/60 px-2 py-0.5 rounded-md border border-brand-200 dark:border-brand-700">
+                  {formatBytes(totalSize)}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-center gap-2 text-xs">
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                  Arquivo pronto para processamento
+                </span>
+              </div>
             </div>
 
-            {/* Sublabel de instrução */}
-            <p className="text-xs text-gray-500">
-              Arraste outro arquivo ou{' '}
+            {/* 4. Sublabel de alteração */}
+            <p className="text-xs text-gray-400 pt-1">
+              Deseja trocar?{' '}
               <span className="text-brand-600 dark:text-brand-400 font-bold underline underline-offset-2 hover:text-brand-700">
-                clique aqui para trocar
+                Clique aqui ou arraste outro arquivo
               </span>
             </p>
           </div>
