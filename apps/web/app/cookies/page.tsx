@@ -4,7 +4,7 @@ import Footer from '../../components/Footer';
 
 export const metadata: Metadata = {
   title: 'Política de Cookies',
-  description: 'Saiba como e por que utilizamos cookies em nossa plataforma. O PDFRápido preza pela transparência e privacidade.',
+  description: 'Conheça a lista detalhada de cookies e chaves de armazenamento local (localStorage) utilizados no PDFRápido, alinhada ao Google Consent Mode v2 e à LGPD.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/cookies',
   },
@@ -19,53 +19,82 @@ export default function CookiesPage() {
         
         <div className="prose prose-gray dark:prose-invert max-w-none text-sm text-gray-600 dark:text-gray-300 leading-relaxed space-y-6">
           <p>
-            No <strong>PDFRápido</strong>, acessível em <a href="https://pdfrapido.com.br" className="text-brand-600 dark:text-brand-400 hover:underline">pdfrapido.com.br</a>, acreditamos em ser claros e abertos sobre como coletamos e usamos dados relacionados a você. No espírito de transparência, esta política fornece informações detalhadas sobre como e quando usamos cookies em nosso site.
+            No <strong>PDFRápido</strong>, acessível em <a href="https://pdfrapido.com.br" className="text-brand-600 dark:text-brand-400 hover:underline">pdfrapido.com.br</a>, prezamos pela transparência absoluta sobre o armazenamento de dados no navegador do usuário. Esta página descreve detalhadamente a lista de cookies e itens de armazenamento local (<code>localStorage</code>) realmente utilizados em nossa plataforma.
           </p>
 
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-8">1. O que são Cookies?</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-8">1. O que são Cookies e localStorage?</h2>
           <p>
-            Cookies são pequenos arquivos de texto que são armazenados no seu computador ou dispositivo móvel quando você visita um site. Eles são amplamente utilizados para fazer os sites funcionarem, ou funcionarem de forma mais eficiente, bem como para fornecer informações aos proprietários do site.
+            Cookies são pequenos arquivos de texto armazenados no seu dispositivo pelo navegador. O <code>localStorage</code> é uma tecnologia web moderna que permite guardar preferências locais diretamente no seu navegador, sem enviar dados a servidores em todas as requisições.
           </p>
 
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-8">2. Como o PDFRápido utiliza Cookies?</h2>
-          <p>
-            Nós utilizamos cookies por vários motivos detalhados abaixo. Infelizmente, na maioria dos casos, não existem opções padrão do setor para desativar os cookies sem desativar completamente a funcionalidade e os recursos que eles adicionam a este site. É recomendável que você deixe todos os cookies se não tiver certeza se precisa deles ou não, caso sejam usados para fornecer um serviço que você utiliza.
-          </p>
-
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-8">3. Tipos de Cookies que Utilizamos</h2>
-          <ul className="list-disc pl-5 space-y-2">
-            <li>
-              <strong>Cookies Necessários:</strong> Estes cookies são essenciais para que você possa navegar pelo site e usar seus recursos. Sem esses cookies, os serviços que você solicitou (como processamento de arquivos) não podem ser fornecidos.
-            </li>
-            <li>
-              <strong>Cookies de Desempenho e Estatísticas:</strong> Coletam informações sobre como os visitantes utilizam o site, por exemplo, quais páginas são acessadas com mais frequência. Esses dados nos ajudam a otimizar o site e facilitar a navegação.
-            </li>
-            <li>
-              <strong>Cookies de Funcionalidade:</strong> Permitem que o site se lembre de escolhas que você faz (como suas preferências de ferramentas ou configurações) e forneça recursos mais aprimorados e personalizados.
-            </li>
-            <li>
-              <strong>Cookies de Publicidade (Google AdSense):</strong> O Google, como fornecedor terceirizado, utiliza cookies para veicular anúncios em nosso site. Com o cookie DART, o Google e seus parceiros podem veicular anúncios para os usuários com base nas visitas a este e a outros sites na Internet.
-            </li>
-          </ul>
-
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-8">4. Como gerenciar ou bloquear Cookies?</h2>
-          <p>
-            Você pode impedir a configuração de cookies ajustando as configurações do seu navegador (consulte a Ajuda do seu navegador para saber como fazer isso). Esteja ciente de que a desativação de cookies afetará a funcionalidade deste e de muitos outros sites que você visita. A desativação de cookies geralmente resultará na desativação de certas funcionalidades e recursos deste site.
-          </p>
-          <p>
-            Para optar por não participar da veiculação de anúncios personalizados do Google AdSense, você pode acessar a página de <a href="https://settings.google.com/ads" target="_blank" rel="noopener noreferrer" className="text-brand-600 dark:text-brand-400 hover:underline">Configurações de Anúncios do Google</a> ou desativar o uso de cookies de publicidade personalizada de terceiros visitando <a href="https://aboutads.info" target="_blank" rel="noopener noreferrer" className="text-brand-600 dark:text-brand-400 hover:underline">aboutads.info</a>.
-          </p>
-
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-8">5. Mais Informações</h2>
-          <p>
-            Esperamos que esta política tenha esclarecido suas dúvidas. Se houver algo que você não tem certeza se precisa ou não, geralmente é mais seguro deixar os cookies ativados, caso interaja com um dos recursos que você usa em nosso site.
-          </p>
-          <p>
-            Para qualquer esclarecimento adicional, sinta-se à vontade para entrar em contato conosco através da nossa página de <a href="/contato" className="text-brand-600 dark:text-brand-400 hover:underline">Contato</a>.
-          </p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-8">2. Inventário Real de Cookies e Armazenamento do PDFRápido</h2>
           
+          <div className="overflow-x-auto my-6 not-prose">
+            <table className="w-full text-left border-collapse border border-gray-200 dark:border-gray-800 text-xs">
+              <thead>
+                <tr className="bg-gray-100 dark:bg-gray-850 text-gray-900 dark:text-white">
+                  <th className="p-3 border border-gray-200 dark:border-gray-800 font-bold">Chave / Cookie</th>
+                  <th className="p-3 border border-gray-200 dark:border-gray-800 font-bold">Tipo</th>
+                  <th className="p-3 border border-gray-200 dark:border-gray-800 font-bold">Fornecedor</th>
+                  <th className="p-3 border border-gray-200 dark:border-gray-800 font-bold">Finalidade</th>
+                  <th className="p-3 border border-gray-200 dark:border-gray-800 font-bold">Duração</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-800 text-gray-600 dark:text-gray-300">
+                <tr>
+                  <td className="p-3 font-mono">theme</td>
+                  <td className="p-3 font-semibold text-green-600 dark:text-green-400">localStorage</td>
+                  <td className="p-3">PDFRápido</td>
+                  <td className="p-3">Salva a preferência de tema (claro/escuro) escolhida pelo usuário.</td>
+                  <td className="p-3">Persistente</td>
+                </tr>
+                <tr>
+                  <td className="p-3 font-mono">pdfrapido_cookie_consent</td>
+                  <td className="p-3 font-semibold text-green-600 dark:text-green-400">localStorage</td>
+                  <td className="p-3">PDFRápido</td>
+                  <td className="p-3">Armazena o registro de aceite ou recusa dos cookies no banner.</td>
+                  <td className="p-3">Persistente</td>
+                </tr>
+                <tr>
+                  <td className="p-3 font-mono">pdfrapido_rating_*</td>
+                  <td className="p-3 font-semibold text-green-600 dark:text-green-400">localStorage</td>
+                  <td className="p-3">PDFRápido</td>
+                  <td className="p-3">Armazena a nota de avaliação em estrelas dada às ferramentas localmente.</td>
+                  <td className="p-3">Persistente</td>
+                </tr>
+                <tr>
+                  <td className="p-3 font-mono">__gads, __gpi</td>
+                  <td className="p-3 font-semibold text-blue-600 dark:text-blue-400">Cookie terceiros</td>
+                  <td className="p-3">Google AdSense</td>
+                  <td className="p-3">Veiculação de publicidade com suporte ao Google Consent Mode v2.</td>
+                  <td className="p-3">13 meses</td>
+                </tr>
+                <tr>
+                  <td className="p-3 font-mono">_ga, _ga_*</td>
+                  <td className="p-3 font-semibold text-purple-600 dark:text-purple-400">Cookie terceiros</td>
+                  <td className="p-3">Google Analytics 4</td>
+                  <td className="p-3">Medição agregada de visitas ao site (apenas se a env GA4 estiver configurada).</td>
+                  <td className="p-3">2 anos</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-8">3. Suporte ao Google Consent Mode v2</h2>
+          <p>
+            Nosso site implementa o <strong>Google Consent Mode v2</strong>. Isso significa que, por padrão, o carregamento de cookies de rastreamento de anúncios e métricas fica bloqueado no estado <code>denied</code> até que você dê seu consentimento explícito no banner de privacidade.
+          </p>
+
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-8">4. Como Alterar ou Revogar suas Preferências</h2>
+          <p>
+            Você pode alterar suas preferências de cookies a qualquer momento limpando os dados de navegação do seu browser ou ajustando as configurações diretamente na página de <a href="/politica-de-privacidade" className="text-brand-600 dark:text-brand-400 hover:underline">Política de Privacidade</a> ou no banner de consentimento.
+          </p>
+          <p>
+            Para gerenciar anúncios personalizados veiculados pelo Google, você também pode acessar o portal oficial: <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="text-brand-600 dark:text-brand-400 hover:underline">Configurações de Anúncios do Google</a>.
+          </p>
+
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-10">
-            Última atualização: 14 de julho de 2026.
+            Última atualização e revisão técnica: 28 de agosto de 2026.
           </p>
         </div>
       </main>

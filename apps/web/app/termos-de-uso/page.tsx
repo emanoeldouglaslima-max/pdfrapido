@@ -66,7 +66,7 @@ export default function TermosUso() {
           </p>
           
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-10">
-            Última atualização: 26 de junho de 2026.
+            Última atualização: 28 de agosto de 2026.
           </p>
         </div>
       </main>
