@@ -100,7 +100,7 @@ export default function ArtigoProtegerPdfSenha() {
               <li>Acesse a ferramenta <strong><Link href="/proteger-pdf" className="text-brand-600 dark:text-brand-400 underline">Proteger PDF com Senha</Link></strong> no PDFRápido.</li>
               <li>Arraste o arquivo PDF que deseja criptografar.</li>
               <li>Digite uma senha forte e utilize o <strong>ícone de olho</strong> para confirmar a digitação exata dos caracteres.</li>
-              <li>Clique em <strong>"Proteger PDF agora"</strong>.</li>
+              <li>Clique em <strong>&quot;Proteger PDF agora&quot;</strong>.</li>
               <li>Faça o download do PDF criptografado. A partir de agora, qualquer pessoa precisará da senha para abrir o arquivo.</li>
             </ol>
 

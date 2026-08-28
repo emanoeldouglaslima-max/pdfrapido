@@ -121,11 +121,6 @@ interface ToolClientPageProps {
 }
 
 export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
-  const tool = TOOLS.find((t) => t.slug === toolSlug);
-  const config = TOOL_CONFIG[toolSlug];
-
-  if (!tool || !config) return null;
-
   const { status, jobId, uploadProgress, downloadUrl, meta, errorMsg, submit, reset, handleDone, handleError } = usePdfTool();
 
   const [files, setFiles] = useState<File[]>([]);
@@ -138,6 +133,11 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
       trackToolComplete(toolSlug);
     }
   }, [status, toolSlug]);
+
+  const tool = TOOLS.find((t) => t.slug === toolSlug);
+  const config = TOOL_CONFIG[toolSlug];
+
+  if (!tool || !config) return null;
 
   const handleFilesSelected = (newFiles: File[]) => {
     setFiles(newFiles);

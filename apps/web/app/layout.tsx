@@ -1,7 +1,14 @@
+import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import CookieBanner from '../components/CookieBanner';
 import './globals.css';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrapido.com.br';
 const SITE_URL = rawSiteUrl.includes('xn--') || rawSiteUrl.includes('pdfrápido') 
@@ -99,13 +106,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
-        {/* Google Fonts — Inter */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
         {/* Google AdSense */}
         {ADSENSE_ID && (
           <script
@@ -127,7 +127,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </Script>
         )}
       </head>
-      <body className="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 antialiased transition-colors duration-300 min-h-screen flex flex-col justify-between">
+      <body className={`${inter.className} bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 antialiased transition-colors duration-300 min-h-screen flex flex-col justify-between`}>
         <div className="flex-grow flex flex-col">
           {children}
         </div>

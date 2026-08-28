@@ -135,7 +135,7 @@ export default function ArtigoTranscreverAudio() {
               <li>Acesse a ferramenta gratuita <strong><Link href="/transcrever-video-em-texto" className="text-brand-600 dark:text-brand-400 underline">Transcrever Vídeo e Áudio em Texto</Link></strong> no PDFRápido.</li>
               <li>Clique na caixa de seleção ou arraste seu arquivo (MP4, MP3, WEBM, MOV, WAV de até 100MB).</li>
               <li>Selecione o idioma original da fala (Português, Inglês ou Espanhol).</li>
-              <li>Clique no botão <strong>"Transcrever Agora"</strong> para iniciar o reconhecimento de fala na nuvem.</li>
+              <li>Clique no botão <strong>&quot;Transcrever Agora&quot;</strong> para iniciar o reconhecimento de fala na nuvem.</li>
               <li>Após alguns instantes, visualize a transcrição dividida por tempo ou o texto corrido contínuo.</li>
               <li>Exporte o resultado formatado em <strong>PDF (.pdf)</strong> ou <strong>Word (.docx)</strong> com 1 clique.</li>
             </ol>

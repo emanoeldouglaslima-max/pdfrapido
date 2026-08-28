@@ -83,7 +83,7 @@ export default function ArtigoPdfCorrompido() {
 
           <div className="prose prose-gray dark:prose-invert max-w-none text-base text-gray-700 dark:text-gray-300 leading-relaxed space-y-6">
             <p className="text-lg font-medium text-gray-800 dark:text-gray-200">
-              A mensagem de erro <em>"Não foi possível abrir o arquivo porque ele está danificado ou em formato não suportado"</em> é uma das mais frustrantes ao lidar com documentos essenciais. Descubra os principais motivos que levam à corrupção da estrutura do PDF e como resgatar seu conteúdo.
+              A mensagem de erro <em>&quot;Não foi possível abrir o arquivo porque ele está danificado ou em formato não suportado&quot;</em> é uma das mais frustrantes ao lidar com documentos essenciais. Descubra os principais motivos que levam à corrupção da estrutura do PDF e como resgatar seu conteúdo.
             </p>
 
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-8">Principais Causas de Corrupção em PDFs</h2>
