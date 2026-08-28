@@ -65,19 +65,19 @@ export default function Footer() {
             <p className="text-white font-bold mb-4 text-sm tracking-wider uppercase">Institucional</p>
             <ul className="space-y-1">
               <li>
-                <Link href="/sobre" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group">
+                <Link href="/sobre" rel="about" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group">
                   <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  Sobre Nós
+                  Sobre Nós (Sobre)
                 </Link>
               </li>
               <li>
-                <Link href="/contato" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group">
+                <Link href="/contato" rel="contact" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group">
                   <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
-                  Fale Conosco
+                  Contato (Fale Conosco)
                 </Link>
               </li>
               <li>
@@ -101,6 +101,7 @@ export default function Footer() {
             <div className="space-y-1">
               <Link
                 href="/politica-de-privacidade"
+                rel="privacy-policy"
                 className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group"
               >
                 <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -110,12 +111,13 @@ export default function Footer() {
               </Link>
               <Link
                 href="/termos-de-uso"
+                rel="terms-of-service"
                 className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group"
               >
                 <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                Termos de Uso
+                Termos e Condições (Termos de Uso)
               </Link>
               <Link
                 href="/cookies"
@@ -129,13 +131,14 @@ export default function Footer() {
               </Link>
               <Link
                 href="/aviso-legal"
+                rel="disclaimer"
                 className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group"
               >
                 <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3 3 7l9 4 9-4-9-4z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10v5c0 2.21 3.13 4 7 4s7-1.79 7-4v-5" />
                 </svg>
-                Aviso Legal
+                Isenção de Responsabilidade (Aviso Legal)
               </Link>
             </div>
           </div>

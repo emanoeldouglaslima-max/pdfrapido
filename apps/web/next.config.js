@@ -79,6 +79,67 @@ const nextConfig = {
         destination: '/transcrever-video-em-texto',
         permanent: true,
       },
+      // Aliases para páginas de políticas e transparência exigidas pelo AdSense
+      {
+        source: '/privacy',
+        destination: '/politica-de-privacidade',
+        permanent: true,
+      },
+      {
+        source: '/privacy-policy',
+        destination: '/politica-de-privacidade',
+        permanent: true,
+      },
+      {
+        source: '/privacidade',
+        destination: '/politica-de-privacidade',
+        permanent: true,
+      },
+      {
+        source: '/about',
+        destination: '/sobre',
+        permanent: true,
+      },
+      {
+        source: '/about-us',
+        destination: '/sobre',
+        permanent: true,
+      },
+      {
+        source: '/contact',
+        destination: '/contato',
+        permanent: true,
+      },
+      {
+        source: '/contact-us',
+        destination: '/contato',
+        permanent: true,
+      },
+      {
+        source: '/fale-conosco',
+        destination: '/contato',
+        permanent: true,
+      },
+      {
+        source: '/disclaimer',
+        destination: '/aviso-legal',
+        permanent: true,
+      },
+      {
+        source: '/isencao-de-responsabilidade',
+        destination: '/aviso-legal',
+        permanent: true,
+      },
+      {
+        source: '/terms',
+        destination: '/termos-de-uso',
+        permanent: true,
+      },
+      {
+        source: '/terms-of-service',
+        destination: '/termos-de-uso',
+        permanent: true,
+      },
     ];
   },
 
