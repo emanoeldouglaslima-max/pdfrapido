@@ -22,7 +22,7 @@ export default function Footer() {
               <Logo forceDark />
             </Link>
             <p className="mt-2 text-sm text-gray-500 max-w-xs leading-relaxed">
-              Ferramentas de PDF gratuitas para converter, comprimir, juntar e organizar seus documentos. Seus arquivos são excluídos automaticamente após o processamento.
+              Ferramentas de PDF gratuitas para converter, comprimir, juntar e organizar seus documentos. Seus arquivos são excluídos automaticamente após o download ou em até 30 minutos.
             </p>
             {/* Selos de segurança */}
             <div className="flex items-center gap-3 mt-3">
@@ -95,7 +95,7 @@ export default function Footer() {
           <div>
             <p className="text-white font-bold mb-4 text-sm tracking-wider uppercase">Segurança e Legal</p>
             <p className="text-sm text-gray-500 leading-relaxed mb-2">
-              Seus arquivos são transmitidos via HTTPS, processados temporariamente em nossos servidores e excluídos automaticamente após o processamento.
+              Seus arquivos são transmitidos via HTTPS, processados temporariamente em nossos servidores e excluídos automaticamente após o download ou em até 30 minutos.
             </p>
 
             <div className="space-y-1">
