@@ -446,15 +446,16 @@ export default function ToolPage({ params }: PageProps) {
         </div>
 
         {/* Conteúdo SEO rico, Explicação da Ferramenta e Instruções de Uso */}
-        <section id="instrucoes-e-explicacao" aria-label="Instruções de uso e explicação da ferramenta" className="mt-10 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 md:p-8 shadow-sm">
+        <section id="instrucoes-e-explicacao" aria-label="Instruções de uso e explicação da ferramenta" className="mt-10 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 md:p-8 shadow-sm space-y-8">
           <article className="prose prose-gray dark:prose-invert max-w-none">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               Explicação da Ferramenta: {tool.name}
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 leading-relaxed mt-2">
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed mt-2 text-base">
               {seo.why}
             </p>
 
+            {/* Guia em 4 Passos com Microdados semânticos */}
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">
               Instruções de Uso e Passo a Passo Simplificado
             </h3>
@@ -469,16 +470,44 @@ export default function ToolPage({ params }: PageProps) {
               ))}
             </ol>
 
+            {/* Especificações Técnicas e Segurança LGPD */}
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 not-prose">
+              <div className="bg-blue-50/70 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/40 p-5 rounded-2xl">
+                <h4 className="font-bold text-blue-900 dark:text-blue-200 text-sm flex items-center gap-2 mb-2">
+                  <span>⚡</span> Especificações Técnicas
+                </h4>
+                <ul className="text-xs text-blue-800 dark:text-blue-300 space-y-1.5 leading-relaxed">
+                  <li><strong>Tamanho Máximo por Arquivo:</strong> 25 MB por upload.</li>
+                  <li><strong>Formatos Suportados:</strong> PDF, DOCX, JPG, PNG, MP4, MP3, WebP.</li>
+                  <li><strong>Velocidade Média:</strong> Processamento na nuvem em menos de 5 segundos.</li>
+                  <li><strong>Compatibilidade:</strong> Funciona em celular, tablet e computador.</li>
+                </ul>
+              </div>
+
+              <div className="bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/40 p-5 rounded-2xl">
+                <h4 className="font-bold text-emerald-900 dark:text-emerald-200 text-sm flex items-center gap-2 mb-2">
+                  <span>🛡️</span> Segurança e Privacidade (LGPD)
+                </h4>
+                <ul className="text-xs text-emerald-800 dark:text-emerald-300 space-y-1.5 leading-relaxed">
+                  <li><strong>Conexão Criptografada:</strong> Tráfego protegido por SSL/TLS de 256 bits.</li>
+                  <li><strong>Exclusão Automática:</strong> Arquivos excluídos em até 30 minutos.</li>
+                  <li><strong>Sem Leitura Humana:</strong> Processamento 100% automatizado por software.</li>
+                  <li><strong>Sem Cadastro:</strong> Não exigimos e-mail ou dados pessoais para uso.</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Perguntas Frequentes (FAQ) com High Value Content */}
             {seo.faq.length > 0 && (
               <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                  Perguntas Frequentes (FAQ)
+                  Perguntas Frequentes (FAQ) — {tool.name}
                 </h3>
                 <div className="space-y-4 not-prose">
                   {seo.faq.map((f, i) => (
-                    <div key={i} className="bg-gray-50 dark:bg-gray-850 p-4 rounded-xl border border-gray-200 dark:border-gray-800">
-                      <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm">{f.q}</h4>
-                      <p className="text-gray-600 dark:text-gray-300 text-xs mt-1.5 leading-relaxed">{f.a}</p>
+                    <div key={i} className="bg-gray-50 dark:bg-gray-850 p-5 rounded-2xl border border-gray-200 dark:border-gray-800">
+                      <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm md:text-base">{f.q}</h4>
+                      <p className="text-gray-600 dark:text-gray-300 text-xs md:text-sm mt-2 leading-relaxed">{f.a}</p>
                     </div>
                   ))}
                 </div>
