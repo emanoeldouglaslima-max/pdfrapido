@@ -44,12 +44,12 @@ export default function Footer() {
           {/* Coluna 2 — Ferramentas */}
           <div>
             <p className="text-white font-bold mb-4 text-sm tracking-wider uppercase">Ferramentas de PDF</p>
-            <ul className="grid grid-cols-1 gap-2">
+            <ul className="grid grid-cols-1 gap-1">
               {TOOLS.map((t) => (
                 <li key={t.slug}>
                   <Link
                     href={`/${t.slug}`}
-                    className="text-sm hover:text-white transition-colors block py-1 group"
+                    className="text-sm hover:text-white transition-colors flex items-center min-h-[40px] py-1.5 group"
                   >
                     <span className="group-hover:translate-x-1 inline-block transition-transform duration-200">
                       {t.icon} {t.shortName || t.name}
@@ -63,9 +63,9 @@ export default function Footer() {
           {/* Coluna 3 — Institucional */}
           <div>
             <p className="text-white font-bold mb-4 text-sm tracking-wider uppercase">Institucional</p>
-            <ul className="space-y-3">
+            <ul className="space-y-1">
               <li>
-                <Link href="/sobre" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors group">
+                <Link href="/sobre" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group">
                   <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -73,7 +73,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/contato" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors group">
+                <Link href="/contato" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group">
                   <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
@@ -81,7 +81,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors group">
+                <Link href="/blog" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group">
                   <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                   </svg>
@@ -94,14 +94,14 @@ export default function Footer() {
           {/* Coluna 4 — Segurança e Legal */}
           <div>
             <p className="text-white font-bold mb-4 text-sm tracking-wider uppercase">Segurança e Legal</p>
-            <p className="text-sm text-gray-500 leading-relaxed">
+            <p className="text-sm text-gray-500 leading-relaxed mb-2">
               Seus arquivos são transmitidos via HTTPS, processados temporariamente em nossos servidores e excluídos automaticamente após o processamento.
             </p>
 
-            <div className="mt-5 space-y-3">
+            <div className="space-y-1">
               <Link
                 href="/politica-de-privacidade"
-                className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors group"
+                className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group"
               >
                 <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -110,7 +110,7 @@ export default function Footer() {
               </Link>
               <Link
                 href="/termos-de-uso"
-                className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors group"
+                className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group"
               >
                 <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -119,7 +119,7 @@ export default function Footer() {
               </Link>
               <Link
                 href="/cookies"
-                className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors group"
+                className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group"
               >
                 <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3c.35 2.38 1.57 3.61 4 4 .39 2.58 1.73 3.82 4 4-.37 5.25-3.47 9-8 9-4.97 0-9-4.03-9-9 0-4.53 3.75-7.63 9-8z" />
@@ -129,7 +129,7 @@ export default function Footer() {
               </Link>
               <Link
                 href="/aviso-legal"
-                className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors group"
+                className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group"
               >
                 <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3 3 7l9 4 9-4-9-4z" />
