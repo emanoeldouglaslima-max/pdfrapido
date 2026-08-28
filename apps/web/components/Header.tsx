@@ -87,24 +87,27 @@ export default function Header() {
           </Link>
           <Link
             href="/sobre"
+            rel="about"
             className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
               pathname === '/sobre' ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800' : ''
             }`}
           >
-            Sobre
+            Sobre Nós
             {pathname === '/sobre' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />}
           </Link>
           <Link
             href="/politica-de-privacidade"
+            rel="privacy-policy"
             className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
               pathname === '/politica-de-privacidade' ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800' : ''
             }`}
           >
-            Privacidade
+            Política de Privacidade
             {pathname === '/politica-de-privacidade' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />}
           </Link>
           <Link
             href="/contato"
+            rel="contact"
             className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
               pathname === '/contato' ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800' : ''
             }`}

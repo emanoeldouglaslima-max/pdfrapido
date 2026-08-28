@@ -148,24 +148,53 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </Script>
         )}
 
-        {/* Schema.org global */}
+        {/* Schema.org global — WebSite e Organization com declarações de transparência AdSense */}
         <Script
           id="schema-org-site"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'WebSite',
-              name: 'PDFRápido',
-              url: SITE_URL,
-              description: 'Ferramentas de PDF online grátis para brasileiros',
-              inLanguage: 'pt-BR',
-              potentialAction: {
-                '@type': 'SearchAction',
-                target: `${SITE_URL}/?q={search_term_string}`,
-                'query-input': 'required name=search_term_string',
+            __html: JSON.stringify([
+              {
+                '@context': 'https://schema.org',
+                '@type': 'WebSite',
+                name: 'PDFRápido',
+                url: SITE_URL,
+                description: 'Ferramentas de PDF online grátis para brasileiros',
+                inLanguage: 'pt-BR',
+                potentialAction: {
+                  '@type': 'SearchAction',
+                  target: `${SITE_URL}/?q={search_term_string}`,
+                  'query-input': 'required name=search_term_string',
+                },
               },
-            }),
+              {
+                '@context': 'https://schema.org',
+                '@type': 'Organization',
+                name: 'PDFRápido',
+                url: SITE_URL,
+                logo: `${SITE_URL}/apple-touch-icon.png`,
+                founder: {
+                  '@type': 'Person',
+                  name: 'Emanoel Douglas',
+                },
+                privacyPolicy: `${SITE_URL}/politica-de-privacidade`,
+                termsOfService: `${SITE_URL}/termos-de-uso`,
+                publishingPrinciples: `${SITE_URL}/aviso-legal`,
+                knowsAbout: [
+                  'Ferramentas de PDF',
+                  'Compressão de Documentos',
+                  'Conversão de Arquivos',
+                  'Privacidade LGPD',
+                ],
+                contactPoint: {
+                  '@type': 'ContactPoint',
+                  contactType: 'customer support',
+                  email: 'emanoeldouglaslima@gmail.com',
+                  url: `${SITE_URL}/contato`,
+                  availableLanguage: ['Portuguese'],
+                },
+              },
+            ]),
           }}
         />
       </body>
