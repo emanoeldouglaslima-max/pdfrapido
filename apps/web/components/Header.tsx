@@ -94,6 +94,24 @@ export default function Header() {
             Sobre
             {pathname === '/sobre' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />}
           </Link>
+          <Link
+            href="/politica-de-privacidade"
+            className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
+              pathname === '/politica-de-privacidade' ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800' : ''
+            }`}
+          >
+            Privacidade
+            {pathname === '/politica-de-privacidade' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />}
+          </Link>
+          <Link
+            href="/contato"
+            className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
+              pathname === '/contato' ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800' : ''
+            }`}
+          >
+            Contato
+            {pathname === '/contato' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />}
+          </Link>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -200,8 +218,23 @@ export default function Header() {
             Sobre
           </Link>
           <Link
+            href="/politica-de-privacidade"
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
+              pathname === '/politica-de-privacidade'
+                ? 'bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400'
+                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+            }`}
+          >
+            <span className="text-base">🛡️</span>
+            Privacidade
+          </Link>
+          <Link
             href="/contato"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200"
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
+              pathname === '/contato'
+                ? 'bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400'
+                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+            }`}
           >
             <span className="text-base">✉️</span>
             Contato

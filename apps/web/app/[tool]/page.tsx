@@ -363,6 +363,48 @@ export default function ToolPage({ params }: PageProps) {
         }}
       />
 
+      {/* Schema.org — HowTo (Instruções de Uso) */}
+      <Script
+        id={`schema-howto-${params.tool}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            name: `${seo.h2} — Instruções de Uso`,
+            description: tool.description,
+            step: seo.how.map((step, idx) => ({
+              '@type': 'HowToStep',
+              position: idx + 1,
+              name: `Passo ${idx + 1}`,
+              text: step,
+            })),
+          }),
+        }}
+      />
+
+      {/* Schema.org — WebApplication (Aplicação Utilitária) */}
+      <Script
+        id={`schema-webapp-${params.tool}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            name: tool.name,
+            url: canonicalUrl,
+            applicationCategory: 'UtilityApplication',
+            operatingSystem: 'All',
+            browserRequirements: 'Requires JavaScript. Requires HTML5.',
+            offers: {
+              '@type': 'Offer',
+              price: '0',
+              priceCurrency: 'BRL',
+            },
+          }),
+        }}
+      />
+
       <Header />
 
       <main className="max-w-3xl mx-auto px-4 py-10">
@@ -403,37 +445,47 @@ export default function ToolPage({ params }: PageProps) {
           />
         </div>
 
-        {/* Conteúdo SEO rico e otimizado */}
-        <article className="prose prose-gray dark:prose-invert max-w-none mt-10">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{seo.h2}</h2>
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mt-3">{seo.why}</p>
+        {/* Conteúdo SEO rico, Explicação da Ferramenta e Instruções de Uso */}
+        <section id="instrucoes-e-explicacao" aria-label="Instruções de uso e explicação da ferramenta" className="mt-10 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 md:p-8 shadow-sm">
+          <article className="prose prose-gray dark:prose-invert max-w-none">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              Explicação da Ferramenta: {tool.name}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed mt-2">
+              {seo.why}
+            </p>
 
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-6">Passo a passo para usar a ferramenta</h3>
-          <ol className="mt-3 space-y-2">
-            {seo.how.map((step, i) => (
-              <li key={i} className="flex gap-3 text-gray-600 dark:text-gray-300">
-                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400 text-xs font-bold flex items-center justify-center">
-                  {i + 1}
-                </span>
-                <span className="mt-0.5">{step}</span>
-              </li>
-            ))}
-          </ol>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-4">
+              Instruções de Uso e Passo a Passo Simplificado
+            </h3>
+            <ol className="space-y-3 not-prose">
+              {seo.how.map((step, i) => (
+                <li key={i} className="flex items-start gap-3 bg-gray-50 dark:bg-gray-800/60 p-4 rounded-2xl border border-gray-100 dark:border-gray-700/60 text-gray-700 dark:text-gray-200 text-sm">
+                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-brand-600 text-white text-xs font-bold flex items-center justify-center shadow-md">
+                    {i + 1}
+                  </span>
+                  <span className="mt-0.5 font-medium leading-relaxed">{step}</span>
+                </li>
+              ))}
+            </ol>
 
-          {seo.faq.length > 0 && (
-            <>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-8">Perguntas frequentes</h3>
-              <div className="mt-3 space-y-4">
-                {seo.faq.map((f, i) => (
-                  <div key={i} className="border-b border-gray-100 dark:border-gray-800 pb-4">
-                    <h4 className="font-semibold text-gray-900 dark:text-gray-100">{f.q}</h4>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{f.a}</p>
-                  </div>
-                ))}
+            {seo.faq.length > 0 && (
+              <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                  Perguntas Frequentes (FAQ)
+                </h3>
+                <div className="space-y-4 not-prose">
+                  {seo.faq.map((f, i) => (
+                    <div key={i} className="bg-gray-50 dark:bg-gray-850 p-4 rounded-xl border border-gray-200 dark:border-gray-800">
+                      <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm">{f.q}</h4>
+                      <p className="text-gray-600 dark:text-gray-300 text-xs mt-1.5 leading-relaxed">{f.a}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </>
-          )}
-        </article>
+            )}
+          </article>
+        </section>
 
         {/* Widget Interativo de Avaliação de Estrelas */}
         <RatingWidget toolName={tool.name} />
