@@ -104,6 +104,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
+        {/* Ahrefs Web Analytics */}
+        <script
+          async
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="nvzm2/hX+YbGc1GRDwLm2Q"
+        />
         {/* Google AdSense */}
         {ADSENSE_ID && (
           <script
