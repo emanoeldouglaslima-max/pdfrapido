@@ -2,7 +2,7 @@
 import { MetadataRoute } from 'next';
 import { TOOLS } from './constants';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrapido.com.br';
+import { SITE_URL } from '../lib/siteUrl';
 
 const BLOG_SLUGS = [
   'como-transcrever-audio-de-reunioes-e-aulas',

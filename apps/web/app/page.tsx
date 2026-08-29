@@ -7,7 +7,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ComparisonTable from '../components/ComparisonTable';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdfrapido.com.br';
+import { SITE_URL } from '../lib/siteUrl';
 
 export const metadata: Metadata = {
   title: 'Ferramentas de PDF Online Grátis — Converter, Comprimir, Juntar e Transcrever',
