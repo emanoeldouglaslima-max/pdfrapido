@@ -116,7 +116,7 @@ export default function Artigo3Page() {
             </p>
             <ul className="list-disc pl-5 space-y-2">
               <li><strong>Conexão Criptografada (SSL/HTTPS):</strong> O endereço do site deve começar com `https://` e exibir um ícone de cadeado no navegador. Isso garante que a transferência dos arquivos entre o seu dispositivo e o servidor seja criptografada e não possa ser interceptada por hackers em redes Wi-Fi públicas.</li>
-              <li><strong>Política de Exclusão Automática e Rápida:</strong> A plataforma deve definir claramente a remoção total e definitiva de qualquer arquivo processado de seus discos rígidos de forma imediata após o processamento.</li>
+              <li><strong>Política de Exclusão Automática e Rápida:</strong> A plataforma deve definir claramente a remoção total e definitiva de qualquer arquivo processado de seus discos rígidos em até 30 minutos após o processamento ou após o download pelo usuário.</li>
               <li><strong>Conformidade com Leis de Proteção de Dados:</strong> O site precisa respeitar regulamentações de privacidade locais, como a **LGPD** (Lei Geral de Proteção de Dados) no Brasil e a **GDPR** na Europa.</li>
             </ul>
 
@@ -126,7 +126,7 @@ export default function Artigo3Page() {
             </p>
             <ol className="list-decimal pl-5 space-y-3">
               <li><strong>Transmissão segura:</strong> Todos os envios e downloads são feitos sob o protocolo TLS/SSL com criptografia de ponta a ponta.</li>
-              <li><strong>Exclusão absoluta após o processamento:</strong> Implementamos um sistema de limpeza automática imediata. Todos os arquivos originais e convertidos são excluídos de forma definitiva de nossos servidores após o processamento e download.</li>
+              <li><strong>Exclusão automática em até 30 minutos:</strong> Implementamos um sistema de limpeza automática. Todos os arquivos originais e convertidos são excluídos definitivamente de nossos servidores em até 30 minutos após o processamento, ou imediatamente após o download.</li>
               <li><strong>Nenhuma cópia de backup:</strong> Não criamos arquivos de backup ou cópias secundárias de seus documentos. O processamento ocorre e a limpeza é definitiva.</li>
               <li><strong>Zero leitura de conteúdo:</strong> O processo de compressão e conversão é executado de forma puramente automatizada. Nossos desenvolvedores ou administradores de sistema não têm acesso visual e não realizam nenhuma análise do conteúdo dos arquivos.</li>
             </ol>
@@ -135,7 +135,7 @@ export default function Artigo3Page() {
             <div className="bg-brand-50 dark:bg-gray-800 border border-brand-100 dark:border-gray-700 p-8 rounded-3xl text-center space-y-4 my-8 not-prose">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white">Privacidade Garantida</h3>
               <p className="text-sm text-gray-600 dark:text-gray-300 max-w-lg mx-auto">
-                Todos os arquivos processados no PDFRápido são excluídos permanentemente e automaticamente de nossos servidores logo após o processamento. Privacidade absoluta para seus documentos confidenciais.
+                Todos os arquivos processados no PDFRápido são excluídos permanentemente e de forma automática de nossos servidores em até 30 minutos após o processamento, ou imediatamente após o download. Privacidade garantida para seus documentos confidenciais.
               </p>
               <div className="pt-2">
                 <Link

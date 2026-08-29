@@ -311,7 +311,7 @@ export default async function HomePage() {
                 </div>
                 <h3 className="font-bold text-gray-900 dark:text-white text-base mb-2">Download & Exclusão</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                  Baixe o resultado imediatamente. Os dados temporários são eliminados de forma definitiva dos nossos discos.
+                  Baixe o resultado imediatamente. Os dados temporários são eliminados definitivamente dos nossos discos em até 30 minutos ou após o download.
                 </p>
               </div>
             </div>
@@ -329,7 +329,7 @@ export default async function HomePage() {
                 {
                   icon: '🔒',
                   title: 'Segurança e LGPD',
-                  desc: 'Arquivos protegidos por criptografia SSL/TLS e excluídos automaticamente após o processamento.',
+                  desc: 'Arquivos protegidos por criptografia SSL/TLS e excluídos automaticamente após o download ou em até 30 minutos.',
                   color: 'from-green-100 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/10',
                   border: 'border-green-200 dark:border-green-900/30',
                 },

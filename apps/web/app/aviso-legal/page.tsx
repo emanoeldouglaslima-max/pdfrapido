@@ -42,7 +42,7 @@ export default function AvisoLegalPage() {
 
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-8">3. Exclusão Automática de Arquivos</h2>
           <p>
-            Conforme nossa <a href="/politica-de-privacidade" className="text-brand-600 dark:text-brand-400 hover:underline">Política de Privacidade</a>, todos os documentos enviados e seus downloads gerados são excluídos permanentemente e automaticamente de nossos servidores logo após o processamento. Por esta razão, o PDFRápido **não atua como um serviço de armazenamento ou backup**. Certifique-se de salvar suas próprias cópias antes e depois do uso de nossas ferramentas.
+            Conforme nossa <a href="/politica-de-privacidade" className="text-brand-600 dark:text-brand-400 hover:underline">Política de Privacidade</a>, todos os documentos enviados e seus downloads gerados são excluídos permanentemente e de forma automática de nossos servidores em até 30 minutos após o processamento, ou imediatamente após o download. Por esta razão, o PDFRápido <strong>não atua como um serviço de armazenamento ou backup</strong>. Certifique-se de salvar suas próprias cópias antes e depois do uso de nossas ferramentas.
           </p>
 
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-8">4. Links para Sites de Terceiros</h2>
