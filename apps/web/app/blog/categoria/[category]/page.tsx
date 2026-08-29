@@ -1,39 +1,50 @@
 import type { Metadata } from 'next';
 import BlogListingPage from '../../page';
+import { slugify } from '../../../../lib/slugify';
 
 interface CategoryPageProps {
   params: { category: string };
   searchParams: { q?: string };
 }
 
+const CATEGORY_NAMES: Record<string, string> = {
+  whatsapp: 'WhatsApp',
+  conversor: 'Conversor',
+  seguranca: 'Segurança',
+  organizacao: 'Organização',
+  produtividade: 'Produtividade',
+  juridico: 'Jurídico',
+};
+
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
-  const capCategory = params.category.charAt(0).toUpperCase() + params.category.slice(1);
+  const slug = slugify(params.category);
+  const displayName = CATEGORY_NAMES[slug] || params.category;
   return {
-    title: `Artigos em ${capCategory}`,
-    description: `Confira todos os tutoriais, dicas e artigos relacionados à categoria ${capCategory} no Blog do PDFRápido.`,
+    title: `Artigos na Categoria ${displayName} | Blog PDFRápido`,
+    description: `Confira todos os tutoriais, dicas e guias práticos relacionados à categoria ${displayName} no Blog do PDFRápido.`,
     alternates: {
-      canonical: `https://pdfrapido.com.br/blog/categoria/${params.category}`,
+      canonical: `https://pdfrapido.com.br/blog/categoria/${slug}`,
     },
   };
 }
 
 export default function CategoryPage({ params, searchParams }: CategoryPageProps) {
+  const slug = slugify(params.category);
   const mergedSearchParams = {
     ...searchParams,
-    categoria: params.category,
+    categoria: slug,
   };
 
   return <BlogListingPage searchParams={mergedSearchParams} />;
 }
 
-// Para SSG: pré-compilar todas as categorias em tempo de build
 export async function generateStaticParams() {
   return [
     { category: 'whatsapp' },
     { category: 'conversor' },
-    { category: 'segurança' },
-    { category: 'organização' },
+    { category: 'seguranca' },
+    { category: 'organizacao' },
     { category: 'produtividade' },
-    { category: 'jurídico' },
+    { category: 'juridico' },
   ];
 }

@@ -3,10 +3,25 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Política de Privacidade e Proteção de Dados (LGPD)',
+  title: 'Política de Privacidade e LGPD | PDFRápido',
   description: 'Saiba como o PDFRápido coleta, processa e protege seus arquivos e dados de navegação de acordo com a LGPD e diretrizes de publicidade do Google.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/politica-de-privacidade',
+  },
+  openGraph: {
+    title: 'Política de Privacidade e LGPD | PDFRápido',
+    description: 'Saiba como o PDFRápido coleta, processa e protege seus arquivos e dados de navegação de acordo com a LGPD.',
+    url: 'https://pdfrapido.com.br/politica-de-privacidade',
+    siteName: 'PDFRápido',
+    locale: 'pt_BR',
+    type: 'website',
+    images: [{ url: 'https://pdfrapido.com.br/og-image.png', width: 1200, height: 630, alt: 'Política de Privacidade PDFRápido' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Política de Privacidade e LGPD | PDFRápido',
+    description: 'Saiba como o PDFRápido protege seus arquivos e dados.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
   },
 };
 

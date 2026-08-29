@@ -3,10 +3,25 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Política de Cookies',
+  title: 'Política de Cookies e Armazenamento Local | PDFRápido',
   description: 'Conheça a lista detalhada de cookies e chaves de armazenamento local (localStorage) utilizados no PDFRápido, alinhada ao Google Consent Mode v2 e à LGPD.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/cookies',
+  },
+  openGraph: {
+    title: 'Política de Cookies e Armazenamento Local | PDFRápido',
+    description: 'Conheça a lista detalhada de cookies e armazenamento local do PDFRápido.',
+    url: 'https://pdfrapido.com.br/cookies',
+    siteName: 'PDFRápido',
+    locale: 'pt_BR',
+    type: 'website',
+    images: [{ url: 'https://pdfrapido.com.br/og-image.png', width: 1200, height: 630, alt: 'Política de Cookies PDFRápido' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Política de Cookies e Armazenamento Local | PDFRápido',
+    description: 'Conheça o gerenciamento de cookies no PDFRápido.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
   },
 };
 

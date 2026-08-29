@@ -4,10 +4,25 @@ import Footer from '../../components/Footer';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Sobre Nós — Equipe, Missão e Compromisso Editorial',
+  title: 'Sobre Nós — Equipe e Missão Editorial | PDFRápido',
   description: 'Conheça o PDFRápido, nossa equipe editorial, infraestrutura tecnológica e o compromisso com a privacidade e utilidade gratuita de documentos para o Brasil.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/sobre',
+  },
+  openGraph: {
+    title: 'Sobre Nós — Equipe e Missão Editorial | PDFRápido',
+    description: 'Conheça o PDFRápido, nossa equipe editorial, infraestrutura tecnológica e o compromisso com a privacidade de documentos.',
+    url: 'https://pdfrapido.com.br/sobre',
+    siteName: 'PDFRápido',
+    locale: 'pt_BR',
+    type: 'website',
+    images: [{ url: 'https://pdfrapido.com.br/og-image.png', width: 1200, height: 630, alt: 'Sobre o PDFRápido' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Sobre Nós — Equipe e Missão Editorial | PDFRápido',
+    description: 'Conheça o PDFRápido e nossa infraestrutura de documentos.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
   },
 };
 

@@ -3,10 +3,25 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Aviso Legal',
-  description: 'Leia o aviso legal e as isenções de responsabilidade da plataforma PDFRápido.',
+  title: 'Aviso Legal e Isenção de Responsabilidade | PDFRápido',
+  description: 'Leia o aviso legal, direitos autorais e as isenções de responsabilidade referentes ao uso das ferramentas online da plataforma PDFRápido.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/aviso-legal',
+  },
+  openGraph: {
+    title: 'Aviso Legal e Isenção de Responsabilidade | PDFRápido',
+    description: 'Leia o aviso legal e as isenções de responsabilidade da plataforma PDFRápido.',
+    url: 'https://pdfrapido.com.br/aviso-legal',
+    siteName: 'PDFRápido',
+    locale: 'pt_BR',
+    type: 'website',
+    images: [{ url: 'https://pdfrapido.com.br/og-image.png', width: 1200, height: 630, alt: 'Aviso Legal PDFRápido' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Aviso Legal e Isenção de Responsabilidade | PDFRápido',
+    description: 'Leia o aviso legal e isenção de responsabilidade do PDFRápido.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
   },
 };
 

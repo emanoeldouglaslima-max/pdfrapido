@@ -3,10 +3,25 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Fale Conosco',
-  description: 'Entre em contato com a equipe do PDFRápido. Tire suas dúvidas, envie sugestões ou solicite suporte técnico.',
+  title: 'Fale Conosco — Suporte e Atendimento | PDFRápido',
+  description: 'Entre em contato com a equipe do PDFRápido. Tire suas dúvidas, envie sugestões ou solicite suporte técnico sobre ferramentas de PDF.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/contato',
+  },
+  openGraph: {
+    title: 'Fale Conosco — Suporte e Atendimento | PDFRápido',
+    description: 'Entre em contato com a equipe do PDFRápido. Tire suas dúvidas, envie sugestões ou solicite suporte técnico.',
+    url: 'https://pdfrapido.com.br/contato',
+    siteName: 'PDFRápido',
+    locale: 'pt_BR',
+    type: 'website',
+    images: [{ url: 'https://pdfrapido.com.br/og-image.png', width: 1200, height: 630, alt: 'Contato PDFRápido' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Fale Conosco — Suporte e Atendimento | PDFRápido',
+    description: 'Entre em contato com a equipe do PDFRápido para suporte e dúvidas.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
   },
 };
 

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import { slugify } from '../../lib/slugify';
 
 export const metadata: Metadata = {
   title: 'Blog — Dicas, Guias e Tutoriais de PDF | PDFRápido',
@@ -321,8 +322,8 @@ export default function BlogListingPage({ searchParams }: PageProps) {
       !query ||
       article.title.toLowerCase().includes(query) ||
       article.description.toLowerCase().includes(query);
-    const matchesCategory = !selectedCategory || article.category.toLowerCase() === selectedCategory.toLowerCase();
-    const matchesTag = !selectedTag || article.tags.some(t => t.toLowerCase() === selectedTag.toLowerCase());
+    const matchesCategory = !selectedCategory || slugify(article.category) === slugify(selectedCategory);
+    const matchesTag = !selectedTag || article.tags.some(t => slugify(t) === slugify(selectedTag));
 
     return matchesQuery && matchesCategory && matchesTag;
   });
@@ -374,8 +375,8 @@ export default function BlogListingPage({ searchParams }: PageProps) {
             </div>
           </div>
 
-          {/* Filtros de Categorias e Tags */}
-          <div className="mb-12 bg-white dark:bg-gray-900 border border-gray-150 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
+          {/* Filtros por Categoria e Tag */}
+          <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 mb-10 shadow-sm space-y-4">
             <div>
               <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Categorias</h3>
               <div className="flex flex-wrap gap-2">
@@ -390,9 +391,9 @@ export default function BlogListingPage({ searchParams }: PageProps) {
                 {CATEGORIES.map((cat) => (
                   <Link
                     key={cat}
-                    href={`/blog/categoria/${cat.toLowerCase()}`}
+                    href={`/blog/categoria/${slugify(cat)}`}
                     className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-                      selectedCategory.toLowerCase() === cat.toLowerCase()
+                      slugify(selectedCategory) === slugify(cat)
                         ? 'bg-brand-600 text-white shadow-sm shadow-brand-500/20'
                         : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                     }`}
@@ -409,9 +410,9 @@ export default function BlogListingPage({ searchParams }: PageProps) {
                 {ALL_TAGS.map((tag) => (
                   <Link
                     key={tag}
-                    href={`/blog/tag/${tag.toLowerCase()}`}
+                    href={`/blog/tag/${slugify(tag)}`}
                     className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all ${
-                      selectedTag.toLowerCase() === tag.toLowerCase()
+                      slugify(selectedTag) === slugify(tag)
                         ? 'bg-indigo-600 text-white shadow-sm'
                         : 'bg-gray-50 dark:bg-gray-800/60 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-100 dark:border-gray-700'
                     }`}
@@ -455,7 +456,7 @@ export default function BlogListingPage({ searchParams }: PageProps) {
                     <div className="space-y-3">
                       <div className="flex items-center justify-between text-xs text-gray-400 dark:text-gray-400">
                         <Link
-                          href={`/blog/categoria/${article.category.toLowerCase()}`}
+                          href={`/blog/categoria/${slugify(article.category)}`}
                           className={`px-2.5 py-0.5 rounded-full font-semibold text-[10px] ${article.iconColor} hover:opacity-90`}
                         >
                           {article.category}
@@ -478,7 +479,7 @@ export default function BlogListingPage({ searchParams }: PageProps) {
                         {article.tags.map(t => (
                           <Link
                             key={t}
-                            href={`/blog/tag/${t.toLowerCase()}`}
+                            href={`/blog/tag/${slugify(t)}`}
                             className="text-[10px] font-bold text-indigo-500 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 mr-2"
                           >
                             #{t}

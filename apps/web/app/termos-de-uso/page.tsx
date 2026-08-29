@@ -3,10 +3,25 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Termos de Uso',
-  description: 'Leia os termos de uso do site PDFRápido. Entenda as regras, limites e termos de serviço.',
+  title: 'Termos de Uso e Condições de Serviço | PDFRápido',
+  description: 'Leia os termos de uso do site PDFRápido. Entenda as regras, limites de arquivo e condições gerais de serviço da plataforma.',
   alternates: {
     canonical: 'https://pdfrapido.com.br/termos-de-uso',
+  },
+  openGraph: {
+    title: 'Termos de Uso e Condições de Serviço | PDFRápido',
+    description: 'Leia os termos de uso do site PDFRápido. Entenda as regras e condições de serviço.',
+    url: 'https://pdfrapido.com.br/termos-de-uso',
+    siteName: 'PDFRápido',
+    locale: 'pt_BR',
+    type: 'website',
+    images: [{ url: 'https://pdfrapido.com.br/og-image.png', width: 1200, height: 630, alt: 'Termos de Uso PDFRápido' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Termos de Uso e Condições de Serviço | PDFRápido',
+    description: 'Entenda as regras e condições de serviço do PDFRápido.',
+    images: ['https://pdfrapido.com.br/og-image.png'],
   },
 };
 

@@ -1,50 +1,53 @@
 import type { Metadata } from 'next';
 import BlogListingPage from '../../page';
+import { slugify } from '../../../../lib/slugify';
 
 interface TagPageProps {
   params: { tag: string };
   searchParams: { q?: string };
 }
 
+const RAW_TAGS = [
+  'compressao',
+  'conversao',
+  'celular',
+  'word',
+  'excel',
+  'lgpd',
+  'privacidade',
+  'concursos',
+  'peticoes',
+  'assinatura',
+  'pdf-a',
+  'seguranca',
+  'organizacao',
+  'transcricao',
+  'audio',
+  'google-docs',
+  'gov-br',
+];
+
 export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
-  const capTag = params.tag.charAt(0).toUpperCase() + params.tag.slice(1);
+  const slug = slugify(params.tag);
   return {
-    title: `Artigos sobre #${capTag}`,
-    description: `Veja todas as dicas, guias práticos e tutoriais marcados com a tag #${capTag} no Blog do PDFRápido.`,
+    title: `Artigos marcados com #${slug} | Blog PDFRápido`,
+    description: `Veja todas as dicas, guias práticos e tutoriais marcados com a tag #${slug} no Blog do PDFRápido.`,
     alternates: {
-      canonical: `https://pdfrapido.com.br/blog/tag/${params.tag}`,
+      canonical: `https://pdfrapido.com.br/blog/tag/${slug}`,
     },
   };
 }
 
 export default function TagPage({ params, searchParams }: TagPageProps) {
+  const slug = slugify(params.tag);
   const mergedSearchParams = {
     ...searchParams,
-    tag: params.tag,
+    tag: slug,
   };
 
   return <BlogListingPage searchParams={mergedSearchParams} />;
 }
 
-// Para SSG: pré-compilar todas as tags em tempo de build
 export async function generateStaticParams() {
-  return [
-    { tag: 'compressão' },
-    { tag: 'conversão' },
-    { tag: 'celular' },
-    { tag: 'word' },
-    { tag: 'excel' },
-    { tag: 'lgpd' },
-    { tag: 'privacidade' },
-    { tag: 'concursos' },
-    { tag: 'petições' },
-    { tag: 'assinatura' },
-    { tag: 'pdf/a' },
-    { tag: 'segurança' },
-    { tag: 'organização' },
-    { tag: 'transcrição' },
-    { tag: 'áudio' },
-    { tag: 'google docs' },
-    { tag: 'gov.br' },
-  ];
+  return RAW_TAGS.map((tag) => ({ tag }));
 }
