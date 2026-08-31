@@ -492,7 +492,7 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
           {/* Opções específicas: Marca d'Água */}
           {toolSlug === 'adicionar-marca-dagua-pdf' && (
             <div className="mt-4">
-              <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">Texto da marca d'água</label>
+              <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">{"Texto da marca d'água"}</label>
               <input
                 type="text"
                 placeholder="Ex: CONFIDENCIAL, RASCUNHO ou seu Nome"
