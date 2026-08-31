@@ -8,12 +8,14 @@ interface CategoryPageProps {
 }
 
 const CATEGORY_NAMES: Record<string, string> = {
-  whatsapp: 'WhatsApp',
-  conversor: 'Conversor',
-  seguranca: 'Segurança',
-  organizacao: 'Organização',
+  pdf: 'PDF',
+  documentos: 'Documentos',
   produtividade: 'Produtividade',
-  juridico: 'Jurídico',
+  estudos: 'Estudos',
+  trabalho: 'Trabalho',
+  tecnologia: 'Tecnologia',
+  seguranca: 'Segurança',
+  whatsapp: 'WhatsApp',
 };
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
@@ -40,11 +42,13 @@ export default function CategoryPage({ params, searchParams }: CategoryPageProps
 
 export async function generateStaticParams() {
   return [
-    { category: 'whatsapp' },
-    { category: 'conversor' },
-    { category: 'seguranca' },
-    { category: 'organizacao' },
+    { category: 'pdf' },
+    { category: 'documentos' },
     { category: 'produtividade' },
-    { category: 'juridico' },
+    { category: 'estudos' },
+    { category: 'trabalho' },
+    { category: 'tecnologia' },
+    { category: 'seguranca' },
+    { category: 'whatsapp' },
   ];
 }

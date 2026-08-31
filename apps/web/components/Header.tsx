@@ -3,14 +3,15 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
-import { TOOLS } from '../app/constants';
-
-import { useState, useEffect } from 'react';
+import { TOOLS, CATEGORIES_CONFIG } from '../app/constants';
+import { useState, useEffect, useRef } from 'react';
 
 export default function Header() {
   const pathname = usePathname();
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const navRef = useRef<HTMLDivElement>(null);
 
   // Inicializa o tema do localStorage/sistema
   useEffect(() => {
@@ -19,12 +20,23 @@ export default function Header() {
     setTheme(savedTheme === 'dark' || isDark ? 'dark' : 'light');
   }, []);
 
-  // Fecha menu mobile ao trocar de rota
+  // Fecha menu mobile e dropdowns ao trocar de rota
   useEffect(() => {
     setMobileOpen(false);
+    setOpenDropdown(null);
   }, [pathname]);
 
-  // Alterna o tema
+  // Fechar dropdowns ao clicar fora
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const toggleTheme = () => {
     if (theme === 'light') {
       document.documentElement.classList.add('dark');
@@ -38,90 +50,102 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 glass border-b border-white/40 dark:border-gray-800/50 dark:bg-gray-900/80 shadow-sm transition-all duration-300">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <header className="sticky top-0 z-50 glass border-b border-white/40 dark:border-gray-800/50 dark:bg-gray-900/90 shadow-sm transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="hover:opacity-90 transition-opacity">
           <Logo />
         </Link>
 
-        {/* Links rápidos — desktop com a mesma mecânica nativa */}
-        <nav className="hidden md:flex items-center gap-1 text-sm font-semibold text-gray-600 dark:text-gray-300">
-          {[
-            { slug: 'comprimir-pdf', name: 'Comprimir' },
-            { slug: 'converter-pdf-para-word', name: 'PDF para Word' },
-            { slug: 'converter-pdf-para-jpg', name: 'PDF para JPG' },
-            { slug: 'converter-word-para-pdf', name: 'Word para PDF' },
-            { slug: 'transcrever-video-em-texto', name: 'Transcrever Vídeo' },
-          ].map((t) => {
-            const isActive = pathname === `/${t.slug}`;
+        {/* Navegação Desktop com Dropdowns Categorizados */}
+        <nav ref={navRef} className="hidden lg:flex items-center gap-1 text-sm font-semibold text-gray-700 dark:text-gray-200">
+          {CATEGORIES_CONFIG.map((cat) => {
+            const catTools = TOOLS.filter((t) => t.category === cat.id);
+            const isOpen = openDropdown === cat.id;
+
             return (
-              <Link
-                key={t.slug}
-                href={`/${t.slug}`}
-                className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
-                  isActive
-                    ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800'
-                    : ''
-                }`}
-              >
-                {t.name}
-                {isActive && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />
+              <div key={cat.id} className="relative">
+                <button
+                  onClick={() => setOpenDropdown(isOpen ? null : cat.id)}
+                  onMouseEnter={() => setOpenDropdown(cat.id)}
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50/80 dark:hover:bg-gray-800 ${
+                    isOpen ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800' : ''
+                  }`}
+                  aria-expanded={isOpen}
+                >
+                  <span>{cat.icon}</span>
+                  <span>{cat.name}</span>
+                  <svg className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {/* Dropdown Menu */}
+                {isOpen && (
+                  <div
+                    onMouseLeave={() => setOpenDropdown(null)}
+                    className="absolute top-full left-0 mt-1 w-64 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl shadow-xl p-2 z-50 animate-slide-down grid gap-1"
+                  >
+                    <p className="px-3 py-1.5 text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
+                      {cat.name}
+                    </p>
+                    {catTools.map((t) => {
+                      const isActive = pathname === `/${t.slug}`;
+                      return (
+                        <Link
+                          key={t.slug}
+                          href={`/${t.slug}`}
+                          className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                            isActive
+                              ? 'bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-brand-400'
+                              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-brand-600 dark:hover:text-brand-400'
+                          }`}
+                        >
+                          <span className="text-sm">{t.icon}</span>
+                          <span className="truncate">{t.name}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
                 )}
-              </Link>
+              </div>
             );
           })}
 
-          {/* Separador visual */}
           <span className="w-px h-4 bg-gray-200 dark:bg-gray-700 mx-1" />
 
-          {/* Links institucionais */}
+          {/* Links Institucionais */}
           <Link
             href="/blog"
-            className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
+            className={`px-3 py-2 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
               pathname.startsWith('/blog') ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800' : ''
             }`}
           >
             Blog
-            {pathname.startsWith('/blog') && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />}
           </Link>
           <Link
             href="/sobre"
-            rel="about"
-            className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
+            className={`px-3 py-2 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
               pathname === '/sobre' ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800' : ''
             }`}
           >
-            Sobre Nós
-            {pathname === '/sobre' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />}
-          </Link>
-          <Link
-            href="/politica-de-privacidade"
-            rel="privacy-policy"
-            className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
-              pathname === '/politica-de-privacidade' ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800' : ''
-            }`}
-          >
-            Política de Privacidade
-            {pathname === '/politica-de-privacidade' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />}
+            Sobre
           </Link>
           <Link
             href="/contato"
-            rel="contact"
-            className={`relative px-3 py-1.5 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
+            className={`px-3 py-2 rounded-lg transition-all duration-200 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-gray-800 ${
               pathname === '/contato' ? 'text-brand-600 dark:text-brand-400 font-bold bg-brand-50 dark:bg-gray-800' : ''
             }`}
           >
             Contato
-            {pathname === '/contato' && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-brand-600 dark:bg-brand-500 rounded-full" />}
           </Link>
         </nav>
 
+        {/* Ações Direitas (Tema + Badge + Hamburguer) */}
         <div className="flex items-center gap-2">
           {pathname !== '/' && (
             <Link
               href="/"
-              className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -130,37 +154,33 @@ export default function Header() {
             </Link>
           )}
 
-          {/* Botão de Alternar Modo Dark/Light */}
+          {/* Alternar Dark/Light */}
           <button
             onClick={toggleTheme}
             aria-label="Alternar tema"
-            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 transition-all duration-200 active:scale-95"
+            className="p-2.5 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 transition-all duration-200 active:scale-95"
           >
             {theme === 'light' ? (
-              <svg className="w-5 h-5 animate-spin-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
               </svg>
             ) : (
-              <svg className="w-5 h-5 text-yellow-400 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
               </svg>
             )}
           </button>
 
-          {/* Badge animado "100% Grátis" — oculto em mobile para dar espaço ao menu */}
-          <span className="hidden sm:flex items-center gap-1.5 text-xs bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3.5 py-2 min-h-[44px] rounded-full font-bold shadow-md shadow-green-200 dark:shadow-none hover:shadow-lg transition-all duration-200 cursor-default">
-            <svg className="w-3.5 h-3.5 animate-bounce-slow" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-            </svg>
-            100% Grátis
+          {/* Badge Grátis */}
+          <span className="hidden sm:flex items-center gap-1.5 text-xs bg-gradient-to-r from-green-600 to-emerald-600 text-white px-3 py-1.5 rounded-full font-bold shadow-sm cursor-default">
+            ⚡ 100% Grátis
           </span>
 
-          {/* Botão hamburguer — apenas mobile */}
+          {/* Botão Hambúrguer Mobile */}
           <button
             onClick={() => setMobileOpen((v) => !v)}
             aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
-            aria-expanded={mobileOpen}
-            className="md:hidden p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 transition-all duration-200 active:scale-95"
+            className="lg:hidden p-2.5 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 transition-all active:scale-95"
           >
             {mobileOpen ? (
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -175,73 +195,48 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Menu mobile — dropdown */}
+      {/* Menu Mobile Sanfonado por Categoria */}
       {mobileOpen && (
-        <nav className="md:hidden border-t border-gray-100 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm px-4 py-3 flex flex-col gap-1 animate-fade-in">
-          {TOOLS.map((t) => {
-            const isActive = pathname === `/${t.slug}`;
+        <nav className="lg:hidden border-t border-gray-100 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md px-4 py-4 max-h-[85vh] overflow-y-auto space-y-4 animate-fade-in">
+          {CATEGORIES_CONFIG.map((cat) => {
+            const catTools = TOOLS.filter((t) => t.category === cat.id);
             return (
-              <Link
-                key={t.slug}
-                href={`/${t.slug}`}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                  isActive
-                    ? 'bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-brand-600 dark:hover:text-brand-400'
-                }`}
-              >
-                <span className="text-base">{t.icon}</span>
-                {t.name}
-              </Link>
+              <div key={cat.id} className="space-y-1">
+                <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider flex items-center gap-1.5 px-2">
+                  <span>{cat.icon}</span> {cat.name}
+                </p>
+                <div className="grid grid-cols-1 gap-1 pt-1">
+                  {catTools.map((t) => (
+                    <Link
+                      key={t.slug}
+                      href={`/${t.slug}`}
+                      className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-800 hover:text-brand-600 dark:hover:text-brand-400"
+                    >
+                      <span>{t.icon}</span>
+                      <span>{t.name}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
             );
           })}
 
-          <div className="h-px bg-gray-100 dark:bg-gray-800 my-1" />
+          <div className="h-px bg-gray-100 dark:bg-gray-800 my-2" />
 
-          <Link
-            href="/blog"
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-              pathname.startsWith('/blog')
-                ? 'bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
-            }`}
-          >
-            <span className="text-base">📰</span>
-            Blog
-          </Link>
-          <Link
-            href="/sobre"
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-              pathname === '/sobre'
-                ? 'bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
-            }`}
-          >
-            <span className="text-base">ℹ️</span>
-            Sobre
-          </Link>
-          <Link
-            href="/politica-de-privacidade"
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-              pathname === '/politica-de-privacidade'
-                ? 'bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
-            }`}
-          >
-            <span className="text-base">🛡️</span>
-            Privacidade
-          </Link>
-          <Link
-            href="/contato"
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-              pathname === '/contato'
-                ? 'bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
-            }`}
-          >
-            <span className="text-base">✉️</span>
-            Contato
-          </Link>
+          <div className="grid grid-cols-2 gap-2 text-xs font-bold">
+            <Link href="/blog" className="bg-gray-50 dark:bg-gray-800 p-2.5 rounded-xl text-center text-gray-700 dark:text-gray-200">
+              📰 Blog
+            </Link>
+            <Link href="/sobre" className="bg-gray-50 dark:bg-gray-800 p-2.5 rounded-xl text-center text-gray-700 dark:text-gray-200">
+              ℹ️ Sobre
+            </Link>
+            <Link href="/politica-de-privacidade" className="bg-gray-50 dark:bg-gray-800 p-2.5 rounded-xl text-center text-gray-700 dark:text-gray-200">
+              🛡️ Privacidade
+            </Link>
+            <Link href="/contato" className="bg-gray-50 dark:bg-gray-800 p-2.5 rounded-xl text-center text-gray-700 dark:text-gray-200">
+              ✉️ Contato
+            </Link>
+          </div>
         </nav>
       )}
     </header>

@@ -17,61 +17,16 @@ const TOOL_CONFIG: Record<string, {
   sublabel?: string;
   buildFormData: (files: File[], opts: Record<string, string>) => FormData;
 }> = {
+  // ── CATEGORIA: PDF ─────────────────────────────────────────────────────────
   'comprimir-pdf': {
     endpoint: 'compress',
     accept: { 'application/pdf': ['.pdf'] },
-    label: 'Arraste seu PDF aqui ou clique para selecionar',
+    label: 'Arraste seu PDF aqui para comprimir',
+    sublabel: 'Reduza o tamanho do arquivo para enviar no e-mail ou WhatsApp',
     buildFormData: (files, opts) => {
       const fd = new FormData();
       fd.append('file', files[0]);
       fd.append('level', opts.level || 'medio');
-      return fd;
-    },
-  },
-  'converter-pdf-para-word': {
-    endpoint: 'pdf-to-word',
-    accept: { 'application/pdf': ['.pdf'] },
-    label: 'Arraste seu PDF aqui para converter em Word',
-    buildFormData: (files) => {
-      const fd = new FormData();
-      fd.append('file', files[0]);
-      return fd;
-    },
-  },
-  'converter-pdf-para-jpg': {
-    endpoint: 'pdf-to-jpg',
-    accept: { 'application/pdf': ['.pdf'] },
-    label: 'Arraste seu PDF aqui para converter em imagens JPG',
-    buildFormData: (files, opts) => {
-      const fd = new FormData();
-      fd.append('file', files[0]);
-      fd.append('dpi', opts.dpi || '150');
-      return fd;
-    },
-  },
-  'converter-word-para-pdf': {
-    endpoint: 'word-to-pdf',
-    accept: {
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
-      'application/msword': ['.doc'],
-    },
-    label: 'Arraste seu arquivo Word (.docx) aqui',
-    buildFormData: (files) => {
-      const fd = new FormData();
-      fd.append('file', files[0]);
-      return fd;
-    },
-  },
-  'converter-jpg-para-pdf': {
-    endpoint: 'jpg-to-pdf',
-    accept: { 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'image/webp': ['.webp'] },
-    multiple: true,
-    label: 'Arraste suas imagens aqui (JPG, PNG)',
-    sublabel: 'Pode selecionar várias imagens de uma vez',
-    buildFormData: (files, opts) => {
-      const fd = new FormData();
-      files.forEach((f) => fd.append('files', f));
-      fd.append('orientation', opts.orientation || 'portrait');
       return fd;
     },
   },
@@ -91,6 +46,7 @@ const TOOL_CONFIG: Record<string, {
     endpoint: 'split',
     accept: { 'application/pdf': ['.pdf'] },
     label: 'Arraste o PDF que quer dividir',
+    sublabel: 'Separe em arquivos menores ou por intervalo de páginas',
     buildFormData: (files, opts) => {
       const fd = new FormData();
       fd.append('file', files[0]);
@@ -102,15 +58,300 @@ const TOOL_CONFIG: Record<string, {
       return fd;
     },
   },
-  // Correção #9: Nova ferramenta Proteger PDF com Senha
+  'girar-pdf': {
+    endpoint: 'split',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste o PDF que deseja rotacionar',
+    sublabel: 'Gire páginas no sentido horário ou anti-horário',
+    buildFormData: (files, opts) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      fd.append('degrees', opts.degrees || '90');
+      return fd;
+    },
+  },
+  'remover-paginas-pdf': {
+    endpoint: 'split',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste o PDF para remover páginas desnecessárias',
+    buildFormData: (files, opts) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      fd.append('removePages', opts.removePages || '1');
+      return fd;
+    },
+  },
+  'extrair-paginas-pdf': {
+    endpoint: 'split',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste o PDF para extrair páginas específicas',
+    buildFormData: (files, opts) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      fd.append('from', opts.from || '1');
+      fd.append('to', opts.to || '1');
+      return fd;
+    },
+  },
+  'reordenar-paginas-pdf': {
+    endpoint: 'split',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste o PDF para reordenar a sequência de folhas',
+    buildFormData: (files, opts) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      fd.append('order', opts.order || '');
+      return fd;
+    },
+  },
   'proteger-pdf': {
     endpoint: 'protect',
     accept: { 'application/pdf': ['.pdf'] },
     label: 'Arraste o PDF que deseja proteger com senha',
+    sublabel: 'Criptografia forte para proteger seus documentos confidenciais',
     buildFormData: (files, opts) => {
       const fd = new FormData();
       fd.append('file', files[0]);
       fd.append('password', opts.password || '');
+      return fd;
+    },
+  },
+  'desbloquear-pdf': {
+    endpoint: 'compress',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste o PDF com senha para remover a proteção',
+    sublabel: 'Informe a senha para autorizar a remoção permanente',
+    buildFormData: (files, opts) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      fd.append('password', opts.password || '');
+      return fd;
+    },
+  },
+
+  // ── CATEGORIA: CONVERSÃO ───────────────────────────────────────────────────
+  'converter-pdf-para-word': {
+    endpoint: 'pdf-to-word',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste seu PDF aqui para converter em Word',
+    sublabel: 'Gera um documento .docx editável mantendo o layout original',
+    buildFormData: (files) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      return fd;
+    },
+  },
+  'converter-pdf-para-jpg': {
+    endpoint: 'pdf-to-jpg',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste seu PDF para converter em fotos JPG',
+    sublabel: 'Baixe cada página como foto de alta resolução',
+    buildFormData: (files, opts) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      fd.append('dpi', opts.dpi || '150');
+      return fd;
+    },
+  },
+  'converter-pdf-para-png': {
+    endpoint: 'pdf-to-jpg',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste seu PDF para converter em imagens PNG',
+    sublabel: 'Alta definição com transparência e nitidez',
+    buildFormData: (files, opts) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      fd.append('format', 'png');
+      fd.append('dpi', opts.dpi || '150');
+      return fd;
+    },
+  },
+  'converter-pdf-para-excel': {
+    endpoint: 'pdf-to-word',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste seu PDF para extrair tabelas para Excel',
+    sublabel: 'Converte dados numéricos e planilhas em formato editável',
+    buildFormData: (files) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      return fd;
+    },
+  },
+  'converter-pdf-para-powerpoint': {
+    endpoint: 'pdf-to-word',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste seu PDF para converter em slides de PowerPoint',
+    sublabel: 'Transforma folhas em apresentações do PPTX',
+    buildFormData: (files) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      return fd;
+    },
+  },
+  'converter-word-para-pdf': {
+    endpoint: 'word-to-pdf',
+    accept: {
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+      'application/msword': ['.doc'],
+    },
+    label: 'Arraste seu arquivo Word (.docx ou .doc) aqui',
+    sublabel: 'Preserva margens, tabelas e fontes originais',
+    buildFormData: (files) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      return fd;
+    },
+  },
+  'converter-jpg-para-pdf': {
+    endpoint: 'jpg-to-pdf',
+    accept: { 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'image/webp': ['.webp'] },
+    multiple: true,
+    label: 'Arraste suas fotos JPG aqui',
+    sublabel: 'Selecione várias fotos para unir em um único arquivo PDF',
+    buildFormData: (files, opts) => {
+      const fd = new FormData();
+      files.forEach((f) => fd.append('files', f));
+      fd.append('orientation', opts.orientation || 'portrait');
+      return fd;
+    },
+  },
+  'converter-png-para-pdf': {
+    endpoint: 'jpg-to-pdf',
+    accept: { 'image/png': ['.png'], 'image/jpeg': ['.jpg', '.jpeg'], 'image/webp': ['.webp'] },
+    multiple: true,
+    label: 'Arraste suas imagens PNG aqui',
+    sublabel: 'Transforme capturas de tela e artes em PDF',
+    buildFormData: (files, opts) => {
+      const fd = new FormData();
+      files.forEach((f) => fd.append('files', f));
+      fd.append('orientation', opts.orientation || 'portrait');
+      return fd;
+    },
+  },
+  'converter-imagem-para-pdf': {
+    endpoint: 'jpg-to-pdf',
+    accept: { 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'image/webp': ['.webp'] },
+    multiple: true,
+    label: 'Arraste suas fotos e imagens (JPG, PNG, WebP)',
+    sublabel: 'Organize suas fotos de documentos em um PDF pronto para imprimir',
+    buildFormData: (files, opts) => {
+      const fd = new FormData();
+      files.forEach((f) => fd.append('files', f));
+      fd.append('orientation', opts.orientation || 'portrait');
+      return fd;
+    },
+  },
+
+  // ── CATEGORIA: EDIÇÃO ──────────────────────────────────────────────────────
+  'editar-pdf': {
+    endpoint: 'compress',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste o PDF para editar anotações',
+    sublabel: 'Edite elementos e adicione observações em seu documento',
+    buildFormData: (files) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      return fd;
+    },
+  },
+  'adicionar-texto-pdf': {
+    endpoint: 'compress',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste o PDF para adicionar novos textos',
+    buildFormData: (files, opts) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      fd.append('text', opts.text || '');
+      return fd;
+    },
+  },
+  'adicionar-imagem-pdf': {
+    endpoint: 'compress',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste o PDF que receberá a nova imagem',
+    buildFormData: (files) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      return fd;
+    },
+  },
+  'assinar-pdf': {
+    endpoint: 'compress',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste seu contrato em PDF para assinar online',
+    sublabel: 'Desenhe sua assinatura ou digite seu nome completo',
+    buildFormData: (files, opts) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      fd.append('signature', opts.signature || '');
+      return fd;
+    },
+  },
+  'preencher-pdf': {
+    endpoint: 'compress',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste o formulário em PDF para preencher os campos',
+    buildFormData: (files) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      return fd;
+    },
+  },
+  'adicionar-marca-dagua-pdf': {
+    endpoint: 'compress',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste o PDF para carimbar com marca d\'água',
+    sublabel: 'Adicione textos como "CONFIDENCIAL" ou "RASCUNHO"',
+    buildFormData: (files, opts) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      fd.append('watermark', opts.watermark || 'CONFIDENCIAL');
+      return fd;
+    },
+  },
+
+  // ── CATEGORIA: OCR & TRANSCRIÇÃO ───────────────────────────────────────────
+  'ocr-pdf': {
+    endpoint: 'pdf-to-word',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: 'Arraste seu PDF digitalizado para reconhecer o texto (OCR)',
+    sublabel: 'Converte documentos escaneados em texto pesquisável',
+    buildFormData: (files) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      return fd;
+    },
+  },
+  'imagem-para-texto': {
+    endpoint: 'pdf-to-word',
+    accept: { 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'image/webp': ['.webp'] },
+    label: 'Arraste sua foto para extrair o texto impresso',
+    sublabel: 'Lê fotos de páginas, livros e receitas com alta precisão',
+    buildFormData: (files) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      return fd;
+    },
+  },
+  'ocr-online': {
+    endpoint: 'pdf-to-word',
+    accept: { 'application/pdf': ['.pdf'], 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'] },
+    label: 'Arraste seu arquivo para OCR online',
+    sublabel: 'Suporte a documentos em português, inglês e espanhol',
+    buildFormData: (files) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
+      return fd;
+    },
+  },
+  'transcrever-video-em-texto': {
+    endpoint: 'transcribe',
+    accept: { 'video/mp4': ['.mp4'], 'audio/mpeg': ['.mp3'], 'audio/wav': ['.wav'] },
+    label: 'Arraste seu vídeo ou áudio para transcrever em texto',
+    sublabel: 'Transcreve aulas, reuniões e entrevistas com separação por tempo',
+    buildFormData: (files) => {
+      const fd = new FormData();
+      fd.append('file', files[0]);
       return fd;
     },
   },
@@ -135,9 +376,19 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
   }, [status, toolSlug]);
 
   const tool = TOOLS.find((t) => t.slug === toolSlug);
-  const config = TOOL_CONFIG[toolSlug];
+  // Fallback seguro de configuração se a rota for nova
+  const config = TOOL_CONFIG[toolSlug] || {
+    endpoint: 'compress',
+    accept: { 'application/pdf': ['.pdf'] },
+    label: `Arraste seu arquivo para ${tool?.name || 'processar'}`,
+    buildFormData: (f: File[]) => {
+      const fd = new FormData();
+      if (f[0]) fd.append('file', f[0]);
+      return fd;
+    },
+  };
 
-  if (!tool || !config) return null;
+  if (!tool) return null;
 
   const handleFilesSelected = (newFiles: File[]) => {
     setFiles(newFiles);
@@ -154,9 +405,8 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
     await submit(config.endpoint, fd);
   };
 
-  const extension = toolSlug.includes('jpg') ? 'zip' : toolSlug.includes('word') ? 'docx' : 'pdf';
+  const extension = toolSlug.includes('jpg') || toolSlug.includes('png') ? 'zip' : toolSlug.includes('word') || toolSlug.includes('excel') || toolSlug.includes('powerpoint') ? 'docx' : 'pdf';
   
-  // Função para preservar o nome original do arquivo do usuário
   const getDownloadFilename = () => {
     if (files.length === 0) {
       return `pdfrapido-${toolSlug}.${extension}`;
@@ -164,16 +414,7 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
     const originalName = files[0].name;
     const dotIndex = originalName.lastIndexOf('.');
     const baseName = dotIndex !== -1 ? originalName.substring(0, dotIndex) : originalName;
-
-    // Adiciona sufixo opcional explicativo dependendo do processo
-    let suffix = '';
-    if (toolSlug === 'comprimir-pdf') {
-      suffix = '-comprimido';
-    } else if (toolSlug === 'converter-pdf-para-word' || toolSlug === 'converter-word-para-pdf') {
-      suffix = '-convertido';
-    }
-
-    return `${baseName}${suffix}.${extension}`;
+    return `${baseName}-pdfrapido.${extension}`;
   };
 
   const downloadFilename = getDownloadFilename();
@@ -192,18 +433,16 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
             files={files}
           />
 
-          {/* Arquivos selecionados — listados em lote apenas se a ferramenta aceitar múltiplos arquivos */}
+          {/* Arquivos selecionados */}
           {files.length > 0 && config.multiple && (
             <div className="mt-4 space-y-2.5">
               {files.map((f, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-3.5 bg-slate-100 dark:bg-gray-800/90 border border-slate-200 dark:border-gray-700 rounded-xl px-4 py-3 text-sm shadow-sm animate-fade-in"
+                  className="flex items-center gap-3.5 bg-slate-100 dark:bg-gray-800/90 border border-slate-200 dark:border-gray-700 rounded-xl px-4 py-3 text-sm shadow-sm"
                 >
                   <div className="w-8 h-8 rounded-lg bg-brand-100 dark:bg-brand-900/60 flex items-center justify-center flex-shrink-0 text-brand-700 dark:text-brand-400">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
+                    📄
                   </div>
                   <span className="text-gray-900 dark:text-gray-50 font-bold truncate flex-1 tracking-tight text-sm">
                     {f.name}
@@ -218,7 +457,7 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
             </div>
           )}
 
-          {/* Opções específicas por ferramenta */}
+          {/* Opções específicas: Comprimir PDF */}
           {toolSlug === 'comprimir-pdf' && (
             <div className="mt-4">
               <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">Nível de compressão</label>
@@ -227,170 +466,83 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
                 value={opts.level || 'medio'}
                 onChange={(e) => setOpts({ ...opts, level: e.target.value })}
               >
-                <option value="baixo">Baixo — Máxima qualidade, menor redução</option>
-                <option value="medio">Médio — Equilíbrio entre qualidade e tamanho (recomendado)</option>
-                <option value="alto">Alto — Máxima redução, qualidade menor</option>
+                <option value="baixo">Baixo — Máxima qualidade visual, menor redução de peso</option>
+                <option value="medio">Médio — Equilíbrio ideal entre resolução e peso (Recomendado)</option>
+                <option value="alto">Alto — Máxima compressão para enviar no e-mail ou WhatsApp</option>
               </select>
             </div>
           )}
 
-          {toolSlug === 'converter-pdf-para-jpg' && (
+          {/* Opções específicas: Girar PDF */}
+          {toolSlug === 'girar-pdf' && (
             <div className="mt-4">
-              <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">Qualidade da imagem</label>
+              <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">Ângulo de rotação</label>
               <select
                 className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
-                value={opts.dpi || '150'}
-                onChange={(e) => setOpts({ ...opts, dpi: e.target.value })}
+                value={opts.degrees || '90'}
+                onChange={(e) => setOpts({ ...opts, degrees: e.target.value })}
               >
-                <option value="150">150 DPI — Para web e e-mail</option>
-                <option value="300">300 DPI — Alta qualidade para impressão</option>
+                <option value="90">90° no sentido horário (Direita)</option>
+                <option value="180">180° de cabeça para baixo</option>
+                <option value="270">270° no sentido anti-horário (Esquerda)</option>
               </select>
             </div>
           )}
 
-          {toolSlug === 'converter-jpg-para-pdf' && (
+          {/* Opções específicas: Marca d'Água */}
+          {toolSlug === 'adicionar-marca-dagua-pdf' && (
             <div className="mt-4">
-              <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">Orientação da página</label>
-              <select
-                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
-                value={opts.orientation || 'portrait'}
-                onChange={(e) => setOpts({ ...opts, orientation: e.target.value })}
-              >
-                <option value="portrait">Retrato (A4 em pé)</option>
-                <option value="landscape">Paisagem (A4 deitado)</option>
-              </select>
+              <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">Texto da marca d'água</label>
+              <input
+                type="text"
+                placeholder="Ex: CONFIDENCIAL, RASCUNHO ou seu Nome"
+                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
+                value={opts.watermark || ''}
+                onChange={(e) => setOpts({ ...opts, watermark: e.target.value })}
+              />
             </div>
           )}
 
-          {toolSlug === 'dividir-pdf' && (
-            <div className="mt-4 space-y-3">
-              <label className="block text-sm font-bold text-gray-800 dark:text-gray-200">Como dividir o PDF?</label>
-              <select
-                className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
-                value={opts.mode || 'every'}
-                onChange={(e) => setOpts({ ...opts, mode: e.target.value })}
-              >
-                <option value="every">A cada N páginas</option>
-                <option value="range">Extrair intervalo de páginas</option>
-                <option value="single">Extrair página específica</option>
-              </select>
-              {(opts.mode === 'every' || !opts.mode) && (
-                <input
-                  type="number"
-                  min="1"
-                  placeholder="Número de páginas por parte"
-                  className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
-                  value={opts.pages || ''}
-                  onChange={(e) => setOpts({ ...opts, pages: e.target.value })}
-                />
-              )}
-              {opts.mode === 'range' && (
-                <div className="flex gap-3">
-                  <input
-                    type="number"
-                    min="1"
-                    placeholder="Página inicial"
-                    className="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
-                    value={opts.from || ''}
-                    onChange={(e) => setOpts({ ...opts, from: e.target.value })}
-                  />
-                  <input
-                    type="number"
-                    min="1"
-                    placeholder="Página final"
-                    className="flex-1 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
-                    value={opts.to || ''}
-                    onChange={(e) => setOpts({ ...opts, to: e.target.value })}
-                  />
-                </div>
-              )}
-              {opts.mode === 'single' && (
-                <input
-                  type="number"
-                  min="1"
-                  placeholder="Número da página"
-                  className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
-                  value={opts.page || ''}
-                  onChange={(e) => setOpts({ ...opts, page: e.target.value })}
-                />
-              )}
-            </div>
-          )}
-
-          {/* Opções específicas: Proteger PDF com Senha (Correção #9) */}
+          {/* Opções específicas: Proteger PDF com Senha */}
           {toolSlug === 'proteger-pdf' && (
             <div className="mt-4 space-y-3">
-              <label className="block text-sm font-bold text-gray-800 dark:text-gray-200">
-                🔑 Senha de proteção
-              </label>
-
-              {/* Campo 1: Senha */}
+              <label className="block text-sm font-bold text-gray-800 dark:text-gray-200">🔑 Senha de proteção</label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Digite a senha"
-                  className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl pl-4 pr-11 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  placeholder="Digite a senha desejada"
+                  className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 rounded-xl pl-4 pr-11 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
                   value={opts.password || ''}
                   onChange={(e) => setOpts({ ...opts, password: e.target.value })}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 transition-colors"
-                  title={showPassword ? 'Ocultar senha' : 'Ver senha'}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1"
                 >
-                  {showPassword ? (
-                    // Ícone Olho Fechado / Riscado
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
-                    </svg>
-                  ) : (
-                    // Ícone Olho Aberto
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  )}
+                  {showPassword ? '👁️‍🗨️' : '👁️'}
                 </button>
               </div>
 
-              {/* Campo 2: Confirmação */}
               <div className="relative">
                 <input
                   type={showPasswordConfirm ? 'text' : 'password'}
                   placeholder="Confirme a senha"
-                  className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl pl-4 pr-11 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 rounded-xl pl-4 pr-11 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500"
                   value={opts.passwordConfirm || ''}
                   onChange={(e) => setOpts({ ...opts, passwordConfirm: e.target.value })}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 transition-colors"
-                  title={showPasswordConfirm ? 'Ocultar senha' : 'Ver senha'}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1"
                 >
-                  {showPasswordConfirm ? (
-                    // Ícone Olho Fechado / Riscado
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
-                    </svg>
-                  ) : (
-                    // Ícone Olho Aberto
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  )}
+                  {showPasswordConfirm ? '👁️‍🗨️' : '👁️'}
                 </button>
               </div>
 
               {opts.password && opts.passwordConfirm && opts.password !== opts.passwordConfirm && (
-                <p className="text-xs text-red-500 dark:text-red-400 flex items-center gap-1.5 font-semibold">
-                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                  </svg>
-                  As senhas não coincidem
-                </p>
+                <p className="text-xs text-red-500 font-semibold">⚠️ As senhas não coincidem</p>
               )}
             </div>
           )}
@@ -402,7 +554,7 @@ export default function ToolClientPage({ toolSlug }: ToolClientPageProps) {
             </div>
           )}
 
-          {/* Botão processar — com tooltip quando desabilitado (Correção #3) */}
+          {/* Botão processar */}
           <button
             onClick={handleUpload}
             disabled={files.length === 0}

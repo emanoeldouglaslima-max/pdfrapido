@@ -1,18 +1,17 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Script from 'next/script';
-import { TOOLS } from './constants';
+import { TOOLS, CATEGORIES_CONFIG } from './constants';
 import AdUnit from '../components/AdUnit';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ComparisonTable from '../components/ComparisonTable';
-
 import { SITE_URL } from '../lib/siteUrl';
 
 export const metadata: Metadata = {
   title: 'Ferramentas de PDF Online Grátis — Converter, Comprimir, Juntar e Transcrever',
   description:
-    'Converta, comprima, junte e divida PDFs online de graça. Transcreva áudio e vídeo com alta precisão. Sem cadastro, com descarte automático e 100% gratuito.',
+    'Converta, comprima, junte, divida, assine e edite PDFs online de graça. Transcreva áudio e vídeo em texto com alta precisão. Sem cadastro, com descarte automático e 100% gratuito.',
   alternates: { canonical: SITE_URL },
   openGraph: {
     title: 'PDFRápido — Ferramentas de PDF Online Grátis',
@@ -38,43 +37,19 @@ async function getStats(): Promise<{ total_files_processed: number }> {
   }
 }
 
-// Paleta de cores por ferramenta para cards premium
+// Estilos de cards dinâmicos para visual premium
 const TOOL_STYLES: Record<string, { gradient: string; iconGradient: string; border: string; hover: string }> = {
-  'comprimir-pdf':             { gradient: 'from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20', iconGradient: 'from-blue-500 to-indigo-500',   border: 'border-blue-100 dark:border-blue-900/30',   hover: 'hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-blue-100 dark:hover:shadow-none' },
-  'converter-pdf-para-word':   { gradient: 'from-indigo-50 to-violet-50 dark:from-indigo-950/20 dark:to-violet-950/20', iconGradient: 'from-indigo-500 to-violet-500', border: 'border-indigo-100 dark:border-indigo-900/30', hover: 'hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-indigo-100 dark:hover:shadow-none' },
-  'converter-pdf-para-jpg':    { gradient: 'from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20',  iconGradient: 'from-emerald-500 to-teal-500', border: 'border-emerald-100 dark:border-emerald-900/30', hover: 'hover:border-emerald-300 dark:hover:border-emerald-700 hover:shadow-emerald-100 dark:hover:shadow-none' },
-  'converter-word-para-pdf':   { gradient: 'from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20',   iconGradient: 'from-purple-500 to-pink-500',  border: 'border-purple-100 dark:border-purple-900/30',  hover: 'hover:border-purple-300 dark:hover:border-purple-700 hover:shadow-purple-100 dark:hover:shadow-none' },
-  'converter-jpg-para-pdf':    { gradient: 'from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20',  iconGradient: 'from-amber-500 to-orange-500', border: 'border-amber-100 dark:border-amber-900/30',   hover: 'hover:border-amber-300 dark:hover:border-amber-700 hover:shadow-amber-100 dark:hover:shadow-none' },
-  'juntar-pdf':                { gradient: 'from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20',    iconGradient: 'from-orange-500 to-red-500',   border: 'border-orange-100 dark:border-orange-900/30',  hover: 'hover:border-orange-300 dark:hover:border-orange-700 hover:shadow-orange-100 dark:hover:shadow-none' },
-  'dividir-pdf':               { gradient: 'from-rose-50 to-pink-50 dark:from-rose-950/20 dark:to-pink-950/20',     iconGradient: 'from-rose-500 to-pink-500',    border: 'border-rose-100 dark:border-rose-900/30',    hover: 'hover:border-rose-300 dark:hover:border-rose-700 hover:shadow-rose-100 dark:hover:shadow-none' },
-  'transcrever-video-em-texto': { gradient: 'from-emerald-50 to-cyan-50 dark:from-emerald-950/20 dark:to-cyan-950/20', iconGradient: 'from-emerald-500 to-cyan-500', border: 'border-emerald-100 dark:border-emerald-900/30', hover: 'hover:border-emerald-300 dark:hover:border-emerald-700 hover:shadow-emerald-100 dark:hover:shadow-none' },
-  'proteger-pdf':               { gradient: 'from-slate-50 to-gray-50 dark:from-slate-950/20 dark:to-gray-950/20',       iconGradient: 'from-slate-500 to-gray-600',   border: 'border-slate-100 dark:border-slate-900/30',   hover: 'hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-slate-100 dark:hover:shadow-none' },
+  'comprimir-pdf': { gradient: 'from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20', iconGradient: 'from-blue-500 to-indigo-500', border: 'border-blue-100 dark:border-blue-900/30', hover: 'hover:border-blue-300 dark:hover:border-blue-700' },
+  'juntar-pdf': { gradient: 'from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20', iconGradient: 'from-orange-500 to-amber-500', border: 'border-orange-100 dark:border-orange-900/30', hover: 'hover:border-orange-300 dark:hover:border-orange-700' },
+  'dividir-pdf': { gradient: 'from-red-50 to-rose-50 dark:from-red-950/20 dark:to-rose-950/20', iconGradient: 'from-red-500 to-rose-500', border: 'border-red-100 dark:border-red-900/30', hover: 'hover:border-red-300 dark:hover:border-red-700' },
+  'converter-pdf-para-word': { gradient: 'from-indigo-50 to-violet-50 dark:from-indigo-950/20 dark:to-violet-950/20', iconGradient: 'from-indigo-500 to-violet-500', border: 'border-indigo-100 dark:border-indigo-900/30', hover: 'hover:border-indigo-300 dark:hover:border-indigo-700' },
+  'converter-pdf-para-jpg': { gradient: 'from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20', iconGradient: 'from-emerald-500 to-teal-500', border: 'border-emerald-100 dark:border-emerald-900/30', hover: 'hover:border-emerald-300 dark:hover:border-emerald-700' },
+  'converter-word-para-pdf': { gradient: 'from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20', iconGradient: 'from-purple-500 to-pink-500', border: 'border-purple-100 dark:border-purple-900/30', hover: 'hover:border-purple-300 dark:hover:border-purple-700' },
+  'converter-jpg-para-pdf': { gradient: 'from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20', iconGradient: 'from-amber-500 to-yellow-500', border: 'border-amber-100 dark:border-amber-900/30', hover: 'hover:border-amber-300 dark:hover:border-amber-700' },
+  'transcrever-video-em-texto': { gradient: 'from-teal-50 to-cyan-50 dark:from-teal-950/20 dark:to-cyan-950/20', iconGradient: 'from-teal-500 to-cyan-500', border: 'border-teal-100 dark:border-teal-900/30', hover: 'hover:border-teal-300 dark:hover:border-teal-700' },
+  'assinar-pdf': { gradient: 'from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20', iconGradient: 'from-emerald-600 to-green-600', border: 'border-emerald-100 dark:border-emerald-900/30', hover: 'hover:border-emerald-300 dark:hover:border-emerald-700' },
+  'proteger-pdf': { gradient: 'from-slate-50 to-gray-50 dark:from-slate-950/20 dark:to-gray-950/20', iconGradient: 'from-slate-600 to-gray-600', border: 'border-slate-100 dark:border-slate-900/30', hover: 'hover:border-slate-300 dark:hover:border-slate-700' },
 };
-
-// Categorização das ferramentas
-const CATEGORIES = [
-  {
-    id: 'pdf',
-    title: 'Manipulação e Edição de PDF',
-    description: 'Comprima, junte, divida, proteja com senha e converta documentos PDF.',
-    icon: '📑',
-    slugs: ['comprimir-pdf', 'converter-pdf-para-word', 'converter-word-para-pdf', 'juntar-pdf', 'dividir-pdf', 'proteger-pdf'],
-  },
-  {
-    id: 'images',
-    title: 'Imagens e Conversão Visual',
-    description: 'Transforme páginas em imagens JPG de alta qualidade ou crie PDFs a partir de fotos.',
-    icon: '🖼️',
-    slugs: ['converter-pdf-para-jpg', 'converter-jpg-para-pdf'],
-  },
-  {
-    id: 'media-text',
-    title: 'Áudio, Vídeo e Transcrição',
-    description: 'Converta arquivos de áudio e vídeo em texto editável com marcação de tempo.',
-    icon: '🎙️',
-    slugs: ['transcrever-video-em-texto'],
-  },
-];
 
 export default async function HomePage() {
   const stats = await getStats();
@@ -92,7 +67,7 @@ export default async function HomePage() {
             '@type': 'Organization',
             name: 'PDFRápido',
             url: SITE_URL,
-            description: 'Ferramentas de PDF online gratuitas para o público brasileiro',
+            description: 'Plataforma profissional de ferramentas de PDF e conversão de arquivos online gratuitas para o público brasileiro',
             founder: {
               '@type': 'Person',
               name: 'Emanoel Douglas',
@@ -107,17 +82,15 @@ export default async function HomePage() {
       <main>
         {/* ── HERO ── */}
         <section className="relative overflow-hidden bg-hero-gradient py-16 md:py-24 px-4">
-          {/* Orbs decorativos de fundo */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div className="absolute -top-40 -right-40 w-96 h-96 bg-brand-200/30 dark:bg-brand-800/10 rounded-full blur-3xl" />
             <div className="absolute -bottom-20 -left-40 w-80 h-80 bg-purple-200/30 dark:bg-purple-800/10 rounded-full blur-3xl" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-100/20 dark:bg-indigo-900/10 rounded-full blur-3xl" />
           </div>
 
-          {/* Padrão de pontos */}
           <div className="absolute inset-0 bg-dots opacity-40 pointer-events-none" />
 
-          <div className="relative max-w-3xl mx-auto text-center">
+          <div className="relative max-w-4xl mx-auto text-center">
             {/* Badge de confiança */}
             <div className="inline-flex items-center gap-2 bg-white dark:bg-gray-900 border border-brand-100 dark:border-gray-800 rounded-full px-4 py-2 shadow-sm mb-6 animate-fade-in">
               <span className="text-green-500" aria-hidden="true">●</span>
@@ -127,7 +100,7 @@ export default async function HomePage() {
             </div>
 
             <p className="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest mb-4">
-              ⚡ Suíte Completa de Ferramentas de Documentos
+              ⚡ Plataforma Completa de Ferramentas para PDF e Imagens
             </p>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight tracking-tight animate-slide-up">
@@ -137,18 +110,17 @@ export default async function HomePage() {
               </span>
             </h1>
 
-            <p className="mt-5 text-lg md:text-xl text-gray-500 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
-              Comprima, converta em Word, junte anexos, divida páginas e transcreva gravações em segundos.
-              Funciona direto no navegador do celular ou computador, sem instalar nada.
+            <p className="mt-5 text-base md:text-xl text-gray-500 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
+              Comprima para o WhatsApp, converta em Word, junte contratos, assine online e transcreva vídeos em segundos. Sem instalar programas.
             </p>
 
             {/* Selos de vantagens */}
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3 text-xs font-semibold">
               {[
                 { icon: '✅', label: '100% Grátis' },
-                { icon: '🔒', label: 'Exclusão automática em 30 min' },
-                { icon: '📱', label: 'Compatível com Celular' },
-                { icon: '🚫', label: 'Sem Cadastro Obrigatório' },
+                { icon: '🔒', label: 'Descarte Automático em 30 min' },
+                { icon: '📱', label: 'Otimizado para Celular' },
+                { icon: '🚫', label: 'Sem Cadastro' },
               ].map((item) => (
                 <span
                   key={item.label}
@@ -182,30 +154,32 @@ export default async function HomePage() {
           />
         </div>
 
-        {/* ── FERRAMENTAS ORGANIZADAS POR CATEGORIAS ── */}
-        <section className="max-w-6xl mx-auto px-4 py-10 md:py-14 space-y-12">
+        {/* ── FERRAMENTAS ORGANIZADAS POR PILARES / CATEGORIAS ── */}
+        <section className="max-w-7xl mx-auto px-4 py-12 space-y-14">
           <div className="text-center max-w-2xl mx-auto">
             <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-3">
-              Catálogo de Ferramentas
+              Catálogo Completo de Ferramentas
             </h2>
             <p className="text-gray-500 dark:text-gray-400 text-sm md:text-base">
-              Selecione a operação desejada abaixo. Todas as ferramentas são executadas em servidores seguros de alta velocidade.
+              Selecione a operação desejada abaixo. Todas as ferramentas são executadas em servidores de alta velocidade e com criptografia total.
             </p>
           </div>
 
-          {CATEGORIES.map((cat) => {
-            const categoryTools = TOOLS.filter((t) => cat.slugs.includes(t.slug));
+          {CATEGORIES_CONFIG.map((cat) => {
+            const categoryTools = TOOLS.filter((t) => t.category === cat.id);
+            if (categoryTools.length === 0) return null;
+
             return (
-              <div key={cat.id} className="space-y-4">
-                <div className="flex items-center gap-3 border-b border-gray-200 dark:border-gray-800 pb-3">
-                  <span className="text-2xl" role="img" aria-label={cat.title}>
+              <div key={cat.id} className="space-y-5">
+                <div className="flex items-center gap-3 border-b border-gray-200 dark:border-gray-800 pb-4">
+                  <span className="text-3xl" role="img" aria-label={cat.name}>
                     {cat.icon}
                   </span>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                      {cat.title}
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {cat.name}
                     </h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
                       {cat.description}
                     </p>
                   </div>
@@ -215,11 +189,11 @@ export default async function HomePage() {
                   {categoryTools.map((tool, idx) => {
                     const styles = TOOL_STYLES[tool.slug] || {
                       gradient: 'from-gray-50 to-white dark:from-gray-900 dark:to-gray-950',
-                      iconGradient: 'from-gray-400 to-gray-500',
+                      iconGradient: 'from-brand-500 to-indigo-500',
                       border: 'border-gray-100 dark:border-gray-800',
-                      hover: 'hover:border-gray-300 dark:hover:border-gray-700',
+                      hover: 'hover:border-brand-300 dark:hover:border-brand-700',
                     };
-                    const isPopular = tool.slug === 'comprimir-pdf' || tool.slug === 'transcrever-video-em-texto';
+                    const isPopular = tool.slug === 'comprimir-pdf' || tool.slug === 'juntar-pdf' || tool.slug === 'converter-pdf-para-word' || tool.slug === 'transcrever-video-em-texto';
 
                     return (
                       <Link
@@ -230,18 +204,15 @@ export default async function HomePage() {
                           border ${styles.border} rounded-2xl p-5
                           hover:shadow-lg ${styles.hover}
                           transition-all duration-300 hover:-translate-y-1
-                          animate-slide-up
                         `}
-                        style={{ animationDelay: `${idx * 50}ms`, animationFillMode: 'both' }}
+                        style={{ animationDelay: `${idx * 40}ms`, animationFillMode: 'both' }}
                       >
-                        {/* Badge popular */}
                         {isPopular && (
                           <span className="absolute -top-2.5 left-4 text-[10px] font-bold bg-gradient-to-r from-brand-600 to-violet-600 text-white px-2.5 py-0.5 rounded-full shadow-sm">
                             🔥 Destaque
                           </span>
                         )}
 
-                        {/* Ícone com gradiente */}
                         <div className={`
                           w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4
                           bg-gradient-to-br ${styles.iconGradient}
@@ -253,7 +224,7 @@ export default async function HomePage() {
                         <h4 className="font-bold text-gray-900 dark:text-gray-100 text-base group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
                           {tool.name}
                         </h4>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1.5 leading-relaxed line-clamp-2">
+                        <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1.5 leading-relaxed line-clamp-2">
                           {tool.description}
                         </p>
 
@@ -272,8 +243,47 @@ export default async function HomePage() {
           })}
         </section>
 
-        {/* ── COMO FUNCIONA (3 PASSOS SIMPLES) ── */}
-        <section className="bg-white dark:bg-gray-900/50 py-16 px-4 border-t border-gray-100 dark:border-gray-800">
+        {/* ── ATALHOS DE BUSCA BRASILEIRA (SOLUÇÕES PARA O DIA A DIA) ── */}
+        <section className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-950 dark:to-gray-900/60 py-16 px-4 border-t border-gray-100 dark:border-gray-800">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest">
+                🇧🇷 Soluções Rápidas para Dores Reais
+              </span>
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mt-1">
+                O que você precisa fazer com seu PDF hoje?
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                { title: 'Como reduzir PDF para enviar no WhatsApp', link: '/comprimir-pdf', icon: '💬', desc: 'Reduza fotos de documentos e contratos para caber no limite de anexo do WhatsApp.' },
+                { title: 'Como juntar vários PDFs em um só arquivo', link: '/juntar-pdf', icon: '📎', desc: 'Una relatórios, certidões e comprovantes em uma única sequência organizada.' },
+                { title: 'Como converter PDF em Word editável', link: '/converter-pdf-para-word', icon: '📝', desc: 'Extraia o texto de seus PDFs para alterar parágrafos e nomes no Microsoft Word.' },
+                { title: 'Como assinar contratos em PDF sem imprimir', link: '/assinar-pdf', icon: '✍️', desc: 'Desenhe sua assinatura na tela do celular e assine documentos sem gastar papel.' },
+                { title: 'Como transformar fotos do celular em PDF', link: '/converter-jpg-para-pdf', icon: '📷', desc: 'Converta imagens JPG e PNG tiradas pela câmera em um PDF pronto para imprimir.' },
+                { title: 'Como proteger documentos com senha forte', link: '/proteger-pdf', icon: '🔒', desc: 'Criptografe seus arquivos confidenciais contra acessos não autorizados.' },
+              ].map((shortcut) => (
+                <Link
+                  key={shortcut.title}
+                  href={shortcut.link}
+                  className="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-md transition-all group"
+                >
+                  <span className="text-2xl mb-2 block">{shortcut.icon}</span>
+                  <h3 className="font-bold text-gray-900 dark:text-white text-sm group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+                    {shortcut.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5 leading-relaxed">
+                    {shortcut.desc}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── COMO FUNCIONA (3 PASSOS) ── */}
+        <section className="bg-white dark:bg-gray-900 py-16 px-4 border-t border-gray-100 dark:border-gray-800">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <span className="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest">
@@ -356,7 +366,6 @@ export default async function HomePage() {
               ))}
             </div>
 
-            {/* ── TABELA COMPARATIVA (HIGH VALUE CONTENT) ── */}
             <ComparisonTable />
           </div>
         </section>
@@ -386,7 +395,7 @@ export default async function HomePage() {
               {[
                 {
                   q: 'O PDFRápido é realmente gratuito?',
-                  a: 'Sim, você pode utilizar todas as ferramentas de conversão, compressão, divisão, junção e proteção de documentos gratuitamente sem necessidade de cadastro ou cartão.',
+                  a: 'Sim, você pode utilizar todas as ferramentas de conversão, compressão, divisão, junção, proteção e edição de documentos gratuitamente sem necessidade de cadastro ou cartão.',
                 },
                 {
                   q: 'O que acontece com os arquivos após o envio?',
@@ -398,7 +407,7 @@ export default async function HomePage() {
                 },
                 {
                   q: 'Como enviar PDFs grandes pelo WhatsApp ou e-mail?',
-                  a: 'Utilize nossa ferramenta de Comprimir PDF. Ela reduz o tamanho do arquivo em até 80% preservando a nitidez de textos e imagens para anexação sem erro de limite.',
+                  a: 'Utilize nossa ferramenta de Comprimir PDF. Ela reduz o tamanho do arquivo preservando a nitidez de textos e imagens para anexação sem erro de limite.',
                 },
               ].map((faq) => (
                 <div key={faq.q} className="bg-gray-50 dark:bg-gray-850 p-5 rounded-2xl border border-gray-200 dark:border-gray-800">

@@ -304,7 +304,7 @@ export const ARTICLES = [
   },
 ];
 
-const CATEGORIES = ['WhatsApp', 'Conversor', 'Segurança', 'Organização', 'Produtividade', 'Jurídico'];
+const CATEGORIES = ['PDF', 'Documentos', 'Produtividade', 'Estudos', 'Trabalho', 'Tecnologia', 'Segurança', 'WhatsApp'];
 const ALL_TAGS = ['Compressão', 'Conversão', 'Celular', 'Word', 'Excel', 'LGPD', 'Privacidade', 'Concursos', 'Petições', 'Assinatura', 'PDF/A', 'Segurança', 'Organização', 'Transcrição', 'Áudio', 'Google Docs', 'Gov.br'];
 
 

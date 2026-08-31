@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import Logo from './Logo';
-import { TOOLS } from '../app/constants';
+import { TOOLS, CATEGORIES_CONFIG } from '../app/constants';
 
 export default function Footer() {
   return (
-    <footer className="relative bg-gray-950 text-gray-400 pt-14 pb-8 px-4 border-t border-gray-800 overflow-hidden">
+    <footer className="relative bg-gray-950 text-gray-400 pt-16 pb-8 px-4 border-t border-gray-800 overflow-hidden">
       {/* Gradiente decorativo no topo */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-500/50 to-transparent" />
 
@@ -14,140 +14,103 @@ export default function Footer() {
       <div className="absolute -top-40 -left-40 w-80 h-80 bg-brand-900/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-purple-900/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          {/* Coluna 1 — Logo e descrição */}
-          <div className="flex flex-col gap-3">
+      <div className="relative max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
+          {/* Coluna 1 & 2 — Logo, descrição e selos */}
+          <div className="lg:col-span-2 flex flex-col gap-4">
             <Link href="/" className="inline-block hover:opacity-90 transition-opacity">
               <Logo forceDark />
             </Link>
-            <p className="mt-2 text-sm text-gray-500 max-w-xs leading-relaxed">
-              Ferramentas de PDF gratuitas para converter, comprimir, juntar e organizar seus documentos. Seus arquivos são excluídos automaticamente após o download ou em até 30 minutos.
+            <p className="text-xs text-gray-400 max-w-sm leading-relaxed">
+              Plataforma 100% gratuita de ferramentas para PDF e conversão de arquivos. Processamento seguro na nuvem com exclusão automática dos documentos em até 30 minutos ou imediatamente após o download.
             </p>
             {/* Selos de segurança */}
-            <div className="flex items-center gap-3 mt-3">
-              <span className="flex items-center gap-1.5 text-[10px] text-gray-500 bg-gray-800/50 px-3 py-1.5 rounded-full border border-gray-800">
-                <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                </svg>
-                SSL/HTTPS
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <span className="flex items-center gap-1.5 text-[10px] font-semibold text-gray-400 bg-gray-900 px-3 py-1.5 rounded-full border border-gray-800">
+                🔒 Criptografia SSL/TLS 256-bit
               </span>
-              <span className="flex items-center gap-1.5 text-[10px] text-gray-500 bg-gray-800/50 px-3 py-1.5 rounded-full border border-gray-800">
-                <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                LGPD
+              <span className="flex items-center gap-1.5 text-[10px] font-semibold text-gray-400 bg-gray-900 px-3 py-1.5 rounded-full border border-gray-800">
+                🛡️ Conformidade LGPD
+              </span>
+              <span className="flex items-center gap-1.5 text-[10px] font-semibold text-gray-400 bg-gray-900 px-3 py-1.5 rounded-full border border-gray-800">
+                ⚡ Descarte Automático
               </span>
             </div>
           </div>
 
-          {/* Coluna 2 — Ferramentas */}
-          <div>
-            <p className="text-white font-bold mb-4 text-sm tracking-wider uppercase">Ferramentas de PDF</p>
-            <ul className="grid grid-cols-1 gap-1">
-              {TOOLS.map((t) => (
-                <li key={t.slug}>
-                  <Link
-                    href={`/${t.slug}`}
-                    className="text-sm hover:text-white transition-colors flex items-center min-h-[40px] py-1.5 group"
-                  >
-                    <span className="group-hover:translate-x-1 inline-block transition-transform duration-200">
-                      {t.icon} {t.shortName || t.name}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Colunas por Categoria de Ferramentas */}
+          {CATEGORIES_CONFIG.map((cat) => {
+            const catTools = TOOLS.filter((t) => t.category === cat.id);
+            return (
+              <div key={cat.id}>
+                <p className="text-white font-bold mb-3 text-xs tracking-wider uppercase flex items-center gap-1.5">
+                  <span>{cat.icon}</span> {cat.name}
+                </p>
+                <ul className="space-y-1 text-xs">
+                  {catTools.map((t) => (
+                    <li key={t.slug}>
+                      <Link
+                        href={`/${t.slug}`}
+                        className="hover:text-white transition-colors py-1 inline-block text-gray-400 hover:underline"
+                      >
+                        {t.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
 
-          {/* Coluna 3 — Institucional */}
+          {/* Coluna Institucional e Legal */}
           <div>
-            <p className="text-white font-bold mb-4 text-sm tracking-wider uppercase">Institucional</p>
-            <ul className="space-y-1">
+            <p className="text-white font-bold mb-3 text-xs tracking-wider uppercase flex items-center gap-1.5">
+              📜 Transparência
+            </p>
+            <ul className="space-y-1.5 text-xs">
               <li>
-                <Link href="/sobre" rel="about" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group">
-                  <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                <Link href="/sobre" rel="about" className="hover:text-white transition-colors text-gray-400 hover:underline">
                   Sobre Nós (Sobre)
                 </Link>
               </li>
               <li>
-                <Link href="/contato" rel="contact" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group">
-                  <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
+                <Link href="/contato" rel="contact" className="hover:text-white transition-colors text-gray-400 hover:underline">
                   Contato (Fale Conosco)
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group">
-                  <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                  </svg>
-                  Blog
+                <Link href="/blog" className="hover:text-white transition-colors text-gray-400 hover:underline">
+                  Blog & Tutoriais
+                </Link>
+              </li>
+              <li>
+                <Link href="/politica-de-privacidade" rel="privacy-policy" className="hover:text-white transition-colors text-gray-400 hover:underline">
+                  Política de Privacidade
+                </Link>
+              </li>
+              <li>
+                <Link href="/termos-de-uso" rel="terms-of-service" className="hover:text-white transition-colors text-gray-400 hover:underline">
+                  Termos de Uso
+                </Link>
+              </li>
+              <li>
+                <Link href="/cookies" className="hover:text-white transition-colors text-gray-400 hover:underline">
+                  Política de Cookies
+                </Link>
+              </li>
+              <li>
+                <Link href="/aviso-legal" rel="disclaimer" className="hover:text-white transition-colors text-gray-400 hover:underline">
+                  Aviso Legal
                 </Link>
               </li>
             </ul>
           </div>
-
-          {/* Coluna 4 — Segurança e Legal */}
-          <div>
-            <p className="text-white font-bold mb-4 text-sm tracking-wider uppercase">Segurança e Legal</p>
-            <p className="text-sm text-gray-500 leading-relaxed mb-2">
-              Seus arquivos são transmitidos via HTTPS, processados temporariamente em nossos servidores e excluídos automaticamente após o download ou em até 30 minutos.
-            </p>
-
-            <div className="space-y-1">
-              <Link
-                href="/politica-de-privacidade"
-                rel="privacy-policy"
-                className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group"
-              >
-                <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-                Política de Privacidade
-              </Link>
-              <Link
-                href="/termos-de-uso"
-                rel="terms-of-service"
-                className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group"
-              >
-                <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Termos e Condições (Termos de Uso)
-              </Link>
-              <Link
-                href="/cookies"
-                className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group"
-              >
-                <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3c.35 2.38 1.57 3.61 4 4 .39 2.58 1.73 3.82 4 4-.37 5.25-3.47 9-8 9-4.97 0-9-4.03-9-9 0-4.53 3.75-7.63 9-8z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 11h.01M11 15h.01M14 10h.01" />
-                </svg>
-                Política de Cookies
-              </Link>
-              <Link
-                href="/aviso-legal"
-                rel="disclaimer"
-                className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors py-2 min-h-[44px] group"
-              >
-                <svg className="w-4 h-4 text-gray-600 group-hover:text-brand-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3 3 7l9 4 9-4-9-4z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10v5c0 2.21 3.13 4 7 4s7-1.79 7-4v-5" />
-                </svg>
-                Isenção de Responsabilidade (Aviso Legal)
-              </Link>
-            </div>
-          </div>
         </div>
 
         {/* Barra inferior */}
-        <div className="mt-12 pt-6 border-t border-gray-800/50 text-xs text-gray-600 text-center flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="pt-6 border-t border-gray-800/80 text-[11px] text-gray-500 text-center flex flex-col sm:flex-row justify-between items-center gap-3">
           <span>© {new Date().getFullYear()} PDFRápido. Todos os direitos reservados.</span>
-          <span>Feito para brasileiros 🇧🇷</span>
+          <span>Desenvolvido com foco em velocidade, utilidade e privacidade para o Brasil 🇧🇷</span>
         </div>
       </div>
     </footer>
