@@ -1,7 +1,5 @@
-// app/sitemap.ts
 import { MetadataRoute } from 'next';
 import { TOOLS } from './constants';
-
 import { SITE_URL } from '../lib/siteUrl';
 
 const BLOG_SLUGS = [
@@ -52,6 +50,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     ...toolPages,
+    // Geradores de documentos
+    {
+      url: `${SITE_URL}/gerar-orcamento`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.95,
+    },
+    {
+      url: `${SITE_URL}/criar-documento`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/ferramentas`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/modelos`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
     // Páginas institucionais de alta transparência exigidas pelo AdSense
     {
       url: `${SITE_URL}/sobre`,
