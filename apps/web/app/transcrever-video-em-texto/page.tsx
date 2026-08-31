@@ -962,7 +962,7 @@ export default function TranscreverVideoPage() {
           </div>
 
           {/* 2. Guia Passo a Passo */}
-          <div className="bg-gray-50 dark:bg-gray-850/60 p-6 md:p-8 rounded-3xl border border-gray-150 dark:border-gray-800 space-y-6">
+          <div className="bg-white dark:bg-gray-800/90 p-6 md:p-8 rounded-3xl border border-gray-150 dark:border-gray-700 shadow-sm space-y-6">
             <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
               <span>📋</span> Como Transcrever Vídeos e Áudios em 4 Passos Simples
             </h3>
@@ -1012,7 +1012,7 @@ export default function TranscreverVideoPage() {
                     <td className="p-3 border border-gray-200 dark:border-gray-700">Videoaulas, reuniões gravadas, podcasts em vídeo e entrevistas.</td>
                     <td className="p-3 border border-gray-200 dark:border-gray-700 text-emerald-600 dark:text-emerald-400 font-bold">Rápida</td>
                   </tr>
-                  <tr className="bg-gray-50/50 dark:bg-gray-850/40">
+                  <tr className="bg-gray-50/50 dark:bg-gray-800/40">
                     <td className="p-3 border border-gray-200 dark:border-gray-700 font-semibold">Áudio Comprimido</td>
                     <td className="p-3 border border-gray-200 dark:border-gray-700">MP3, M4A, AAC, OGG</td>
                     <td className="p-3 border border-gray-200 dark:border-gray-700">Áudios do WhatsApp, gravador de voz do celular, reuniões sem vídeo.</td>
@@ -1030,7 +1030,7 @@ export default function TranscreverVideoPage() {
           </div>
 
           {/* 4. Segurança e LGPD */}
-          <div className="bg-gray-50 dark:bg-gray-850/60 p-6 md:p-8 rounded-3xl border border-gray-150 dark:border-gray-800 space-y-4">
+          <div className="bg-white dark:bg-gray-800/90 p-6 md:p-8 rounded-3xl border border-gray-150 dark:border-gray-700 shadow-sm space-y-4">
             <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
               <span>🛡️</span> Privacidade e Segurança de Dados (LGPD)
             </h3>

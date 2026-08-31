@@ -116,7 +116,7 @@ export default function ArtigoTranscreverAudio() {
                     <td className="p-3 border border-gray-200 dark:border-gray-700">Leve</td>
                     <td className="p-3 border border-gray-200 dark:border-gray-700">Ideal para gravações de voz e mensagens de áudio.</td>
                   </tr>
-                  <tr className="bg-gray-50/50 dark:bg-gray-850/40">
+                  <tr className="bg-gray-50/50 dark:bg-gray-800/40">
                     <td className="p-3 border border-gray-200 dark:border-gray-700 font-semibold">MP4 / WEBM</td>
                     <td className="p-3 border border-gray-200 dark:border-gray-700">Médio</td>
                     <td className="p-3 border border-gray-200 dark:border-gray-700">Padrão para reuniões no Google Meet, Zoom ou Teams.</td>

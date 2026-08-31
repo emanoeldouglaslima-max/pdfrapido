@@ -22,7 +22,7 @@ export default function AuthorBio({
       </div>
 
       {/* Caixa do Autor */}
-      <div className="flex flex-col sm:flex-row items-start gap-4 p-6 bg-gray-50 dark:bg-gray-850/60 rounded-2xl border border-gray-150 dark:border-gray-800">
+      <div className="flex flex-col sm:flex-row items-start gap-4 p-6 bg-white dark:bg-gray-800/90 rounded-2xl border border-gray-150 dark:border-gray-700 shadow-sm">
         <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-600 to-indigo-600 text-white font-extrabold text-xl flex items-center justify-center shrink-0 shadow-md">
           ED
         </div>

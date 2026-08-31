@@ -336,8 +336,8 @@ export default async function HomePage() {
                   a: 'Sim! Toda a plataforma foi desenvolvida com foco em Mobile-First, funcionando em iPhones, smartphones Android e tablets.',
                 },
               ].map((faq) => (
-                <div key={faq.q} className="bg-gray-50 dark:bg-gray-850 p-5 rounded-2xl border border-gray-200 dark:border-gray-800">
-                  <h3 className="font-bold text-gray-900 dark:text-gray-100 text-sm md:text-base">{faq.q}</h3>
+                <div key={faq.q} className="bg-white dark:bg-gray-800/90 p-5 md:p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm">
+                  <h3 className="font-bold text-gray-900 dark:text-white text-base md:text-lg">{faq.q}</h3>
                   <p className="text-gray-600 dark:text-gray-300 text-sm mt-2 leading-relaxed">{faq.a}</p>
                 </div>
               ))}

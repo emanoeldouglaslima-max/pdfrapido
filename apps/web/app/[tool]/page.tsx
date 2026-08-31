@@ -533,8 +533,8 @@ export default function ToolPage({ params }: PageProps) {
                 </h3>
                 <div className="space-y-4 not-prose">
                   {seo.faq.map((f, i) => (
-                    <div key={i} className="bg-gray-50 dark:bg-gray-850 p-5 rounded-2xl border border-gray-200 dark:border-gray-800">
-                      <h4 className="font-bold text-gray-900 dark:text-gray-100 text-sm md:text-base">{f.q}</h4>
+                    <div key={i} className="bg-white dark:bg-gray-800/90 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm">
+                      <h4 className="font-bold text-gray-900 dark:text-white text-sm md:text-base">{f.q}</h4>
                       <p className="text-gray-600 dark:text-gray-300 text-xs md:text-sm mt-2 leading-relaxed">{f.a}</p>
                     </div>
                   ))}

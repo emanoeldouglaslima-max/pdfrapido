@@ -47,7 +47,7 @@ export default function CookiesPage() {
           <div className="overflow-x-auto my-6 not-prose">
             <table className="w-full text-left border-collapse border border-gray-200 dark:border-gray-800 text-xs">
               <thead>
-                <tr className="bg-gray-100 dark:bg-gray-850 text-gray-900 dark:text-white">
+                <tr className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white">
                   <th className="p-3 border border-gray-200 dark:border-gray-800 font-bold">Chave / Cookie</th>
                   <th className="p-3 border border-gray-200 dark:border-gray-800 font-bold">Tipo</th>
                   <th className="p-3 border border-gray-200 dark:border-gray-800 font-bold">Fornecedor</th>
